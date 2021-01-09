@@ -5,10 +5,6 @@
   </ol>
 </nav>
 
-<div class="text-end">
-    <a class="btn btn-sm btn-danger" href="/patients/">Cancel</a>
-</div>
-
 <h1 class="mb-4">Register Patient</h1>
 
 <?php
@@ -16,7 +12,7 @@
 ?>
 
 <?php
-	echo $this->Form->control('opd_no', ['class' => 'form-control mb-3']);
+	echo $this->Form->control('opd_no', ['label' => 'OPD No.', 'class' => 'form-control mb-3', 'default' => $maxOpdNo]);
 	echo $this->Form->control('name', ['class' => 'form-control mb-3']);
 	echo $this->Form->control('phone', ['class' => 'form-control mb-3']);
 	echo $this->Form->control('age', ['class' => 'form-control mb-3']);

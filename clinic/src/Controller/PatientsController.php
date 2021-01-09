@@ -38,9 +38,19 @@ class PatientsController extends AppController
                 $this->Flash->success(__('Your patient has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
+
             $this->Flash->error(__('Unable to add your patient.'));
         }
+
+        $maxOpd = $this->Patients->query()->order('Patients.opd_no desc')->limit(1)->first();
+
+        $maxOpdNo = 100;
+        if ($maxOpd) {
+            $maxOpdNo = (int) $maxOpd->opd_no + 1;
+        }
+
         $this->set('patient', $patient);
+        $this->set('maxOpdNo', $maxOpdNo);
     }
 
     public function edit($id)

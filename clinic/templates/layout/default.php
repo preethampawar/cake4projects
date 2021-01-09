@@ -31,7 +31,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
                         <a class="nav-link" href="/patients">Patients</a>
                         <a class="nav-link" href="/billings">Billing</a>
                         <a class="nav-link" href="/patients/search">Search</a>
@@ -42,7 +42,20 @@
 
         <main class="main">
             <div class="container py-4">
-                <?= $this->Flash->render() ?>
+                <?php
+                $message = $this->Flash->render();
+
+                if ($message) {
+                    ?>
+
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <?= $message ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php
+                }
+                ?>
+
                 <?= $this->fetch('content') ?>
             </div>
         </main>

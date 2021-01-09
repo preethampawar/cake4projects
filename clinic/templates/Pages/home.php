@@ -1,1 +1,15 @@
-<h1 class="mt-5 text-center">Welcome to Spandana Physiotheraphy & Rehabilitation Center</h1>
+<h1 class="mt-3 text-center">Welcome to SPR Clinic</h1>
+
+<div class="text-center mt-4">
+    <p>
+        <a class="my-3" href="/patients/add">Register New Patient</a>
+    </p>
+
+    <p>
+        <a class="mb-3" href="/patients/search">Search Patient</a>
+    </p>
+
+    <p>
+        <a class="mb-3" href="/billings/add-step1">Create New Bill</a>
+    </p>
+</div>

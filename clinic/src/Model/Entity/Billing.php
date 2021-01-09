@@ -3,7 +3,7 @@ namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
 
-class Patient extends Entity
+class Billing extends Entity
 {
     protected $_accessible = [
         '*' => true,

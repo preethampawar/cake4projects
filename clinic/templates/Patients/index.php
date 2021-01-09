@@ -36,7 +36,7 @@
             <?= $patient->join_date->format('d/m/Y') ?>
         </td>
         <td>
-            <?= $this->Html->link($patient->name, ['action' => 'view', $patient->id]) ?>
+            <?= $patient->name ?>
         </td>
         <td>
             <?= $patient->age ?>
