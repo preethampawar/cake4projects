@@ -1,4 +1,4 @@
-<h1 class="mt-3 text-center">Welcome to SPR Clinic</h1>
+<h1 class="mt-3 text-center">Welcome to Spandana Physiotheraphy Sujok Acupressure Clinic</h1>
 
 <div class="text-center mt-4">
     <p>
