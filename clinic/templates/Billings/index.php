@@ -4,7 +4,7 @@
     <a class="btn btn-primary btn-sm" href="/billings/add-step1">+ Add New Bill</a>
 </div>
 
-<table class="table mt-3">
+<table class="table table-sm small mt-3">
 	<thead>
     <tr>
         <th>#</th>
