@@ -18,10 +18,11 @@ echo $this->Form->create($caseSheet);
 <?php
 echo $this->Form->control('patient_id', ['type' => 'hidden', 'value' => $caseSheet->patient->id]);
 echo $this->Form->control('date', ['type' => 'date', 'class' => 'form-control mb-3', 'default' => date('Y-m-d')]);
+echo $this->Form->control('seatings', ['label' => 'Seatings *', 'class' => 'form-control mb-3', 'required' => true]);
 echo $this->Form->control('past_history', ['rows' => '3', 'class' => 'form-control mb-3']);
 echo $this->Form->control('present_history', ['rows' => '3', 'class' => 'form-control mb-3']);
 echo $this->Form->control('diagnosis', ['rows' => '3', 'class' => 'form-control mb-3']);
-echo $this->Form->control('treatment', ['rows' => '3', 'class' => 'form-control mb-3']);
+echo $this->Form->control('treatment', ['label' => 'Treatment *', 'rows' => '3', 'class' => 'form-control mb-3', 'required' => true]);
 ?>
 
 <div class="mt-4">

@@ -24,7 +24,16 @@ echo $this->Form->control('patient_name', ['label' => 'Patient Name', 'class' =>
 echo $this->Form->control('age', ['label' => 'Age', 'class' => 'form-control mb-3', 'default' => $patient->age]);
 echo $this->Form->control('sex', ['label' => 'Sex', 'class' => 'form-control mb-3', 'default' => $patient->sex, 'list' => 'UserSex']);
 echo $this->Form->control('treatment', ['rows' => '3', 'class' => 'form-control mb-3']);
-echo $this->Form->control('amount', ['type' => 'number', 'required' => true, 'label' => 'Amount *', 'class' => 'form-control mb-3']);
+echo $this->Form->control('treatment_type', [
+        'type' => 'select',
+        'label' => 'Treatment Type',
+        'class' => 'form-control mb-3',
+        'options' => ['clinic' => 'Clinic', 'home_visit' => 'Home Visit'],
+        'default' => 'clinic',
+    ]);
+echo $this->Form->control('consultation_fee', ['label' => 'Consultation Fee', 'class' => 'form-control mb-3', 'required' => false]);
+echo $this->Form->control('seatings', ['label' => 'Seatings *', 'class' => 'form-control mb-3', 'required' => true]);
+echo $this->Form->control('amount', ['type' => 'number', 'required' => false, 'label' => 'Amount', 'class' => 'form-control mb-3']);
 ?>
 
 <div class="mt-4">

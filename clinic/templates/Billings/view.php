@@ -1,20 +1,18 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/billings/">Billings</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Bill Details</li>
-    </ol>
-</nav>
-
-
 <div class="text-end">
-    <a class="btn btn-sm btn-danger" href="/billings/">Back</a>
+    <a class="btn btn-sm btn-secondary" href="/billings/">Back</a>
 </div>
 
-<h1>Bill Details - <?= h($billing->patient_name) ?></h1>
+<h4>Bill Details</h4>
 
-<table class="table table-sm small table-striped table-bordered mt-3">
+<table class="table table-bordered table-sm small mt-3">
 	<tbody>
 
+	<tr>
+		<th class="w-25">Date</th>
+		<td>
+			<?= $billing->bill_date->format('d/m/Y') ?>
+		</td>
+	</tr>
 	<tr>
 		<th class="w-25">OPD No.</th>
 		<td>
@@ -27,6 +25,7 @@
             <?= $billing->patient_name ?>
         </td>
 	</tr>
+
 	<tr>
 		<th>Age</th>
 		<td>
@@ -40,8 +39,26 @@
         </td>
     </tr>
 	<tr>
-		<th>Treatment</th>
+		<th>Treatment Type</th>
 		<td>
+            <?= $billing->treatment_type === 'clinic' ? 'Clinic' : 'Home Visit' ?>
+        </td>
+    </tr>
+	<tr>
+		<th>Consultation Fee</th>
+		<td>
+            <?= $billing->consultation_fee ?>
+        </td>
+    </tr>
+	<tr>
+		<th>Seatings</th>
+		<td>
+            <?= $billing->seatings ?>
+        </td>
+    </tr>
+    <tr>
+        <th>Treatment</th>
+        <td>
             <?= $billing->treatment ?>
         </td>
     </tr>

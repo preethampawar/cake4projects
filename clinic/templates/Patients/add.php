@@ -12,14 +12,14 @@
 ?>
 
 <?php
-	echo $this->Form->control('opd_no', ['label' => 'OPD No.', 'class' => 'form-control mb-3', 'default' => $maxOpdNo]);
+	echo $this->Form->control('opd_no', ['label' => 'OPD No. *', 'class' => 'form-control mb-3', 'default' => $maxOpdNo, 'required' => true]);
 	echo $this->Form->control('name', ['class' => 'form-control mb-3']);
-	echo $this->Form->control('phone', ['class' => 'form-control mb-3']);
-	echo $this->Form->control('age', ['class' => 'form-control mb-3']);
-	echo $this->Form->control('sex', ['class' => 'form-control mb-3', 'list' => 'UserSex']);
+	echo $this->Form->control('phone', ['label' => 'Phone *', 'class' => 'form-control mb-3', 'required' => true]);
+	echo $this->Form->control('age', ['label' => 'Age *', 'class' => 'form-control mb-3', 'required' => true]);
+	echo $this->Form->control('sex', ['label' => 'Sex *', 'class' => 'form-control mb-3', 'list' => 'UserSex', 'required' => true]);
 	echo $this->Form->control('address', ['rows' => '3', 'class' => 'form-control mb-3']);
 	echo $this->Form->control('blood_group', ['class' => 'form-control mb-3', 'list' => 'UserBloodGroup']);
-	echo $this->Form->control('join_date', ['type' => 'date', 'class' => 'form-control mb-3', 'default' => date('Y-m-d')]);
+	echo $this->Form->control('join_date', ['label' => 'Join Date (dd-mm-yyyy) *', 'type' => 'date', 'class' => 'form-control mb-3', 'default' => date('Y-m-d'), 'required' => true]);
 ?>
 
 <div class="mt-4">

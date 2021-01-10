@@ -121,6 +121,12 @@ if ($patient->case_sheets) {
                     </td>
                 </tr>
                 <tr>
+                    <th>Seatings</th>
+                    <td>
+                        <?= $caseSheet->seatings ?>
+                    </td>
+                </tr>
+                <tr>
                     <th>Past History</th>
                     <td><?= $caseSheet->past_history ?></td>
                 </tr>
