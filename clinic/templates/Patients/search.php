@@ -22,7 +22,7 @@
         'label' => 'Search By',
         'class' => 'form-control mb-3',
         'empty' => false,
-        'options' => ['phone' => 'Phone No.', 'id' => 'OPD No.', 'name' => 'Name'],
+        'options' => ['phone' => 'Phone No.', 'opd_no' => 'OPD No.', 'name' => 'Name'],
         'default' => 'phone'
     ]);
 ?>
