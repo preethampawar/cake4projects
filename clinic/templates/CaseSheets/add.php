@@ -5,15 +5,20 @@
   </ol>
 </nav>
 
-<h1>Add Case Sheet - <?= $patient->name ?></h1>
+<div class="text-end">
+    <a class="btn btn-sm btn-danger" href="/patients/view/<?= $patient->id ?>">Cancel</a>
+</div>
+
+<h1>Add Case Sheet</h1>
+
+<div class="mb-3">
+    OPD No:  <?= $patient->opd_no ?><br>
+    Patient Name:  <?= $patient->name ?>
+</div>
 
 <?php
     echo $this->Form->create($caseSheet);
 ?>
-
-<div class="text-end">
-    <a class="btn btn-sm btn-danger" href="/patients/view/<?= $patient->id ?>">Cancel</a>
-</div>
 
 <?php
 echo $this->Form->control('patient_id', ['type' => 'hidden', 'value' => $patient->id]);
@@ -26,7 +31,7 @@ echo $this->Form->control('treatment', ['label' => 'Treatment *', 'rows' => '3',
 ?>
 
 <div class="mt-4">
-    <?= $this->Form->button(__('+ Add Case Sheet'), ['class' => 'btn btn-primary']) ?>
+    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-sm btn-primary']) ?>
 </div>
 
 <?php

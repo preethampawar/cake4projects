@@ -30,7 +30,8 @@
     </div>
 </div>
 
-<table class="table table-sm small mt-3">
+<div class="table-responsive">
+    <table class="table table-sm small mt-3">
 	<thead>
     <tr>
         <th>#</th>
@@ -90,3 +91,4 @@
 	?>
 	</tbody>
 </table>
+</div>

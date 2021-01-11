@@ -11,7 +11,7 @@
     <a class="btn btn-secondary btn-sm" href="/patients/">Back</a>
 </div>
 
-<h1><?= h($patient->name) ?></h1>
+<h1 class="mt-3"><?= h($patient->name) ?></h1>
 <p><small>Join Date: <?= $patient->join_date->format('d-m-Y') ?></small></p>
 
 
@@ -22,7 +22,7 @@
         <tr>
             <th class="w-25">Id</th>
             <td>
-                <?= $patient->id ?>
+                <?= $patient->id ?> (<?= $this->Html->link('Edit', ['action' => 'edit', $patient->id]) ?>)
             </td>
         </tr>
         <tr>
@@ -34,7 +34,7 @@
         <tr>
             <th>Name</th>
             <td>
-                <?= $patient->name ?> (<?= $this->Html->link('Edit', ['action' => 'edit', $patient->id]) ?>)
+                <?= $patient->name ?>
             </td>
         </tr>
         <tr>
@@ -151,6 +151,10 @@ if ($patient->case_sheets) {
     endforeach;
     ?>
 <?php
+} else {
+    ?>
+    No case sheets found. Click <a href="/case-sheets/add/<?= $patient->id ?>">here</a> to add new case sheet.
+    <?php
 }
 
 

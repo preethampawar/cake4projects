@@ -18,7 +18,7 @@ echo $this->Form->create($billing);
 <?php
 echo $this->Form->control('bill_date', ['label' => 'Bill Date *', 'type' => 'date', 'required' => true, 'class' => 'form-control mb-3', 'default' => date('Y-m-d')]);
 echo $this->Form->control('opd_no', ['label' => 'OPD No. *', 'required' => true, 'class' => 'form-control mb-3', 'default' => $billing->opd_no]);
-echo $this->Form->control('name', ['label' => 'Patient Name', 'class' => 'form-control mb-3', 'default' => $billing->patient_name]);
+echo $this->Form->control('patient_name', ['label' => 'Patient Name', 'class' => 'form-control mb-3', 'default' => $billing->patient_name]);
 echo $this->Form->control('age', ['label' => 'Age', 'class' => 'form-control mb-3', 'default' => $billing->age]);
 echo $this->Form->control('sex', ['label' => 'Sex', 'class' => 'form-control mb-3', 'default' => $billing->sex, 'list' => 'UserSex']);
 echo $this->Form->control('treatment', ['rows' => '3', 'class' => 'form-control mb-3']);

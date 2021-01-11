@@ -30,7 +30,8 @@
     </div>
 </div>
 
-<table class="table table-sm small mt-3">
+<div class="table-responsive">
+    <table class="table table-sm small mt-3">
     <thead>
     <tr>
         <th style="width:30px;">Id</th>
@@ -53,7 +54,8 @@
 
         <tr>
             <td class="text-center">
-                <?= $patient->id ?>
+                <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
+                   class=""><?= $patient->id ?></a>
             </td>
             <td class="text-center">
                 <?= $patient->opd_no ?>
@@ -62,7 +64,8 @@
                 <?= $patient->join_date->format('d/m/Y') ?>
             </td>
             <td>
-                <?= $patient->name ?>
+                <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
+                   class=""><?= $patient->name ?></a>
             </td>
             <td>
                 <?= $patient->age ?>
@@ -74,9 +77,6 @@
                 <?= $patient->phone ?>
             </td>
             <td>
-                <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
-                   class="">Details</a>
-                &nbsp;|&nbsp;
                 <a href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>" class="">Edit</a>
             </td>
 
@@ -87,3 +87,4 @@
     ?>
     </tbody>
 </table>
+</div>
