@@ -64,8 +64,7 @@
                 <?= $patient->join_date->format('d/m/Y') ?>
             </td>
             <td>
-                <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
-                   class=""><?= $patient->name ?></a>
+                <?= $patient->name ?>
             </td>
             <td>
                 <?= $patient->age ?>
@@ -77,7 +76,10 @@
                 <?= $patient->phone ?>
             </td>
             <td>
-                <a href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>" class="">Edit</a>
+                <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
+                   class="">Details</a>
+
+                <a href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>" class="mx-3">Edit</a>
             </td>
 
         </tr>

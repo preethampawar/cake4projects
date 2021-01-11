@@ -56,7 +56,9 @@
 	?>
 
 	<tr>
-        <td><?= $i ?></td>
+        <td>
+            <a href="/billings/view/<?= $billing->id ?>" title="Details - <?= $billing->patient_name ?>" class=""><?= $billing->id ?></a>
+        </td>
 		<td>
             <?= $billing->bill_date->format('d/m/Y') ?>
 		</td>
