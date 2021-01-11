@@ -18,7 +18,7 @@ class PatientsController extends AppController
     public function index()
     {
         $this->loadComponent('Paginator');
-        $patients = $this->Paginator->paginate($this->Patients->find());
+        $patients = $this->Paginator->paginate($this->Patients->find()->order('Patients.id desc'));
         $this->set(compact('patients'));
     }
 

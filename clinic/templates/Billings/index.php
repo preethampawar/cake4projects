@@ -4,6 +4,32 @@
     <a class="btn btn-primary btn-sm" href="/billings/add-step1">+ Add New Bill</a>
 </div>
 
+<div>
+    <div>
+        <b><?php echo $this->Paginator->counter(
+                'Total Records: {{count}}'
+            ); ?></b>
+    </div>
+
+    <div class="d-flex mt-3">
+        <div class="">
+            Page:
+            <?= $this->Paginator->counter() ?>
+        </div>
+        <div class="mx-3">|</div>
+        <div class="text-end d-flex">
+
+            <ul class="list-unstyled">
+                <?= $this->Paginator->prev('« Previous') ?>
+            </ul>
+
+            <ul class="list-unstyled mx-3">
+                <?= $this->Paginator->next('Next »') ?>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <table class="table table-sm small mt-3">
 	<thead>
     <tr>

@@ -16,6 +16,8 @@ class CaseSheetsController extends AppController
 
     public function index()
     {
+        $this->redirect('/patients');
+        
         $this->loadComponent('Paginator');
         $caseSheets = $this->Paginator->paginate($this->CaseSheets->find('all', ['contain' => ['Patients']]));
         $this->set(compact('caseSheets'));
