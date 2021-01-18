@@ -32,7 +32,13 @@ class PatientsController extends AppController
     {
         $patient = $this->Patients->newEmptyEntity();
         if ($this->request->is('post')) {
-            $patient = $this->Patients->patchEntity($patient, $this->request->getData());
+            $data = $this->request->getData();
+
+            if(empty($data['join_date'])) {
+                $data['join_date'] = date('Y-m-d');
+            }
+
+            $patient = $this->Patients->patchEntity($patient, $data);
 
             if ($this->Patients->save($patient)) {
                 $this->Flash->success(__('Your patient has been saved.'));
@@ -60,7 +66,15 @@ class PatientsController extends AppController
             ->firstOrFail();
 
         if ($this->request->is(['post', 'put'])) {
-            $this->Patients->patchEntity($patient, $this->request->getData());
+
+            $data = $this->request->getData();
+
+            if(empty($data['join_date'])) {
+                $data['join_date'] = date('Y-m-d');
+            }
+
+            $this->Patients->patchEntity($patient, $data);
+
             if ($this->Patients->save($patient)) {
                 $this->Flash->success(__('Your patient has been updated.'));
                 return $this->redirect(['action' => 'index']);
