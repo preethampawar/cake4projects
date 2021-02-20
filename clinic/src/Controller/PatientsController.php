@@ -120,6 +120,12 @@ class PatientsController extends AppController
 
     public function download()
     {
+        $this->layout = false;
+        
+        $filename = 'Patients_List_' . date('d_m_Y') . '.csv';
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'";');
+
         if ($this->request->getSession()->read('loggedIn') != true) {
             return $this->redirect('/', 401);
         }
@@ -152,9 +158,8 @@ class PatientsController extends AppController
             fputcsv($out, $csvData);
         }
 
-        $filename = 'Patients_List_' . date('d_m_Y') . '.csv';
-        header('Content-Type: application/csv');
-        header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+
         fpassthru($out);
         //fclose($out);
         exit;
