@@ -8,6 +8,8 @@
 <div class="text-end">
     <a class="btn btn-primary btn-sm" href="/case-sheets/add/<?= $patient->id ?>">+ Add New Case Sheet</a>
     &nbsp;
+    <a class="btn btn-primary btn-sm" href="/billings/add/<?= $patient->id ?>" title="Create new bill for - <?= $patient->name ?>" class="">Create Bill</a>
+    &nbsp;
     <a class="btn btn-secondary btn-sm" href="/patients/">Back</a>
 </div>
 

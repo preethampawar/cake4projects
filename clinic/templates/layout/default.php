@@ -25,16 +25,28 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">SPSA Clinic</a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                        <a class="nav-link" href="/patients">Patients</a>
-                        <a class="nav-link" href="/billings">Billing</a>
-                        <a class="nav-link" href="/patients/search">Search</a>
+                        <?php
+                        if ($this->getRequest()->getSession()->read('loggedIn') === true) {
+                            ?>
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                            <a class="nav-link" href="/patients">Patients</a>
+                            <a class="nav-link" href="/billings">Billing</a>
+                            <a class="nav-link" href="/patients/search">Search</a>
+                            <a class="nav-link" href="/patients/logout">Logout</a>
+                            <?php
+                        } else {
+                            ?>
+                            <a class="nav-link" href="/patients/login">Login</a>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>

@@ -12,6 +12,7 @@ class PatientsController extends AppController
         parent::initialize();
 
         $this->loadComponent('Paginator');
+
         $this->loadComponent('Flash'); // Include the FlashComponent
     }
 
@@ -115,5 +116,76 @@ class PatientsController extends AppController
         }
 
         $this->set('result', $result);
+    }
+
+    public function download()
+    {
+        if ($this->request->getSession()->read('loggedIn') != true) {
+            return $this->redirect('/', 401);
+        }
+
+        $patients = $this->Patients->find('all')->order('Patients.join_date desc');
+
+        $out = fopen('php://output', 'w');
+
+        $csvData = [
+            'Id', 'OPD No.', 'Join Date', 'Name', 'Age', 'Sex', 'Phone', 'Blood Group', 'Address', 'Referred By'
+        ];
+
+        fputcsv($out, $csvData);
+
+        foreach($patients as $patient) {
+
+            $csvData = [
+                $patient->id,
+                $patient->opd_no,
+                ' ' . $patient->join_date->format('d-m-Y'),
+                addslashes($patient->name),
+                $patient->age,
+                addslashes($patient->sex),
+                $patient->phone . ",",
+                addslashes($patient->blood_group),
+                addslashes($patient->address),
+                addslashes($patient->referred_by)
+            ];
+
+            fputcsv($out, $csvData);
+        }
+
+        $filename = 'Patients_List_' . date('d_m_Y') . '.csv';
+        header('Content-Type: application/csv');
+        header('Content-Disposition: attachment; filename="'.$filename.'";');
+        fpassthru($out);
+        //fclose($out);
+        exit;
+    }
+
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            $credentials = [
+                'user' => 'Subbi',
+                'password' => '9848597878'
+            ];
+
+            if (trim($data['user']) === $credentials['user'] &&
+                trim($data['kunji']) === $credentials['password']
+            ) {
+                $this->request->getSession()->write('loggedIn', true);
+                $this->redirect('/');
+            } else {
+                $this->Flash->error(__('Error! Invalid User or Password.'));
+            }
+        }
+    }
+
+    public function logout()
+    {
+        $this->request->getSession()->write('loggedIn', false);
+        $this->request->getSession()->destroy();
+
+        $this->redirect('/');
     }
 }

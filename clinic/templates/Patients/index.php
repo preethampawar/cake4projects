@@ -1,4 +1,4 @@
-<h1>Patients</h1>
+<h1>Patients List</h1>
 
 <div class="text-end">
     <a class="btn btn-primary btn-sm" href="/patients/add">Register Patient</a>
@@ -79,7 +79,9 @@
                 <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
                    class="">Details</a>
 
-                <a href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>" class="mx-3">Edit</a>
+                <a href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>" class="mx-2">Edit</a>
+
+                <a href="/billings/add/<?= $patient->id ?>" title="Create new bill for - <?= $patient->name ?>" class="">Create Bill</a>
             </td>
 
         </tr>

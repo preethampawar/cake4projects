@@ -15,21 +15,31 @@
 <?php
 echo $this->Form->create();
 ?>
+<div class="card">
 
-<?php
-echo $this->Form->control('keyword', ['label' => 'Search Keyword', 'class' => 'form-control mb-3']);
-echo $this->Form->control('type', [
-    'type' => 'select',
-    'label' => 'Search By',
-    'class' => 'form-control mb-3',
-    'empty' => false,
-    'options' => ['opd_no' => 'OPD No.', 'phone' => 'Phone No.', 'name' => 'Name', 'id' => 'Id'],
-    'default' => 'opd_no'
-]);
-?>
 
-<div class="mt-4">
-    <?= $this->Form->button(__('Search'), ['class' => 'btn btn-sm btn-primary']) ?>
+    <div class="d-flex card-body">
+        <div>
+            <?php
+            echo $this->Form->control('keyword', ['label' => 'Search Keyword', 'class' => 'form-control mb-3', 'placeholder' => 'Enter OPD no. (or) Phone (or ) Name']);
+            ?>
+        </div>
+        <div class="mx-4">
+            <?php
+            echo $this->Form->control('type', [
+                'type' => 'select',
+                'label' => 'Search By',
+                'class' => 'form-control mb-3',
+                'empty' => false,
+                'options' => ['opd_no' => 'OPD No.', 'phone' => 'Phone No.', 'name' => 'Name', 'id' => 'Id'],
+                'default' => 'opd_no'
+            ]);
+            ?>
+        </div>
+        <div class="mt-4">
+            <?= $this->Form->button(__('Search'), ['class' => 'btn btn-md btn-primary']) ?>
+        </div>
+    </div>
 </div>
 
 <?php
@@ -40,7 +50,7 @@ echo $this->Form->end();
 <?php
 if ($result) {
     ?>
-    <h4 class="mt-5"><?= count($result) ?> record(s) found:</h4>
+    <h4 class="mt-4"><?= count($result) ?> record(s) found:</h4>
     <table class="table table-sm small mt-3">
         <thead>
         <tr>
@@ -93,5 +103,10 @@ if ($result) {
         ?>
         </tbody>
     </table>
+    <?php
+} else {
+    ?>
+    <p class="mt-4">No records found.</p>
+
     <?php
 }
