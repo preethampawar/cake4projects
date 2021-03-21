@@ -5,39 +5,18 @@
     <div class="col-6">
         <div class="card">
             <div class="card-header">
-                Patients
+                Questions
             </div>
             <div class="card-body">
                 <p>
-                    <a class="my-3" href="/patients/add">Register New Patient</a>
+                    <a class="my-3" href="/questions/add">Add Question</a>
                 </p>
                 <p>
-                    <a class="my-3" href="/patients/">Patients List</a>
-                </p>
-
-                <p>
-                    <a class="mb-3" href="/patients/search">Search Patients</a>
-                </p>
-                <p>
-                    <a class="mb-3" href="/patients/download">Download Patients List</a>
+                    <a class="my-3" href="/questions/">Questions List</a>
                 </p>
             </div>
         </div>
     </div>
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                Billing
-            </div>
-            <div class="card-body">
-                <p>
-                    <a class="mb-3" href="/billings/add-step1">Create New Bill</a>
-                </p>
-                <p>
-                    <a class="my-3" href="/billings/">Bills List</a>
-                </p>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
