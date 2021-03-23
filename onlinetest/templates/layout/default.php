@@ -71,8 +71,6 @@
                             <?php
                         } else {
                             ?>
-                            <a class="nav-link <?= $questionsLinkActive?>" href="/questions">Questions</a>
-                            <a class="nav-link <?= $examsLinkActive?>" href="/exams">Exams</a>
                             <a class="nav-link" href="/questions/login">Login</a>
                             <?php
                         }
