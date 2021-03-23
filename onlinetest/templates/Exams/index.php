@@ -1,7 +1,7 @@
-<h1>Questions List</h1>
+<h1>Exams List</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/questions/add">+ Add New Question</a>
+    <a class="btn btn-primary btn-sm" href="/exams/add">+ New Exam</a>
 </div>
 
 <div>
@@ -35,9 +35,9 @@
         <thead>
         <tr>
             <th style="width: 50px;">#</th>
-            <th style="width: 50px;">Q.ID</th>
-            <th>Question</th>
-            <th style="width: 8rem;">Actions</th>
+            <th style="width: 50px;">E.ID</th>
+            <th>Exam Name</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -45,9 +45,9 @@
 
         <tbody>
         <?php
-        $k = $this->Paginator->counter('{{start}}');
-        foreach ($questions as $question):
-
+        $k = 0;
+        foreach ($exams as $exam):
+            $k++;
             ?>
 
             <tr>
@@ -55,30 +55,29 @@
                     <?= $k ?>.
                 </td>
                 <td>
-                    <?= $question->id ?>
+                    <?= $exam->id ?>
                 </td>
                 <td>
-                    <div class="mb-2"><?= $question->name ?></div>
+                    <div class="mb-2"><?= $exam->name ?></div>
 
                     <div class="row">
                         <?php
-                        if ($question->question_options) {
+                        if ($exam->question_options) {
                             $i = 1;
-                            foreach ($question->question_options as $row) {
+                            foreach ($exam->question_options as $row) {
                                 ?>
 
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <?php
                                     $class = null;
                                     $checked = null;
-                                    if ($i === (int)$question->answer) {
+                                    if ($i === (int)$exam->answer) {
                                         $class = "fw-bold";
                                         $checked = "checked";
                                     }
                                     ?>
                                     <span class="<?= $class ?>">
                                 <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
-                                    <span class="small text-secondary"><?= $i ?>.</span>
                                     <input class="form-check-input" type="radio" <?= $checked ?> disabled>
                                     <label class="form-check-label2">
                                         <?= $row->name ?>
@@ -100,49 +99,32 @@
                     </div>
                 </td>
                 <td>
-                    <a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="">Edit</a>
+                    <a href="/exams/view/<?= $exam->id ?>" title="Show details" class="">Preview</a>
+                    &nbsp;|&nbsp;
+                    <a href="/exams/addQuestions/<?= $exam->id ?>" title="Add or Remove Questions" class="">Add/Remove Questions</a>
+                    &nbsp;|&nbsp;
+                    <a href="/exams/edit/<?= $exam->id ?>" title="Edit Exam details" class="">Edit Exam Details</a>
                     &nbsp;|&nbsp;
                     <?php
                     echo $this->Html->link(
                         'Delete',
-                        ['controller' => 'Questions', 'action' => 'delete', $question->id],
-                        ['confirm' => 'Q.No.' . $question->id . '. Are you sure you want to delete this question?']
+                        ['controller' => 'Exams', 'action' => 'delete', $exam->id],
+                        ['confirm' => 'E.ID.' . $exam->id . '. Are you sure you want to delete this exam?']
                     );
                     ?>
                 </td>
             </tr>
 
         <?php
-            $k++;
         endforeach;
 
-        if (empty($questions->toArray())) {
+        if (empty($exams->toArray())) {
             ?>
-            <tr><td colspan="4">No questions found.</td></tr>
+            <tr><td colspan="4">No exams found.</td></tr>
             <?php
         }
+
         ?>
         </tbody>
     </table>
-
-    <div class="my-3">
-
-        <div class="d-flex mt-3">
-            <div class="">
-                Page:
-                <?= $this->Paginator->counter() ?>
-            </div>
-            <div class="mx-3">|</div>
-            <div class="text-end d-flex">
-
-                <ul class="list-unstyled">
-                    <?= $this->Paginator->prev('« Previous') ?>
-                </ul>
-
-                <ul class="list-unstyled mx-3">
-                    <?= $this->Paginator->next('Next »') ?>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>

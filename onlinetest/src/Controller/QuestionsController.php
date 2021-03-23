@@ -23,8 +23,15 @@ class QuestionsController extends AppController
             $this->Questions->find('all')
                 ->where(['Questions.deleted' => 0])
                 ->contain(['QuestionOptions'])
-                ->order('Questions.id desc')
-                ->limit(100));
+                ->order('Questions.id desc'),
+            [
+                'limit' => '50',
+                'order' => [
+                    'Questions.id' => 'desc'
+                ]
+            ]
+        );
+
         $this->set(compact('questions'));
     }
 
@@ -178,5 +185,34 @@ class QuestionsController extends AppController
         }
 
         return $this->redirect(['controller' => 'questions', 'action' => 'index']);
+    }
+
+    public function login()
+    {
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            $credentials = [
+                'user' => 'admin',
+                'password' => 'preetham2020'
+            ];
+
+            if (trim($data['user']) === $credentials['user'] &&
+                trim($data['kunji']) === $credentials['password']
+            ) {
+                $this->request->getSession()->write('loggedIn', true);
+                $this->redirect('/');
+            } else {
+                $this->Flash->error(__('Error! Invalid User or Password.'));
+            }
+        }
+    }
+
+    public function logout()
+    {
+        $this->request->getSession()->write('loggedIn', false);
+        $this->request->getSession()->destroy();
+
+        $this->redirect('/');
     }
 }
