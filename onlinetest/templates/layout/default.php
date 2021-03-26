@@ -84,7 +84,7 @@
                                 <?php
                             } else {
                                 ?>
-                                <a class="nav-link <?= $userExamsLinkActive?>" href="/userexams">Exams</a>
+                                <a class="nav-link <?= $userExamsLinkActive?>" href="/UserExams/">Exams</a>
                                 <?php
                             }
                             ?>

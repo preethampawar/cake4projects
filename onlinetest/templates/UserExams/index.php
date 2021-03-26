@@ -40,7 +40,7 @@
                     <?= $exam->end_date->format('d/m/Y h:i A') ?>
                 </td>
                 <td>
-                    <a href="/userexams/view/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="">Take Online Test</a>
+                    <a href="/UserExams/view/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="">Take Online Test</a>
 
                 </td>
             </tr>

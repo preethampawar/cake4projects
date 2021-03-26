@@ -74,7 +74,7 @@ var exams = {
 
 var userExam = {
     updateAnswer: function(userExamId, questionId, selectedOption) {
-        let url = '/userexams/updateAnswer'
+        let url = '/UserExams/updateAnswer'
         let dataType = 'json'
         let csrfToken = $( "input[name='_csrfToken']" ).val()
         let data = {
@@ -112,7 +112,7 @@ var userExam = {
     getUserExamInfo: function(examId) {
         $.ajax({
             type: "GET",
-            url: '/userexams/getUserExamInfo/'+examId,
+            url: '/UserExams/getUserExamInfo/'+examId,
             success: function (data, obj) {
                 if (data && data.userExamInfo) {
                     let duration = data.userExamInfo.duration
@@ -141,10 +141,10 @@ var userExam = {
     clearUserExamSession: function(examId) {
         $.ajax({
             type: "GET",
-            url: '/userexams/clearUserExamSession/'+examId,
+            url: '/UserExams/clearUserExamSession/'+examId,
             success: function (data, obj) {
                 alert('Your exam time is over.')
-                window.location = '/userexams/'
+                window.location = '/UserExams/'
             },
             dataType: 'json',
         });

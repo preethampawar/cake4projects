@@ -45,7 +45,7 @@ class UserExamsController extends AppController
 
         if ($error) {
             $this->Flash->error(__($error));
-            $this->redirect('/userexams/');
+            $this->redirect('/UserExams/');
 
             return;
         }
@@ -68,7 +68,7 @@ class UserExamsController extends AppController
 
         if ($error) {
             $this->Flash->error(__($error));
-            $this->redirect('/userexams/');
+            $this->redirect('/UserExams/');
 
             return;
         }
@@ -105,7 +105,7 @@ class UserExamsController extends AppController
             $this->cleanUpUserExamSession($examId);
 
             $this->Flash->error(__($error));
-            $this->redirect('/userexams/');
+            $this->redirect('/UserExams/');
 
             return;
         }
@@ -244,7 +244,7 @@ class UserExamsController extends AppController
         if (!$userExamInfo) {
             $this->Flash->error(__('Session expired.'));
 
-            return $this->redirect('/userexams/');
+            return $this->redirect('/UserExams/');
         }
 
         $userExamId = $userExamInfo->id;
@@ -264,7 +264,7 @@ class UserExamsController extends AppController
 
             $this->Flash->error(__('You have cancelled the ongoing test.'));
 
-            return $this->redirect('/userexams/');
+            return $this->redirect('/UserExams/');
         }
 
         $this->Flash->error(__('Please try again.'));
@@ -282,7 +282,7 @@ class UserExamsController extends AppController
 
         $this->cleanUpUserExamSession($examId);
 
-        return $this->redirect('/userexams/myResult/'.base64_encode($userExamId));
+        return $this->redirect('/UserExams/myResult/'.base64_encode($userExamId));
     }
 
     public function myResult($userExamId) {

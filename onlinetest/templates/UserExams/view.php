@@ -2,13 +2,13 @@
     <div class="col-md-10">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/userexams/">Exams</a></li>
+                <li class="breadcrumb-item"><a href="/UserExams/">Exams</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Online Test</li>
             </ol>
         </nav>
     </div>
     <div class="col-md-2 text-end small">
-        <a class="btn btn-sm btn-danger" href="/userexams/">Back</a>
+        <a class="btn btn-sm btn-danger" href="/UserExams/">Back</a>
     </div>
 </div>
 
@@ -38,7 +38,7 @@ if ($userExamInfo) {
         <p class="text-danger fw-bold">Remaining Time: <?= ($userExamInfo['duration'] - $userExamInfo['time']) ?> mins</p>
 
         <p>
-            <a href="/userexams/startTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
+            <a href="/UserExams/startTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
                 Continue Online Test &raquo;
             </a>
         </p>
@@ -71,7 +71,7 @@ if ($userExamInfo) {
 } else {
     ?>
     <div class="text-center mt-5">
-        <a href="/userexams/startTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
+        <a href="/UserExams/startTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
             Start Online Test &raquo;
         </a>
     </div>
