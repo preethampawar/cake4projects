@@ -77,7 +77,7 @@
                             <a class="nav-link <?= $homeLinkActive?>" aria-current="page" href="/">Home</a>
 
                             <?php
-                            if((bool) $this->getRequest()->getSession()->read('userInfo.is_admin') === true) {
+                            if((bool) $this->getRequest()->getSession()->read('userInfo.isAdmin') === true) {
                                 ?>
                                 <a class="nav-link <?= $questionsLinkActive?>" href="/questions">Question Bank</a>
                                 <a class="nav-link <?= $examsLinkActive?>" href="/exams">Exams</a>
