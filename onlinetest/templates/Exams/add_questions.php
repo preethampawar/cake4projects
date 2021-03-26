@@ -12,10 +12,6 @@
     </div>
 </div>
 
-
-
-
-
 <h1><?= $exam->name ?></h1>
 
 <p class="mt-2 small">
@@ -29,76 +25,93 @@
 <?php
 //debug($questions);
 ?>
-<div class="row">
-    <div class="col-sm-5 bg-light">
-        <div class="text-center"><b>Selected questions for Exam</b></div>
-        <hr>
-        <div class="" id="examSelectedQuestions" style="height: 300px; overflow: auto;">
-            Click "Add" button on the right pane to add questions
+
+<div class="row mt-2">
+
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header fw-bold">
+                Selected questions for Exam
+            </div>
+            <div class="card-body">
+                <div class="" id="examSelectedQuestions" style="height: 300px; overflow: auto;">
+                    Click "Add" button on the right pane to add questions
+                </div>
+            </div>
         </div>
 
     </div>
-    <div class="col-sm-1"></div>
-    <div class="col-sm-6 bg-light">
-        <div class="text-center"><b>Question Bank</b></div>
-        <hr>
-        <div class=""  style="height: 300px; overflow: auto;">
-            <table class="table table-sm table-hover small mb-3">
 
-                <tbody>
-                <?php
-                $k = $this->Paginator->counter('{{start}}');
-                foreach ($questions as $question):
-                    ?>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="fw-bold">Question Bank</div>
 
-                    <tr id = "addQuestionRow<?= $question->id ?>">
-                        <td><?= $k ?>.</td>
-                        <td>
-                            <?= $question->name ?>
-                        </td>
-                        <td class="text-center">
-                            <button
-                                id = "addQuestionButton<?= $question->id ?>"
-                                class="btn btn-sm btn-primary py-0"
-                                onclick="exams.addExamQuestion('<?= $exam->id ?>', '<?= $question->id ?>')">
-                                Add
-                            </button>
-                        </td>
-                    </tr>
-
-                <?php
-                    $k++;
-                endforeach;
-
-                if (empty($questions->toArray())) {
-                    ?>
-                    <tr>
-                        <td colspan="4">No questions found.</td>
-                    </tr>
-                    <?php
-                }
-                ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="text-center my-1 small">
-            <div class="text-center">
-                <ul class="list-unstyled mb-1">
-                    <div class="d-inline-flex">
-                        <?= $this->Paginator->prev('« Previous') ?>
+                <div class="text-end small">
+                    <div class="d-inline-flex">Page: <?= $this->Paginator->counter() ?></div>
+                    <div class="text-center d-inline-flex ms-3">
+                        <ul class="list-unstyled mb-1">
+                            <div class="d-inline-flex">
+                                <?= $this->Paginator->prev('« Previous') ?>
+                            </div>
+                            &nbsp;&nbsp;
+                            <div class="d-inline-flex">
+                                <?= $this->Paginator->next('Next »') ?>
+                            </div>
+                        </ul>
                     </div>
-                    &nbsp;&nbsp;
-                    <div class="d-inline-flex">
-                        <?= $this->Paginator->next('Next »') ?>
-                    </div>
-                </ul>
+                </div>
             </div>
-            <div>
-                Page: <?= $this->Paginator->counter() ?>
+            <div class="card-body">
+                <div class=""  style="height: 300px; overflow: auto;">
+                    <table class="table table-sm table-hover small mb-3">
+
+                        <tbody>
+                        <?php
+                        $k = $this->Paginator->counter('{{start}}');
+                        foreach ($questions as $question):
+                            ?>
+
+                            <tr id = "addQuestionRow<?= $question->id ?>">
+                                <td><?= $k ?>.</td>
+                                <td>
+                                    <?= $question->name ?>
+                                </td>
+                                <td class="text-center">
+                                    <button
+                                        id = "addQuestionButton<?= $question->id ?>"
+                                        class="btn btn-sm btn-primary py-0"
+                                        onclick="exams.addExamQuestion('<?= $exam->id ?>', '<?= $question->id ?>')">
+                                        Add
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <?php
+                            $k++;
+                        endforeach;
+
+                        if (empty($questions->toArray())) {
+                            ?>
+                            <tr>
+                                <td colspan="4">No questions found.</td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
+
         </div>
     </div>
+
+
+
 </div>
+
 
 <script>
     $( document ).ready(function() {

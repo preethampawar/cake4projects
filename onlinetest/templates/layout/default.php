@@ -28,6 +28,12 @@
             }
         </style>
 
+        <!-- JS math parsers -->
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async
+                src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="/js/common.js"></script>
         <script>
@@ -50,6 +56,7 @@
                         $questionsLinkActive = null;
                         $examsLinkActive = null;
                         $homeLinkActive = null;
+                        $userExamsLinkActive = null;
 
                         switch($controller) {
                             case 'Questions':
@@ -58,29 +65,47 @@
                             case 'Exams':
                                 $examsLinkActive = 'active';
                                 break;
+                            case 'UserExams':
+                                $userExamsLinkActive = 'active';
+                                break;
                             default:
                                 $homeLinkActive = 'active';
                         }
 
-                        if ($this->getRequest()->getSession()->read('loggedIn') === true) {
+                        if ($this->getRequest()->getSession()->check('userInfo.id') === true) {
                             ?>
                             <a class="nav-link <?= $homeLinkActive?>" aria-current="page" href="/">Home</a>
-                            <a class="nav-link <?= $questionsLinkActive?>" href="/questions">Questions</a>
-                            <a class="nav-link <?= $examsLinkActive?>" href="/exams">Exams</a>
-                            <a class="nav-link" href="/questions/logout">Logout</a>
+
+                            <?php
+                            if((bool) $this->getRequest()->getSession()->read('userInfo.is_admin') === true) {
+                                ?>
+                                <a class="nav-link <?= $questionsLinkActive?>" href="/questions">Question Bank</a>
+                                <a class="nav-link <?= $examsLinkActive?>" href="/exams">Exams</a>
+                                <?php
+                            } else {
+                                ?>
+                                <a class="nav-link <?= $userExamsLinkActive?>" href="/userexams">Exams</a>
+                                <?php
+                            }
+                            ?>
+
+                            <a class="nav-link" href="/users/logout">Logout</a>
+
                             <?php
                         } else {
                             ?>
-                            <a class="nav-link" href="/questions/login">Login</a>
+                            <a class="nav-link" href="/users/login">Login</a>
+                            <a class="nav-link" href="/users/register">Register</a>
                             <?php
                         }
                         ?>
+
                     </div>
                 </div>
             </div>
         </nav>
 
-        <main class="main">
+        <main class="main mb-5">
             <div class="container py-4">
                 <?php
                 $message = $this->Flash->render();

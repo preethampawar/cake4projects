@@ -2,11 +2,7 @@
 
 namespace App\Controller;
 
-use App\Model\Table\QuestionOptionsTable;
-use Cake\Database\Expression\QueryExpression;
-use Cake\ORM\Query;
-
-class QuestionsController extends AppController
+class UsersController extends AppController
 {
     public function initialize(): void
     {
@@ -43,10 +39,10 @@ class QuestionsController extends AppController
 
     public function add()
     {
-        $question = $this->Questions->newEmptyEntity();
+        $user = $this->Users->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            $error = $this->validateQuestion($this->request->getData());
+            $error = $this->validateUser($this->request->getData());
 
             if ($error) {
                 $this->Flash->error(__($error));
@@ -54,75 +50,82 @@ class QuestionsController extends AppController
                 return;
             }
 
-            $question = $this->Questions->patchEntity($question, $this->request->getData());
+            $user = $this->Users->patchEntity($user, $this->request->getData());
 
-            if ($questionInfo = $this->Questions->save($question)) {
-                $this->loadModel(QuestionOptionsTable::class);
-                $options = $question['options'];
+            if ($userInfo = $this->Users->save($user)) {
+                $this->Flash->success(__('Registration completed.'));
 
-                foreach ($options as $row) {
-                    if (empty(trim($row['name']))) {
-                        continue;
-                    }
-
-                    $questionOption = $this->QuestionOptions->newEmptyEntity();
-                    $data = [];
-                    $data['question_id'] = $questionInfo->id;
-                    $data['name'] = $row['name'];
-                    $data['sort'] = (int) $row['order'];
-
-                    $questionOption = $this->QuestionOptions->patchEntity($questionOption, $data);
-
-                    $this->QuestionOptions->save($questionOption);
-                }
-
-                $this->Flash->success(__('Your question has been saved.'));
-                return $this->redirect(['controller' => 'questions', 'action' => 'index']);
+                return $this->redirect(['controller' => 'users', 'action' => 'login']);
             }
 
-            $this->Flash->error(__('Unable to add new question.'));
+            $this->Flash->error(__('Unable to add new user.'));
         }
 
-        $this->set('question', $question);
+        $this->set('user', $user);
     }
 
-    private function validateQuestion($data)
+    public function register()
     {
-        if (empty(trim($data['type']))) {
-            return 'Please select the question type.';
+        $user = $this->Users->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $error = $this->validateUser($this->request->getData());
+
+            if ($error) {
+                $this->Flash->error(__($error));
+
+                return;
+            }
+
+            $data = $this->request->getData();
+            $data['password'] = sha1($data['password']);
+
+            $user = $this->Users->patchEntity($user, $data);
+
+            if ($userInfo = $this->Users->save($user)) {
+                $this->Flash->success(__('Registration successful.'));
+
+                return $this->redirect(['controller' => 'users', 'action' => 'login']);
+            }
+
+            $this->Flash->error(__('Unable to add new user.'));
         }
+
+        $this->set('user', $user);
+    }
+
+    private function validateUser($data)
+    {
+        //debug($data);
 
         if (empty(trim($data['name']))) {
-            return 'Question field cannot be empty.';
+            return 'Full Name field cannot be empty.';
         }
 
-        if (empty($data['options'])) {
-            return 'No options selected.';
+        if (empty(trim($data['username']))) {
+            return 'Username field cannot be empty.';
         }
 
-        $error = null;
-
-        switch ($data['type']) {
-            case 'MultipleChoice-SingleAnswer':
-                foreach ($data['options'] as $index => $row) {
-                    if ($index < 3 && empty(trim($row['name'])) || empty(trim($row['order']))) {
-                        $error = '"Option ' . $index . '" cannot be empty.';
-                        break;
-                    }
-                }
-                break;
-
-            default:
-                $error = 'Invalid question type.';
-                break;
+        if (empty(trim($data['password']))) {
+            return 'Password field cannot be empty.';
         }
 
-        if ($error) {
-            return $error;
+        if (empty(trim($data['confirm']))) {
+            return 'Confirm Password field cannot be empty.';
         }
 
-        if (empty($data['answer'])) {
-            return 'Please select the answer.';
+        if (empty(trim($data['phone']))) {
+            return 'Phone Number field cannot be empty.';
+        }
+
+        if (trim($data['password']) != trim($data['confirm'])) {
+            return 'Password and Confirm Password fields do not match.';
+        }
+
+        $userInfo = $this->Users->findByUsername($data['username'])->first();
+
+        if (!empty($userInfo)) {
+            return 'Username already exits.';
         }
 
         return null;
@@ -195,26 +198,33 @@ class QuestionsController extends AppController
     {
         if ($this->request->is('post')) {
             $data = $this->request->getData();
+            $userInfo = $this->Users->findByUsername($data['username'])->where(['Users.deleted' => 0])->first();
 
-            $credentials = [
-                'user' => 'admin',
-                'password' => 'preetham2020'
-            ];
+            if ($userInfo && $userInfo->password === sha1($data['kunji'])) {
+                $user['id'] = $userInfo->id;
+                $user['username'] = $userInfo->username;
+                $user['name'] = $userInfo->name;
+                $user['email'] = $userInfo->email;
+                $user['phone'] = $userInfo->phone;
+                $user['address'] = $userInfo->address;
+                $user['isAdmin'] = $userInfo->is_admin;
 
-            if (trim($data['user']) === $credentials['user'] &&
-                trim($data['kunji']) === $credentials['password']
-            ) {
-                $this->request->getSession()->write('loggedIn', true);
+                $this->request->getSession()->write('userInfo', $user);
+
                 $this->redirect('/');
-            } else {
-                $this->Flash->error(__('Error! Invalid User or Password.'));
+
+                return;
             }
+
+            $this->Flash->error(__('User not found.'));
+
+            return;
         }
     }
 
     public function logout()
     {
-        $this->request->getSession()->write('loggedIn', false);
+        $this->request->getSession()->delete('userInfo');
         $this->request->getSession()->destroy();
 
         $this->redirect('/');

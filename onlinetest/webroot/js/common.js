@@ -72,3 +72,83 @@ var exams = {
     },
 }
 
+var userExam = {
+    updateAnswer: function(userExamId, questionId, selectedOption) {
+        let url = '/userexams/updateAnswer'
+        let dataType = 'json'
+        let csrfToken = $( "input[name='_csrfToken']" ).val()
+        let data = {
+            userExamId: userExamId,
+            examQuestionId: questionId,
+            selectedOption: selectedOption,
+            _csrfToken: csrfToken
+        }
+        let decodedQuestionId = atob(questionId)
+
+        $('.examQuestion-'+decodedQuestionId).removeClass('text-success');
+        $('.examQuestion-'+decodedQuestionId).removeClass('fw-bold');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (data, obj) {
+                $('#examQuestion-'+decodedQuestionId+'-'+selectedOption).addClass('text-success fw-bold');
+
+                $('#examQuestion-'+decodedQuestionId+'-'+selectedOption).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+            },
+            dataType: dataType,
+        });
+    },
+
+    checkExamDuration: function(examId) {
+        userExam.getUserExamInfo(examId)
+
+        setInterval(function() {
+            userExam.getUserExamInfo(examId)
+        }, (30000));
+    },
+
+    getUserExamInfo: function(examId) {
+        $.ajax({
+            type: "GET",
+            url: '/userexams/getUserExamInfo/'+examId,
+            success: function (data, obj) {
+                if (data && data.userExamInfo) {
+                    let duration = data.userExamInfo.duration
+                    let examId = data.userExamInfo.exam_id
+                    let time = data.userExamInfo.time
+                    let text = 'Remaining Time: ' + (duration - time) + ' mins';
+
+                    if (time > duration) {
+                        userExam.clearUserExamSession(examId);
+                    }
+
+                    $('#examTimeDisplay')
+                        .text(text)
+                        .fadeIn(100).fadeOut(100)
+                        .fadeIn(100).fadeOut(100)
+                        .fadeIn(100).fadeOut(100)
+                        .fadeIn(100)
+
+                    console.log(data.userExamInfo);
+                }
+            },
+            dataType: 'json',
+        });
+    },
+
+    clearUserExamSession: function(examId) {
+        $.ajax({
+            type: "GET",
+            url: '/userexams/clearUserExamSession/'+examId,
+            success: function (data, obj) {
+                alert('Your exam time is over.')
+                window.location = '/userexams/'
+            },
+            dataType: 'json',
+        });
+    }
+
+}
+

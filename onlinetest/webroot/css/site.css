@@ -6,6 +6,8 @@
     --cus-maroon: #721c24;
     --cus-maroon-dark: #611c24;
     --cus-light-grey: #f8f8f8;
+    --cus-ivory: #fffff0;
+    --cus-aliceblue: #f0f8ff;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -70,5 +72,27 @@
 .btn-maroon:hover {
     background-color: var(--cus-maroon-dark);
     color: var(--bs-white);
+}
+
+.bg-ivory {
+    background-color: var(--cus-ivory);
+    color: var(--bs-dark);
+}
+.bg-aliceblue {
+    background-color: var(--cus-aliceblue);
+    color: var(--bs-dark);
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.pagination a{
+    text-decoration: none;
+    color: #efefef;
+}
+.pagination a:hover{
+    text-decoration: none;
+    color: white;
 }
 

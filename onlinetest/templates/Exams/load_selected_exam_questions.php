@@ -13,9 +13,9 @@
             <td><?= $question ?></td>
             <td>
                 <button
-                    class="btn btn-sm btn-outline-danger py-0"
+                    class="btn btn-sm btn-danger py-0"
                     onclick="exams.deleteSelectedExamQuestion('<?= $examId ?>', '<?= $examQuestionId ?>')">
-                    Remove
+                    X
                 </button>
                 <script>
                     $( document ).ready(function() {
