@@ -1,12 +1,12 @@
 <nav class="navbar navbar-light bg-light d-print-none sticky-top mb-3">
     <div class="container-fluid justify-content-start">
         <a class="nav-link" href="/UserExams/">All Online Exams</a>
-        <a class="nav-link" href="/UserExams/myTests">My Tests</a>
+        <a class="nav-link active" href="/UserExams/myTests">My Tests</a>
     </div>
 </nav>
 
 
-<h1>All Online Exams</h1>
+<h1>My Tests</h1>
 
 <div class="">
     <?php echo $this->Paginator->counter(
@@ -18,9 +18,9 @@
         <thead>
         <tr>
             <th style="width: 50px;">#</th>
-            <th>Exam Name</th>
+            <th>Attempted Exams</th>
             <th>Duration</th>
-            <th>End Date</th>
+            <th>Date</th>
             <th></th>
         </tr>
         </thead>
@@ -30,7 +30,8 @@
         <tbody>
         <?php
         $k = 0;
-        foreach ($exams as $exam):
+        foreach ($userExams as $userExam):
+            $exam = $userExam->exam;
             $k++;
             ?>
 
@@ -45,23 +46,25 @@
                     <?= $exam->time ?> mins
                 </td>
                 <td>
-                    <?= $exam->end_date->format('d/m/Y h:i A') ?>
+                    <?= $userExam->created->format('d/m/Y') ?>
                 </td>
                 <td>
-                    <a href="/UserExams/view/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary py-0">Online Test</a>
-
+                    <?php
+                    if ($userExam->cancelled) {
+                        ?>
+                        <span class="text-danger">Cancelled</span>
+                        <?php
+                    } else {
+                        ?>
+                        <a href="/UserExams/myResult/<?= base64_encode($userExam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary py-0">My Result</a>
+                        <?php
+                    }
+                    ?>
                 </td>
             </tr>
 
         <?php
         endforeach;
-
-        if (empty($exams->toArray())) {
-            ?>
-            <tr><td colspan="4">No exams found.</td></tr>
-            <?php
-        }
-
         ?>
         </tbody>
     </table>

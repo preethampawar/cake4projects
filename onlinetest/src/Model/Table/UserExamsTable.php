@@ -9,6 +9,6 @@ class UserExamsTable extends Table
     {
         $this->belongsTo('Exams');
 
-//        $this->addBehavior('Timestamp');
+        $this->addBehavior('Timestamp');
     }
 }

@@ -41,6 +41,30 @@
         </script>
     </head>
     <body>
+        <?php
+        $loggedIn = $this->getRequest()->getSession()->check('User.id');
+        $isAdmin = (bool) $this->getRequest()->getSession()->read('User.isAdmin');
+        $loggedInUser = $this->getRequest()->getSession()->read('User');
+        $controller = $this->request->getParam('controller');
+        $questionsLinkActive = null;
+        $examsLinkActive = null;
+        $homeLinkActive = null;
+        $userExamsLinkActive = null;
+
+        switch($controller) {
+            case 'Questions':
+                $questionsLinkActive = 'active';
+                break;
+            case 'Exams':
+                $examsLinkActive = 'active';
+                break;
+            case 'UserExams':
+                $userExamsLinkActive = 'active';
+                break;
+            default:
+                $homeLinkActive = 'active';
+        }
+        ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-purple d-print-none">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Online Tests</a>
@@ -52,32 +76,12 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <?php
-                        $controller = $this->request->getParam('controller');
-                        $questionsLinkActive = null;
-                        $examsLinkActive = null;
-                        $homeLinkActive = null;
-                        $userExamsLinkActive = null;
-
-                        switch($controller) {
-                            case 'Questions':
-                                $questionsLinkActive = 'active';
-                                break;
-                            case 'Exams':
-                                $examsLinkActive = 'active';
-                                break;
-                            case 'UserExams':
-                                $userExamsLinkActive = 'active';
-                                break;
-                            default:
-                                $homeLinkActive = 'active';
-                        }
-
-                        if ($this->getRequest()->getSession()->check('userInfo.id') === true) {
+                        if ($loggedIn) {
                             ?>
                             <a class="nav-link <?= $homeLinkActive?>" aria-current="page" href="/">Home</a>
 
                             <?php
-                            if((bool) $this->getRequest()->getSession()->read('userInfo.isAdmin') === true) {
+                            if($isAdmin) {
                                 ?>
                                 <a class="nav-link <?= $questionsLinkActive?>" href="/questions">Question Bank</a>
                                 <a class="nav-link <?= $examsLinkActive?>" href="/exams">Exams</a>
@@ -102,6 +106,11 @@
 
                     </div>
                 </div>
+                <?php if ($loggedIn) { ?>
+                <div>
+                    <?= ucwords($loggedInUser['username']) ?>
+                </div>
+                <?php } ?>
             </div>
         </nav>
 
@@ -112,7 +121,6 @@
 
                 if ($message) {
                     ?>
-
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
                         <?= $message ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

@@ -209,7 +209,7 @@ class UsersController extends AppController
                 $user['address'] = $userInfo->address;
                 $user['isAdmin'] = $userInfo->is_admin;
 
-                $this->request->getSession()->write('userInfo', $user);
+                $this->request->getSession()->write('User', $user);
 
                 $this->redirect('/');
 

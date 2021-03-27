@@ -1,6 +1,13 @@
+<nav class="navbar navbar-light bg-light d-print-none sticky-top mb-3">
+    <div class="container-fluid justify-content-start">
+        <a class="nav-link" href="/UserExams/">All Online Exams</a>
+        <a class="nav-link active" href="/UserExams/myTests">My Tests</a>
+    </div>
+</nav>
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/UserExams/">Exams</a></li>
+        <li class="breadcrumb-item"><a href="/UserExams/myTests">My Tests</a></li>
         <li class="breadcrumb-item"><?= $userExamInfo->exam->name ?></li>
         <li class="breadcrumb-item active" aria-current="page">My Result</li>
     </ol>

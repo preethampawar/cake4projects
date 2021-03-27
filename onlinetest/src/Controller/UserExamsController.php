@@ -85,8 +85,7 @@ class UserExamsController extends AppController
 
         if (!$this->request->getSession()->check('writingUserExam.' . $exam->id)) {
             $data['exam_id'] = $exam->id;
-            $data['user_id'] = $this->request->getSession()->read('userInfo.id');
-            $data['start_time'] = date('Y-m-d H:i');
+            $data['user_id'] = $this->request->getSession()->read('User.id');
             $data['duration'] = $examDuration;
 
             $userExam = $this->UserExams->newEmptyEntity();
@@ -159,7 +158,7 @@ class UserExamsController extends AppController
     private function getUserExamElapsedTime($examId)
     {
         $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
-        $examStartTime = new DateTime($userExamInfo->start_time);
+        $examStartTime = new DateTime($userExamInfo->created);
         $now = new DateTime();
         $diff = $now->diff($examStartTime);
         $minutes = $diff->days * 24 * 60;
@@ -313,6 +312,30 @@ class UserExamsController extends AppController
         }
 
         $this->set(compact('userExamInfo', 'selectedQAs'));
+    }
+
+    public function myTests()
+    {
+        $loggedInUserId = $this->getRequest()->getSession()->read('User.id');
+
+        $this->loadModel(ExamsTable::class);
+        $this->loadModel(UserExamsTable::class);
+        $this->loadComponent('Paginator');
+
+        $userExams = $this->Paginator->paginate(
+            $userExamInfo = $this->UserExams->find('all')
+                ->where(['UserExams.user_id' => $loggedInUserId])
+                ->contain(['Exams']),
+            [
+                'limit' => '50',
+                'order' => [
+                    'UserExams.created' => 'desc'
+                ]
+            ]
+
+        );
+
+        $this->set(compact('userExams'));
     }
 
 }

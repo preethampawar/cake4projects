@@ -126,15 +126,18 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
             <?php
             $showNextLink = false;
             $showPrevLink = false;
+            $showFinishLink = false;
             $currentQuestion = ($k - 1);
             $count = (int) $this->Paginator->counter('{{count}}');
 
             if ($count > $currentQuestion) {
                 $showNextLink = true;
             }
-
             if ($currentQuestion > 1) {
                 $showPrevLink = true;
+            }
+            if ($count == $currentQuestion) {
+                $showFinishLink = true;
             }
             ?>
             <div class="d-flex justify-content-between mt-2">
@@ -145,9 +148,22 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
                     <ul class="list-unstyled <?= $showPrevLink ? null : 'd-none' ?> btn btn-secondary btn-sm" title="Previous">
                         <?= $this->Paginator->prev('« Previous') ?>
                     </ul>
-                    <ul class="list-unstyled ms-5 <?= $showNextLink ? null : 'd-none' ?> btn btn-secondary btn-sm" title="Next">
+                    <ul class="list-unstyled ms-5 <?= $showNextLink ? null : 'd-none' ?> btn btn-primary btn-sm" title="Next">
                         <?= $this->Paginator->next('Next »') ?>
                     </ul>
+                    <div class=" ms-5 <?= $showFinishLink ? null : 'd-none' ?>">
+                        <?php
+                        echo $this->Html->link(
+                            'Finish & Exit Test &raquo;',
+                            ['controller' => 'UserExams', 'action' => 'finishTest', base64_encode($exam->id)],
+                            [
+                                'confirm' => 'Are you sure you want to finish and exit this online exam?',
+                                'class' => 'btn btn-sm btn-warning text-dark',
+                                'escape' => false
+                            ]
+                        );
+                        ?>
+                    </div>
                 </div>
                 <div class="">
                     <?php

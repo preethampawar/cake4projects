@@ -1,8 +1,10 @@
-<h1>Welcome to Online Tests platform</h1>
+<div class="text-center">
+    <h1>Welcome to Online Tests platform</h1>
+</div>
 
 <?php
-if ($this->request->getSession()->check('userInfo.isAdmin') &&
-    $this->request->getSession()->read('userInfo.isAdmin') == true) {
+if ($this->request->getSession()->check('User.isAdmin') &&
+    $this->request->getSession()->read('User.isAdmin') == true) {
     ?>
     <div class="row mt-5">
 
