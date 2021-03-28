@@ -34,8 +34,7 @@
     <table class="table table-sm small mt-3">
         <thead>
         <tr>
-            <th style="width: 50px;">#</th>
-            <th style="width: 50px;">E.ID</th>
+            <th>#</th>
             <th>Exam Name</th>
             <th>Actions</th>
         </tr>
@@ -53,9 +52,6 @@
             <tr>
                 <td>
                     <?= $k ?>.
-                </td>
-                <td>
-                    <?= $exam->id ?>
                 </td>
                 <td>
                     <div class="mb-2"><?= $exam->name ?></div>

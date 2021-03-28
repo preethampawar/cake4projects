@@ -4,11 +4,11 @@
     echo $this->Form->create(null);
 ?>
 
-<div class="text-end">
+<div class="text-end mb-3">
     <a class="btn btn-sm btn-danger" href="/users/login">Cancel</a>
 </div>
 
-<div class="row gx-5">
+<div class="row gx-md-5">
     <div class="col-sm-6">
         <?php
         echo $this->Form->control('name',

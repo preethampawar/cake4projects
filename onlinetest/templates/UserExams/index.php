@@ -1,12 +1,7 @@
-<nav class="navbar navbar-light bg-light d-print-none sticky-top mb-3">
-    <div class="container-fluid justify-content-start">
-        <a class="nav-link" href="/UserExams/">All Online Exams</a>
-        <a class="nav-link" href="/UserExams/myTests">My Tests</a>
-    </div>
-</nav>
+<?= $this->element('myTestsNav');?>
 
 
-<h1>All Online Exams</h1>
+<h1>Online Exams</h1>
 
 <div class="">
     <?php echo $this->Paginator->counter(
@@ -14,13 +9,12 @@
         ); ?>
 </div>
 <div class="table-responsive">
-    <table class="table table-sm small mt-3 table-hover">
+    <table class="table small mt-3 table-hover">
         <thead>
         <tr>
-            <th style="width: 50px;">#</th>
+            <th>#</th>
             <th>Exam Name</th>
             <th>Duration</th>
-            <th>End Date</th>
             <th></th>
         </tr>
         </thead>
@@ -44,9 +38,7 @@
                 <td>
                     <?= $exam->time ?> mins
                 </td>
-                <td>
-                    <?= $exam->end_date->format('d/m/Y h:i A') ?>
-                </td>
+
                 <td>
                     <a href="/UserExams/view/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary py-0">Online Test</a>
 

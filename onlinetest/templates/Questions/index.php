@@ -62,7 +62,7 @@
 
                     <div class="row">
                         <?php
-                        // $chars = range('a', 'z');
+                        $chars = range('a', 'z');
                         if ($question->question_options) {
                             $i = 1;
                             foreach ($question->question_options as $row) {
@@ -79,10 +79,13 @@
                                     ?>
                                     <span class="<?= $class ?>">
                                 <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
-                                    <span class="small text-secondary"><?= $i ?>.</span>
+
                                     <input class="form-check-input" type="radio" <?= $checked ?> disabled>
                                     <label class="form-check-label2">
-                                        <?= $row->name ?>
+                                        <span class="text-secondary d-flex">
+                                            <span><?= $chars[$i] ?>)&nbsp;</span>
+                                            <span><?= $row->name ?></span>
+                                        </span>
                                     </label>
                                 </div>
 

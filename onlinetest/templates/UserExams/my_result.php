@@ -1,17 +1,6 @@
-<nav class="navbar navbar-light bg-light d-print-none sticky-top mb-3">
-    <div class="container-fluid justify-content-start">
-        <a class="nav-link" href="/UserExams/">All Online Exams</a>
-        <a class="nav-link active" href="/UserExams/myTests">My Tests</a>
-    </div>
-</nav>
+<?= $this->element('myTestsNav'); ?>
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/UserExams/myTests">My Tests</a></li>
-        <li class="breadcrumb-item"><?= $userExamInfo->exam->name ?></li>
-        <li class="breadcrumb-item active" aria-current="page">My Result</li>
-    </ol>
-</nav>
+<h1>Exam Result</h1>
 
 
 <?php
@@ -19,7 +8,7 @@
 //debug($userExamInfo);
 
 $correctQAs = [];
-foreach($userExamInfo->exam->exam_questions as $row) {
+foreach ($userExamInfo->exam->exam_questions as $row) {
     $questionAnswer = $row->question->answer;
     $selectedAnswer = '';
 
@@ -30,28 +19,38 @@ foreach($userExamInfo->exam->exam_questions as $row) {
 
 $totalQuestions = count($userExamInfo->exam->exam_questions);
 $correctQuestions = count($correctQAs);
-$percentage = round($correctQuestions*100/$totalQuestions, 2);
+$percentage = round($correctQuestions * 100 / $totalQuestions, 2);
 
 $bgClass = "bg-danger";
-if ($percentage >=  90) {
+if ($percentage >= 90) {
     $bgClass = "bg-success";
-} elseif ($percentage >=  70) {
+} elseif ($percentage >= 70) {
     $bgClass = "bg-warning";
 }
 ?>
+<h2 class="mt-4"><?= $userExamInfo->exam->name ?></h2>
+<p class="small">
+    Total Questions:
+    <?php
+    echo $userExamInfo->exam->exam_questions ? count($userExamInfo->exam->exam_questions) : 0;
+    ?>
+    &nbsp;|&nbsp;
+    Duration: <?= $userExamInfo->exam->time ?> mins
+</p>
 
-<div>
+<div class="mt-3">
     <div class="card">
         <div class="card-header">
             <div class="">
                 <div>
-                    <h5><?= $userExamInfo->exam->name ?></h5>
+
                 </div>
                 <div class="d-flex justify-content-start small">
-                    <div class="badge rounded-circle fs-8 <?= $bgClass ?>" title="You got <?= $correctQuestions ?> answers correct out of <?= $totalQuestions ?>">
+                    <div class="badge rounded-circle fs-6 <?= $bgClass ?> bg-gradient"
+                         title="You got <?= $correctQuestions ?> answers correct out of <?= $totalQuestions ?>">
                         <table class="table text-center text-white m-0">
                             <tr>
-                                <td>
+                                <td style="width: 55px;">
                                     <?= $correctQuestions ?>
                                 </td>
                             </tr>
@@ -64,9 +63,9 @@ if ($percentage >=  90) {
                     </div>
 
                     <div class="ms-3">
-                        <div class="">Total Questions: <?= $totalQuestions ?> </div>
-                        <div class="text-success">Correct: <?= $correctQuestions ?> (<b><?= $percentage ?>%</b>)</div>
-                        <div class="text-danger">Wrong: <?= ($totalQuestions-$correctQuestions) ?></div>
+                        <h6 class="text-purple">You have scored - <b><?= $percentage ?>%</b></h6>
+                        <div class="text-success">Correct: <?= $correctQuestions ?> </div>
+                        <div class="text-danger">Wrong: <?= ($totalQuestions - $correctQuestions) ?></div>
                     </div>
 
                 </div>
@@ -76,18 +75,16 @@ if ($percentage >=  90) {
             <?php
             $k = 1;
             $correctQAs = [];
-            foreach($userExamInfo->exam->exam_questions as $row) {
+            foreach ($userExamInfo->exam->exam_questions as $row) {
                 $questionAnswer = $row->question->answer;
                 $selectedAnswer = '';
                 $isSelectedAnswerCorrect = false;
+                $questionOptions = $row->question->question_options;
 
                 if (isset($selectedQAs[$row->question->id]) && $selectedQAs[$row->question->id] == $questionAnswer) {
                     $isSelectedAnswerCorrect = true;
                     $correctQAs[$row->question->id] = $questionAnswer;
                 }
-
-
-                $questionOptions = $row->question->question_options;
                 ?>
                 <div class="mb-3">
                     <div class="d-flex mt-3">
@@ -97,11 +94,12 @@ if ($percentage >=  90) {
 
                     <?php
                     $i = 1;
-                    foreach($questionOptions as $questionOption) {
+
+                    foreach ($questionOptions as $questionOption) {
                         $checked = null;
                         $class = null;
                         $chars = range('a', 'z');
-                        $radioButtonId = 'answer-' . $userExamInfo->exam->id . '-' . $row->question->id . '-' . ($i+1);
+                        $radioButtonId = 'answer-' . $userExamInfo->exam->id . '-' . $row->question->id . '-' . ($i + 1);
 
                         if (isset($selectedQAs[$row->question->id]) && $selectedQAs[$row->question->id] == $i) {
                             $checked = 'checked';
@@ -110,11 +108,9 @@ if ($percentage >=  90) {
                         ?>
                         <div
                             id="examQuestion-<?= $row->question->id ?>-<?= $i ?>"
-                            class="ms-3 mt-2 small examQuestion-<?= $row->question->id ?> examQuestion-<?= $row->question->id ?>-<?= $i ?> <?= $class ?>"
+                            class="ms-3 mt-1 small examQuestion-<?= $row->question->id ?> examQuestion-<?= $row->question->id ?>-<?= $i ?> <?= $class ?>"
                         >
-
                             <div class="form-check">
-                                <span class="small text-secondary"><?= $chars[$i] ?>)</span>
                                 <input
                                     type="radio"
                                     name="data[question][<?= $row->question->id ?>]"
@@ -124,13 +120,13 @@ if ($percentage >=  90) {
                                     disabled
                                 >
                                 <label class="form-check-label2" for="<?= $radioButtonId ?>">
-                                    <?= $questionOption->name ?>
+                                    <span class="text-secondary d-flex">
+                                        <span><?= $chars[$i-1] ?>)&nbsp;</span>
+                                        <span><?= $questionOption->name ?></span>
+                                    </span>
                                 </label>
                             </div>
                         </div>
-
-
-
                         <?php
                         $i++;
                     }

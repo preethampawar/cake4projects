@@ -118,9 +118,9 @@ var userExam = {
                     let duration = data.userExamInfo.duration
                     let examId = data.userExamInfo.exam_id
                     let time = data.userExamInfo.time
-                    let text = 'Remaining Time: ' + (duration - time) + ' mins';
+                    let text = (duration - time) + ' mins';
 
-                    if (time > duration) {
+                    if (time >= duration) {
                         userExam.clearUserExamSession(examId);
                     }
 
@@ -144,7 +144,7 @@ var userExam = {
             url: '/UserExams/clearUserExamSession/'+examId,
             success: function (data, obj) {
                 alert('Your exam time is over.')
-                window.location = '/UserExams/'
+                window.location = '/UserExams/myResult/'+btoa(examId)
             },
             dataType: 'json',
         });

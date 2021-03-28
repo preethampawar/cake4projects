@@ -64,8 +64,13 @@
             default:
                 $homeLinkActive = 'active';
         }
+
+        $navBarClass = 'd-block';
+        if ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') == 'startTest') {
+            $navBarClass = 'd-none';
+        }
         ?>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-purple d-print-none">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-purple d-print-none <?= $navBarClass ?>">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Online Tests</a>
 
@@ -88,10 +93,12 @@
                                 <?php
                             } else {
                                 ?>
-                                <a class="nav-link <?= $userExamsLinkActive?>" href="/UserExams/">Exams</a>
+                                <a class="nav-link <?= $userExamsLinkActive?>" href="/UserExams/">Online Exams</a>
                                 <?php
                             }
                             ?>
+
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><?= ucwords($loggedInUser['username']) ?></a>
 
                             <a class="nav-link" href="/users/logout">Logout</a>
 
@@ -106,11 +113,6 @@
 
                     </div>
                 </div>
-                <?php if ($loggedIn) { ?>
-                <div>
-                    <?= ucwords($loggedInUser['username']) ?>
-                </div>
-                <?php } ?>
             </div>
         </nav>
 

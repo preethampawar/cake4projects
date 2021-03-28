@@ -23,7 +23,7 @@
 }
 
 .text-purple {
-    background-color: var(--cus-purple);
+    color: var(--cus-purple);
 }
 
 .btn-purple {
@@ -42,7 +42,7 @@
 }
 
 .text-orange {
-    background-color: var(--cus-orange);
+    color: var(--cus-orange);
 }
 
 .btn-orange {
@@ -61,7 +61,7 @@
 }
 
 .text-maroon {
-    background-color: var(--cus-maroon);
+    color: var(--cus-maroon);
 }
 
 .btn-maroon {
@@ -86,10 +86,15 @@
 p {
     margin-bottom: 0;
 }
-
+.pagination li {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 .pagination a{
     text-decoration: none;
     color: #efefef;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .pagination a:hover{
     text-decoration: none;

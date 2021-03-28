@@ -104,7 +104,7 @@ class UserExamsController extends AppController
             $this->cleanUpUserExamSession($examId);
 
             $this->Flash->error(__($error));
-            $this->redirect('/UserExams/');
+            $this->redirect('/UserExams/myResult/'. base64_encode($examId));
 
             return;
         }

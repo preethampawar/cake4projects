@@ -34,7 +34,7 @@ if ($this->request->getSession()->check('User.isAdmin') &&
                         <a class="my-3" href="/questions/add">Add New Question</a>
                     </p>
                     <p>
-                        <a class="my-3" href="/questions/">Questions List</a>
+                        <a class="my-3" href="/questions/">Question Bank</a>
                     </p>
                 </div>
             </div>

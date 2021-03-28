@@ -1,9 +1,4 @@
-<nav class="navbar navbar-light bg-light d-print-none sticky-top mb-3">
-    <div class="container-fluid justify-content-start">
-        <a class="nav-link" href="/UserExams/">All Online Exams</a>
-        <a class="nav-link active" href="/UserExams/myTests">My Tests</a>
-    </div>
-</nav>
+<?= $this->element('myTestsNav');?>
 
 
 <h1>My Tests</h1>
@@ -14,12 +9,11 @@
         ); ?>
 </div>
 <div class="table-responsive">
-    <table class="table table-sm small mt-3 table-hover">
+    <table class="table small mt-3 table-hover">
         <thead>
         <tr>
-            <th style="width: 50px;">#</th>
+            <th>#</th>
             <th>Attempted Exams</th>
-            <th>Duration</th>
             <th>Date</th>
             <th></th>
         </tr>
@@ -41,9 +35,7 @@
                 </td>
                 <td>
                     <?= $exam->name ?>
-                </td>
-                <td>
-                    <?= $exam->time ?> mins
+                    <span class="text-muted">(<?= $exam->time ?> mins)</span>
                 </td>
                 <td>
                     <?= $userExam->created->format('d/m/Y') ?>
@@ -56,7 +48,7 @@
                         <?php
                     } else {
                         ?>
-                        <a href="/UserExams/myResult/<?= base64_encode($userExam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary py-0">My Result</a>
+                        <a href="/UserExams/myResult/<?= base64_encode($userExam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary py-0">Show Result</a>
                         <?php
                     }
                     ?>

@@ -1,18 +1,15 @@
+<?= $this->element('myTestsNav');?>
+
+<h1>Online Test</h1>
+
 <div class="row d-print-none">
-    <div class="col-md-10">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/UserExams/">Exams</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Online Test</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="col-md-2 text-end small">
-        <a class="btn btn-sm btn-danger" href="/UserExams/">Back</a>
+    <div class="text-end small">
+        <a class="btn btn-sm btn-danger" href="/UserExams/">Cancel</a>
     </div>
 </div>
 
-<h1><?= $exam->name ?></h1>
+
+<h2 class="mt-3"><?= $exam->name ?></h2>
 
 
 <p class="small">
@@ -23,12 +20,7 @@
     &nbsp;|&nbsp;
     Duration: <?= $exam->time ?> mins
 </p>
-<p class="small">
-    End Date: <?= $exam->end_date->format('d/m/Y h:i A') ?>
-</p>
-<p>
-    <?= $exam->description ?>
-</p>
+
 
 <?php
 if ($userExamInfo) {
@@ -70,7 +62,7 @@ if ($userExamInfo) {
     <?php
 } else {
     ?>
-    <div class="text-center mt-5">
+    <div class="text-center mt-4">
         <a href="/UserExams/startTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
             Start Online Test &raquo;
         </a>
@@ -78,6 +70,10 @@ if ($userExamInfo) {
     <?php
 }
 ?>
+
+<p>
+    <?= $exam->description ?>
+</p>
 
 
 
