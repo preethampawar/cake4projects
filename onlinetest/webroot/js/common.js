@@ -152,3 +152,112 @@ var userExam = {
 
 }
 
+var subjects = {
+    add: function () {
+        let url = '/Subjects/add'
+        let dataType = 'json'
+        let csrfToken = $( "input[name='_csrfToken']" ).val()
+        let data = {
+            name: $('#addSubjectField').val().trim(),
+            _csrfToken: csrfToken
+        }
+
+        $('#addSubjectErrorDiv').text('').addClass('d-none')
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (data, obj) {
+                console.log(data);
+                if (data.error && data.error != null) {
+                    $('#addSubjectErrorDiv').html(data.error).removeClass('d-none')
+                } else {
+                    if (data.subjectsDropDown != '') {
+                        $('#subjectDivAddQuestionForm').html(data.subjectsDropDown)
+
+                        $('#closeAddSubjectPopup').click()
+                    }
+                }
+
+            },
+            dataType: dataType,
+        });
+    }
+}
+
+
+var educationLevels = {
+    add: function () {
+        let url = '/EducationLevels/add'
+        let dataType = 'json'
+        let csrfToken = $( "input[name='_csrfToken']" ).val()
+        let data = {
+            name: $('#addEducationLevelField').val().trim(),
+            _csrfToken: csrfToken
+        }
+
+        $('#addEducationLevelErrorDiv').text('').addClass('d-none')
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (data, obj) {
+                console.log(data);
+                if (data.error && data.error != null) {
+                    $('#addEducationLevelErrorDiv').html(data.error).removeClass('d-none')
+                } else {
+                    if (data.educationLevelsDropDown != '') {
+                        $('#educationLevelDivAddQuestionForm').html(data.educationLevelsDropDown)
+
+                        $('#closeAddEducationLevelPopup').click()
+                    }
+                }
+
+            },
+            dataType: dataType,
+        });
+    }
+}
+
+
+var tags = {
+    add: function () {
+        let url = '/Tags/add'
+        let dataType = 'json'
+        let csrfToken = $( "input[name='_csrfToken']" ).val()
+        let data = {
+            name: $('#addTagField').val().trim(),
+            selectedTags: $('#tags').val(),
+            _csrfToken: csrfToken
+        }
+
+        $('#addTagErrorDiv').text('').addClass('d-none')
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (data, obj) {
+                console.log(data);
+                if (data.error && data.error != null) {
+                    $('#addTagErrorDiv').html(data.error).removeClass('d-none')
+                } else {
+                    if (data.tagsDropDown != '') {
+                        $('#tagsDivAddQuestionForm').html(data.tagsDropDown)
+
+                        $('#tags').select2({
+                            placeholder: 'Select an option'
+                        });
+
+                        $('#closeAddTagsPopup').click()
+                    }
+                }
+
+            },
+            dataType: dataType,
+        });
+    }
+}
+

@@ -104,6 +104,11 @@ if ($percentage >= 90) {
                         if (isset($selectedQAs[$row->question->id]) && $selectedQAs[$row->question->id] == $i) {
                             $checked = 'checked';
                             $class = 'fw-bold';
+
+
+                            $class .= $isSelectedAnswerCorrect
+                                ? ' text-success'
+                                : ' text-danger';
                         }
                         ?>
                         <div
@@ -120,7 +125,7 @@ if ($percentage >= 90) {
                                     disabled
                                 >
                                 <label class="form-check-label2" for="<?= $radioButtonId ?>">
-                                    <span class="text-secondary d-flex">
+                                    <span class="d-flex">
                                         <span><?= $chars[$i-1] ?>)&nbsp;</span>
                                         <span><?= $questionOption->name ?></span>
                                     </span>

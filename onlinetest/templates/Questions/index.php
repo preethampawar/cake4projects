@@ -1,10 +1,74 @@
 <h1>Question Bank</h1>
 
-<div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/questions/add">+ Add New Question</a>
+
+<div class="text-end mt-3">
+    <a class="btn btn-info btn-sm" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
+    <a class="btn btn-primary btn-sm ms-3" href="/questions/add">+ Add New Question</a>
 </div>
 
-<div>
+<div id="FilterQuestionBank" class="alert alert-secondary bg-light mt-3 d-none">
+    <?= $this->Form->create(null, ['method' => 'get']) ?>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div id="subjectDivAddQuestionForm">
+                <div class="">
+                    <label>Subjects</label>
+                    <div id="subjectDivAddQuestionForm">
+                        <?= $this->element('subjectsDropDown', [
+                            'subjects' => $subjects,
+                            'selectedSubject' => $selectedSubject,
+                            'empty' => true,
+                            'multiple' => true
+                        ])
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="">
+                <label>Education</label>
+                <div id="educationLevelDivAddQuestionForm">
+                    <?= $this->element('educationLevelsDropDown', [
+                        'educationLevels' => $educationLevels,
+                        'selected' => $selectedEducationLevel,
+                        'empty' => true,
+                        'multiple' => true
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="">
+                <label>Difficulty Level</label>
+                <?php
+                echo $this->Form->control('difficulty_level', [
+                    'label' => false,
+                    'type' => 'select',
+                    'class' => 'form-control form-control-sm',
+                    'options' => [
+                        '1' => 'Easy',
+                        '2' => 'Medium',
+                        '3' => 'Hard',
+                    ],
+                    'empty' => true,
+                    'multiple' => true,
+                    'default' => $selectedDifficultyLevel
+                ]);
+                ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-3 text-start">
+        <button type="submit" class="btn btn-sm btn-primary">Filter Question Bank</button>
+    </div>
+    <?= $this->Form->end() ?>
+</div>
+
+
+<div class="mt-3">
     <div>
         <b><?php echo $this->Paginator->counter(
                 'Total Records: {{count}}'
@@ -12,11 +76,6 @@
     </div>
 
     <div class="d-flex mt-3">
-        <div class="">
-            Page:
-            <?= $this->Paginator->counter() ?>
-        </div>
-        <div class="mx-3">|</div>
         <div class="text-end d-flex">
 
             <ul class="list-unstyled">
@@ -31,13 +90,12 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table table-sm small mt-3">
+    <table class="table small mt-3">
         <thead>
         <tr>
-            <th style="width: 50px;">#</th>
-            <th style="width: 50px;">Q.ID</th>
+            <th>#</th>
             <th>Question</th>
-            <th style="width: 8rem;">Actions</th>
+            <th></th>
         </tr>
         </thead>
 
@@ -47,7 +105,6 @@
         <?php
         $k = $this->Paginator->counter('{{start}}');
         foreach ($questions as $question):
-
             ?>
 
             <tr>
@@ -55,98 +112,137 @@
                     <?= $k ?>.
                 </td>
                 <td>
-                    <?= $question->id ?>
-                </td>
-                <td>
-                    <div class="mb-2"><?= $question->name ?></div>
+                    <div class="mb-2">
+                        <a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="">
+                            <?= $question->name ?>
+                        </a>
+                    </div>
 
-                    <div class="row">
+
+                    <div class="">
                         <?php
                         $chars = range('a', 'z');
                         if ($question->question_options) {
                             $i = 1;
                             foreach ($question->question_options as $row) {
+                                $class = null;
+                                $checked = null;
+                                if ($i === (int)$question->answer) {
+                                    $class = "fw-bold";
+                                    $checked = "checked";
+                                }
                                 ?>
+                                <div class="<?= $class ?>">
+                                    <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
 
-                                <div class="col-6">
-                                    <?php
-                                    $class = null;
-                                    $checked = null;
-                                    if ($i === (int)$question->answer) {
-                                        $class = "fw-bold";
-                                        $checked = "checked";
-                                    }
-                                    ?>
-                                    <span class="<?= $class ?>">
-                                <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
+                                        <input class="form-check-input" type="radio" <?= $checked ?> disabled>
+                                        <label class="form-check-label2">
+                                            <span class="text-secondary d-flex">
+                                                <span><?= $chars[$i - 1] ?>)&nbsp;</span>
+                                                <span><?= $row->name ?></span>
+                                            </span>
+                                        </label>
+                                    </div>
 
-                                    <input class="form-check-input" type="radio" <?= $checked ?> disabled>
-                                    <label class="form-check-label2">
-                                        <span class="text-secondary d-flex">
-                                            <span><?= $chars[$i] ?>)&nbsp;</span>
-                                            <span><?= $row->name ?></span>
-                                        </span>
-                                    </label>
-                                </div>
-
-                            </span>
                                 </div>
 
                                 <?php
-                                if ($i % 2 == 0) {
-                                    echo '</div><div class="row">';
-                                }
 
                                 $i++;
                             }
                         }
                         ?>
                     </div>
+                    <div>
+                        <?= $question->subject != '' ? '<span class="bg-orange me-1 px-1 border">'.$question->subject.'</span>' : null ?>
+
+                        <?= $question->level != '' ? '<span class="bg-purple me-1 px-1 border">'.$question->level.'</span>' : null ?>
+
+                        <?php
+                        $difficulty = null;
+                        switch ($question->difficulty_level) {
+                            case 1:
+                                $difficulty = 'Easy';
+                                break;
+                            case 2:
+                                $difficulty = 'Medium';
+                                break;
+                            case 3:
+                                $difficulty = 'Hard';
+                                break;
+                        }
+                        ?>
+                        <?= $difficulty ? '<span class="bg-aliceblue me-1 px-1 border">'.$difficulty.'</span>' : null ?>
+
+                        <?php
+                        if(!empty($question->tags)) {
+                            ?>
+
+                            <div class="mt-1">
+                            <b>Tags: </b>
+                            <?php
+                            $tags = explode(',', $question->tags);
+                            foreach($tags as $tag) {
+                                ?>
+                                <span class="bg-light me-1 px-1 border">
+                                    <?= $tag ?>
+                                </span>
+                                <?php
+                            }
+                            ?>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
                 </td>
                 <td>
-                    <a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="">Edit</a>
-                    &nbsp;|&nbsp;
                     <?php
                     echo $this->Html->link(
                         'Delete',
                         ['controller' => 'Questions', 'action' => 'delete', $question->id],
-                        ['confirm' => 'Q.No.' . $question->id . '. Are you sure you want to delete this question?']
+                        [
+                            'confirm' => 'Are you sure you want to delete this question?',
+                            'class' => 'btn btn-danger btn-sm'
+                        ]
                     );
                     ?>
                 </td>
             </tr>
 
-        <?php
+            <?php
             $k++;
         endforeach;
 
         if (empty($questions->toArray())) {
             ?>
-            <tr><td colspan="4">No questions found.</td></tr>
+            <tr>
+                <td colspan="4">No questions found.</td>
+            </tr>
             <?php
         }
         ?>
         </tbody>
     </table>
 
-    <div class="my-3">
+    <?= $this->element('bottomPagination', ['paginator' => $this->Paginator]); ?>
 
-        <div class="d-flex mt-3">
-            <div class="">
-                Page:
-                <?= $this->Paginator->counter() ?>
-            </div>
-            <div class="mx-3">|</div>
-            <div class="text-end d-flex">
-
-                <ul class="list-unstyled">
-                    <?= $this->Paginator->prev('« Previous') ?>
-                </ul>
-
-                <ul class="list-unstyled mx-3">
-                    <?= $this->Paginator->next('Next »') ?>
-                </ul>
-            </div>
-        </div>
-    </div>
 </div>
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#subject').select2({
+            placeholder: '-',
+        });
+        $('#level').select2({
+            placeholder: '-',
+        });
+        $('#difficulty-level').select2({
+            placeholder: '-',
+        });
+    })
+</script>

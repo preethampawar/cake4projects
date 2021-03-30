@@ -21,10 +21,68 @@
 </p>
 
 <hr>
+<div class="text-end mt-3">
+    <a class="btn btn-info btn-sm py-0" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
+</div>
+<div id="FilterQuestionBank" class="alert alert-secondary bg-light d-none mt-3">
+    <?= $this->Form->create(null, ['method' => 'get']) ?>
 
-<?php
-//debug($questions);
-?>
+    <div class="row">
+        <div class="col-sm-4">
+            <div id="subjectDivAddQuestionForm">
+                <div class="">
+                    <label>Subjects</label>
+                    <div id="subjectDivAddQuestionForm">
+                        <?= $this->element('subjectsDropDown', [
+                            'subjects' => $subjects,
+                            'selectedSubject' => $selectedSubject,
+                            'empty' => true,
+                            'multiple' => true
+                        ])
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="">
+                <label>Education</label>
+                <div id="educationLevelDivAddQuestionForm">
+                    <?= $this->element('educationLevelsDropDown', [
+                        'educationLevels' => $educationLevels,
+                        'selected' => $selectedEducationLevel,
+                        'empty' => true,
+                        'multiple' => true
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="">
+                <?php
+                echo $this->Form->control('difficulty_level', [
+                    'type' => 'select',
+                    'class' => 'form-control form-control-sm',
+                    'options' => [
+                        '1' => 'Easy',
+                        '2' => 'Medium',
+                        '3' => 'Hard',
+                    ],
+                    'empty' => true,
+                    'multiple' => true,
+                    'default' => $selectedDifficultyLevel
+                ]);
+                ?>
+            </div>
+        </div>
+
+    </div>
+    <div class="mt-3 text-start">
+        <button type="submit" class="btn btn-sm btn-primary">Filter Question Bank</button>
+    </div>
+    <?= $this->Form->end() ?>
+</div>
+
 
 <div class="row mt-2">
 
@@ -128,3 +186,21 @@ echo $this->Form->create(null);
 <?php
 echo $this->Form->end();
 ?>
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#subject').select2({
+            placeholder: '-',
+        });
+        $('#level').select2({
+            placeholder: '-',
+        });
+        $('#difficulty-level').select2({
+            placeholder: '-',
+        });
+    })
+</script>

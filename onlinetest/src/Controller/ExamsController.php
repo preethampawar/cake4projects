@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Model\Table\EducationLevelsTable;
 use App\Model\Table\QuestionsTable;
+use App\Model\Table\SubjectsTable;
+use App\Model\Table\TagsTable;
 
 class ExamsController extends AppController
 {
@@ -68,23 +71,63 @@ class ExamsController extends AppController
 
     public function addQuestions($examId)
     {
+        $params = $this->request->getQueryParams();
+        $selectedSubject = null;
+        $selectedEducationLevel = null;
+        $selectedDifficultyLevel = null;
+
+        if (isset($params['subject']) and !empty($params['subject'])) {
+            $selectedSubject = $params['subject'];
+        }
+        if (isset($params['level']) and !empty($params['level'])) {
+            $selectedEducationLevel = $params['level'];
+        }
+        if (isset($params['difficulty_level']) and !empty($params['difficulty_level'])) {
+            $selectedDifficultyLevel = $params['difficulty_level'];
+        }
+
         $this->loadModel(QuestionsTable::class);
         $this->loadComponent('Paginator');
 
+        $query = $this->Questions->find('all')
+            ->where(['Questions.deleted' => 0])
+            ->order('Questions.id desc');
+
+        if ($selectedSubject) {
+            $query->andWhere(['Questions.subject in' => $selectedSubject]);
+        }
+        if ($selectedEducationLevel) {
+            $query->andWhere(['Questions.level in' => $selectedEducationLevel]);
+        }
+        if ($selectedDifficultyLevel) {
+            $query->andWhere(['Questions.difficulty_level in' => $selectedDifficultyLevel]);
+        }
+
         $questions = $this->Paginator->paginate(
-            $this->Questions->find('all')
-                ->where(['Questions.deleted' => 0])
-                ->order('Questions.id desc')
-            ,
+            $query,
             [
                 'limit' => 50,
                 'order' => [
                     'Questions.id' => 'desc'
                 ]
             ]
+
         );
 
         $exam = $this->Exams->findById($examId)->firstOrFail();
+
+
+        $this->loadModel(SubjectsTable::class);
+        $this->loadModel(EducationLevelsTable::class);
+
+        $subjects = $this->Subjects->find('all')->select(['Subjects.name'])->order('name asc')->all();
+        $educationLevels = $this->EducationLevels->find('all')->select(['EducationLevels.name'])->order('name asc')->all();
+
+        $this->set('subjects', $subjects);
+        $this->set('selectedSubject', $selectedSubject);
+        $this->set('educationLevels', $educationLevels);
+        $this->set('selectedEducationLevel', $selectedEducationLevel);
+        $this->set('selectedDifficultyLevel', $selectedDifficultyLevel);
 
         $this->set(compact('questions'));
         $this->set(compact('exam'));

@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Model\Table\QuestionOptionsTable;
+use App\Model\Table\SubjectsTable;
+use App\Model\Table\EducationLevelsTable;
+use App\Model\Table\TagsTable;
 use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Query;
 
@@ -18,19 +21,59 @@ class QuestionsController extends AppController
 
     public function index()
     {
+        $params = $this->request->getQueryParams();
+        $selectedSubject = null;
+        $selectedEducationLevel = null;
+        $selectedDifficultyLevel = null;
+
+        if (isset($params['subject']) and !empty($params['subject'])) {
+            $selectedSubject = $params['subject'];
+        }
+        if (isset($params['level']) and !empty($params['level'])) {
+            $selectedEducationLevel = $params['level'];
+        }
+        if (isset($params['difficulty_level']) and !empty($params['difficulty_level'])) {
+            $selectedDifficultyLevel = $params['difficulty_level'];
+        }
+
         $this->loadComponent('Paginator');
+
+        $query = $this->Questions->find('all')
+            ->where(['Questions.deleted' => 0])
+            ->contain(['QuestionOptions'])
+            ->order('Questions.id desc');
+
+        if ($selectedSubject) {
+            $query->andWhere(['Questions.subject in' => $selectedSubject]);
+        }
+        if ($selectedEducationLevel) {
+            $query->andWhere(['Questions.level in' => $selectedEducationLevel]);
+        }
+        if ($selectedDifficultyLevel) {
+            $query->andWhere(['Questions.difficulty_level in' => $selectedDifficultyLevel]);
+        }
+
         $questions = $this->Paginator->paginate(
-            $this->Questions->find('all')
-                ->where(['Questions.deleted' => 0])
-                ->contain(['QuestionOptions'])
-                ->order('Questions.id desc'),
+            $query,
             [
-                'limit' => '50',
+                'limit' => '100',
                 'order' => [
                     'Questions.id' => 'desc'
                 ]
             ]
         );
+
+        $this->loadModel(SubjectsTable::class);
+        $this->loadModel(EducationLevelsTable::class);
+
+        $subjects = $this->Subjects->find('all')->select(['Subjects.name'])->order('name asc')->all();
+        $educationLevels = $this->EducationLevels->find('all')->select(['EducationLevels.name'])->order('name asc')->all();
+
+        $this->set('subjects', $subjects);
+        $this->set('selectedSubject', $selectedSubject);
+        $this->set('educationLevels', $educationLevels);
+        $this->set('selectedEducationLevel', $selectedEducationLevel);
+        $this->set('selectedDifficultyLevel', $selectedDifficultyLevel);
 
         $this->set(compact('questions'));
     }
@@ -41,12 +84,25 @@ class QuestionsController extends AppController
         $this->set(compact('question'));
     }
 
-    public function add()
+    public function add($editorEnabled = 0)
     {
+        $this->set('editorEnabled', $editorEnabled);
         $question = $this->Questions->newEmptyEntity();
 
+        $selectedSubject = $this->request->getSession()->check('AddQuestions.selectedSubject')
+                                ? $this->request->getSession()->read('AddQuestions.selectedSubject') : null;
+        $selectedEducationLevel = $this->request->getSession()->check('AddQuestions.selectedEducationLevel')
+                                ? $this->request->getSession()->read('AddQuestions.selectedEducationLevel') : null;
+        $selectedDifficultyLevel = $this->request->getSession()->check('AddQuestions.selectedDifficultyLevel')
+                                ? $this->request->getSession()->read('AddQuestions.selectedDifficultyLevel') : null;
+
         if ($this->request->is('post')) {
-            $error = $this->validateQuestion($this->request->getData());
+            $qData = $this->request->getData();
+            $error = $this->validateQuestion($qData);
+
+            $this->request->getSession()->write('AddQuestions.selectedSubject', $qData['subject']);
+            $this->request->getSession()->write('AddQuestions.selectedEducationLevel', $qData['level']);
+            $this->request->getSession()->write('AddQuestions.selectedDifficultyLevel', $qData['difficulty_level']);
 
             if ($error) {
                 $this->Flash->error(__($error));
@@ -54,7 +110,11 @@ class QuestionsController extends AppController
                 return;
             }
 
-            $question = $this->Questions->patchEntity($question, $this->request->getData());
+            if (!empty($qData['tags'])) {
+                $qData['tags'] = implode(',',$qData['tags']);
+            }
+
+            $question = $this->Questions->patchEntity($question, $qData);
 
             if ($questionInfo = $this->Questions->save($question)) {
                 $this->loadModel(QuestionOptionsTable::class);
@@ -83,7 +143,21 @@ class QuestionsController extends AppController
             $this->Flash->error(__('Unable to add new question.'));
         }
 
+        $this->loadModel(SubjectsTable::class);
+        $this->loadModel(EducationLevelsTable::class);
+        $this->loadModel(TagsTable::class);
+
+        $subjects = $this->Subjects->find('all')->select(['Subjects.name'])->order('name asc')->all();
+        $educationLevels = $this->EducationLevels->find('all')->select(['EducationLevels.name'])->order('name asc')->all();
+        $tags = $this->Tags->find('all')->select(['Tags.name'])->order('name asc')->all();
+
         $this->set('question', $question);
+        $this->set('subjects', $subjects);
+        $this->set('educationLevels', $educationLevels);
+        $this->set('tags', $tags);
+        $this->set('selectedSubject', $selectedSubject);
+        $this->set('selectedEducationLevel', $selectedEducationLevel);
+        $this->set('selectedDifficultyLevel', $selectedDifficultyLevel);
     }
 
     private function validateQuestion($data)
@@ -128,8 +202,10 @@ class QuestionsController extends AppController
         return null;
     }
 
-    public function edit($id)
+    public function edit($id, $editorEnabled = 0)
     {
+        $this->set('editorEnabled', $editorEnabled);
+
         $question = $this->Questions
             ->findById($id)
             ->contain(['QuestionOptions'])
@@ -144,10 +220,14 @@ class QuestionsController extends AppController
             }
         }
 
-        //debug($options);
-
         if ($this->request->is(['post', 'put'])) {
-            $this->Questions->patchEntity($question, $this->request->getData());
+            $qData = $this->request->getData();
+
+            if (!empty($qData['tags'])) {
+                $qData['tags'] = implode(',',$qData['tags']);
+            }
+
+            $this->Questions->patchEntity($question, $qData);
 
             if ($this->Questions->save($question)) {
                 // $this->loadModel(QuestionOptionsTable::class);
@@ -174,8 +254,20 @@ class QuestionsController extends AppController
             $this->Flash->error(__('Unable to update your question.'));
         }
 
+        $this->loadModel(SubjectsTable::class);
+        $this->loadModel(EducationLevelsTable::class);
+        $this->loadModel(TagsTable::class);
+
+        $subjects = $this->Subjects->find('all')->select(['Subjects.name'])->order('name asc')->all();
+        $educationLevels = $this->EducationLevels->find('all')->select(['EducationLevels.name'])->order('name asc')->all();
+        $tags = $this->Tags->find('all')->select(['Tags.name'])->order('name asc')->all();
+
+        $this->set('id', $id);
         $this->set('question', $question);
         $this->set('options', $options);
+        $this->set('subjects', $subjects);
+        $this->set('educationLevels', $educationLevels);
+        $this->set('tags', $tags);
     }
 
     public function delete($id)

@@ -211,9 +211,12 @@ class UsersController extends AppController
 
                 $this->request->getSession()->write('User', $user);
 
-                $this->redirect('/');
+                if ($user['isAdmin'] == false) {
+                    $this->redirect('/UserExams/');
+                    return;
+                }
 
-                return;
+                return $this->redirect('/');;
             }
 
             $this->Flash->error(__('User not found.'));

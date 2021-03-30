@@ -14,7 +14,6 @@
         <tr>
             <th>#</th>
             <th>Exam Name</th>
-            <th>Duration</th>
             <th></th>
         </tr>
         </thead>
@@ -34,13 +33,12 @@
                 </td>
                 <td>
                     <?= $exam->name ?>
+                    <div class="text-muted">
+                        <?= $exam->time ?> mins
+                    </div>
                 </td>
                 <td>
-                    <?= $exam->time ?> mins
-                </td>
-
-                <td>
-                    <a href="/UserExams/view/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary py-0">Online Test</a>
+                    <a href="/UserExams/view/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary">Online Test</a>
 
                 </td>
             </tr>
@@ -58,24 +56,6 @@
         </tbody>
     </table>
 
-
-
-    <div class="d-flex mt-4">
-        <div class="">
-            Page:
-            <?= $this->Paginator->counter() ?>
-        </div>
-        <div class="mx-3">|</div>
-        <div class="text-end d-flex">
-
-            <ul class="list-unstyled">
-                <?= $this->Paginator->prev('« Previous') ?>
-            </ul>
-
-            <ul class="list-unstyled mx-3">
-                <?= $this->Paginator->next('Next »') ?>
-            </ul>
-        </div>
-    </div>
+        <?= $this->element('bottomPagination', ['paginator' => $this->Paginator]); ?>
 
 </div>
