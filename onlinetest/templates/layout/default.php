@@ -70,7 +70,7 @@
             $navBarClass = 'd-none';
         }
         ?>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-purple d-print-none <?= $navBarClass ?>">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-purple d-print-none <?= $navBarClass ?>">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Online Tests</a>
 
