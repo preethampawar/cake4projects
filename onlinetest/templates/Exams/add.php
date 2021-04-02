@@ -44,22 +44,22 @@ echo $this->Form->control('time',
         'class' => 'form-control form-control-sm mb-3'
     ]);
 
-echo $this->Form->control('start_date',
+echo $this->Form->hidden('start_date',
     [
         'label' => 'Start Date *',
         'type' => 'datetime',
         'required' => true,
         'class' => 'form-control mb-3',
-        'default' => date('Y-m-d')
+        'default' => date('Y-m-d H:i:s')
     ]);
 
-echo $this->Form->control('end_date',
+echo $this->Form->hidden('end_date',
     [
         'label' => 'End Date *',
         'type' => 'datetime',
         'required' => true,
         'class' => 'form-control mb-3',
-        'default' => date('Y-m-d', strtotime('+ 1 day'))
+        'default' => date('Y-m-d H:i:s', strtotime('+ 1 day'))
     ]);
 
 ?>

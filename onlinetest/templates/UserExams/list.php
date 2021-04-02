@@ -19,7 +19,7 @@ if ($this->request->getSession()->check('User.isAdmin')
 
 <div class="alert shadow mt-3 border">
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">
+        <li class="list-group-item px-0">
             <h5>Total <?php echo count($exams) ?> test(s)</h5>
         </li>
         <?php
@@ -27,11 +27,11 @@ if ($this->request->getSession()->check('User.isAdmin')
         foreach ($exams as $exam):
             $k++;
             ?>
-            <li class="list-group-item">
+            <li class="list-group-item px-0">
                 <div class="d-flex justify-content-between">
-                    <div class="">
-                        <?= $k ?>.
-                        <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="">
+                    <div class="d-flex">
+                        <span><?= $k ?>. </span>
+                        <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="ms-1">
                             <?= $exam->name ?>
                         </a>
                     </div>
