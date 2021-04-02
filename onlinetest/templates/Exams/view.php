@@ -29,10 +29,10 @@
 <hr>
 
 <div class="">
-    <table class="table table-sm table-hover small mb-3">
+    <table class="table table-hover table-sm mb-3">
         <thead>
         <tr>
-            <th style="width: 50px;">#</th>
+            <th>#</th>
             <th>Question</th>
         </tr>
         </thead>
@@ -45,18 +45,19 @@
             ?>
 
             <tr id = "addQuestionRow<?= $question->id ?>">
-                <td><?= $k ?>.</td>
-                <td>
+                <td class="py-2"><?= $k ?>.</td>
+                <td class="py-2">
                     <?= $question->name ?>
-                    <div class="row">
+                    <div class="">
                         <?php
                         if ($question->question_options) {
                             $i = 1;
                             foreach ($question->question_options as $row) {
                                 ?>
 
-                                <div class="col-6">
+                                <div class="">
                                     <?php
+                                    $chars = range('a', 'z');
                                     $class = null;
                                     $checked = null;
                                     if ($i === (int)$question->answer) {
@@ -66,10 +67,12 @@
                                     ?>
                                     <div class="<?= $class ?>">
                                         <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
-                                            <span class="small text-secondary"><?= $i ?>.</span>
                                             <input class="form-check-input" type="radio" <?= $checked ?> disabled>
                                             <label class="form-check-label2">
-                                                <?= $row->name ?>
+                                                <span class="text-secondary d-flex">
+                                                    <span><?= $chars[$i - 1] ?>)&nbsp;</span>
+                                                    <span><?= $row->name ?></span>
+                                                </span>
                                             </label>
                                         </div>
 
@@ -77,10 +80,6 @@
                                 </div>
 
                                 <?php
-                                if ($i % 2 == 0) {
-                                    echo '</div><div class="row">';
-                                }
-
                                 $i++;
                             }
                         }

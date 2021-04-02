@@ -110,17 +110,17 @@ class UsersController extends AppController
             return 'Password field cannot be empty.';
         }
 
-        if (empty(trim($data['confirm']))) {
-            return 'Confirm Password field cannot be empty.';
-        }
+//        if (empty(trim($data['confirm']))) {
+//            return 'Confirm Password field cannot be empty.';
+//        }
 
         if (empty(trim($data['phone']))) {
             return 'Phone Number field cannot be empty.';
         }
 
-        if (trim($data['password']) != trim($data['confirm'])) {
-            return 'Password and Confirm Password fields do not match.';
-        }
+//        if (trim($data['password']) != trim($data['confirm'])) {
+//            return 'Password and Confirm Password fields do not match.';
+//        }
 
         $userInfo = $this->Users->findByUsername($data['username'])->first();
 
@@ -212,11 +212,15 @@ class UsersController extends AppController
                 $this->request->getSession()->write('User', $user);
 
                 if ($user['isAdmin'] == false) {
-                    $this->redirect('/UserExams/');
+                    if ($this->request->getSession()->check('selectedExamId')) {
+                        return $this->redirect('/UserExams/view/' . $this->request->getSession()->read('selectedExamId'));
+                    }
+
+                    $this->redirect('/UserExams/list');
                     return;
                 }
 
-                return $this->redirect('/');;
+                return $this->redirect('/Questions/');
             }
 
             $this->Flash->error(__('User not found.'));

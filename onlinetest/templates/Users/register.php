@@ -1,89 +1,170 @@
 <h1>Register</h1>
-
+<h6 class="text-muted">It's quick and easy.</h6>
+<hr>
 <?php
-    echo $this->Form->create(null);
+    echo $this->Form->create(null, ['class' => 'needs-validation', 'novalidate']);
 ?>
 
-<div class="text-end mb-3">
-    <a class="btn btn-sm btn-danger" href="/users/login">Cancel</a>
-</div>
 
-<div class="row gx-md-5">
-    <div class="col-sm-6">
-        <?php
-        echo $this->Form->control('name',
-            [
-                'type' => 'text',
-                'label' => 'Full Name *',
-                'minlength' => 3,
-                'maxlength' => 255,
-                'required' => true,
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        echo $this->Form->control('username',
-            [
-                'type' => 'text',
-                'label' => 'Username *',
-                'minlength' => 3,
-                'maxlength' => 55,
-                'required' => true,
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        echo $this->Form->control('password',
-            [
-                'type' => 'password',
-                'label' => 'Password *',
-                'minlength' => 5,
-                'maxlength' => 55,
-                'required' => true,
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        echo $this->Form->control('confirm',
-            [
-                'type' => 'password',
-                'label' => 'Confirm Password *',
-                'minlength' => 5,
-                'maxlength' => 55,
-                'required' => true,
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        ?>
+<div class="">
+    <div class="alert bg-light border shadow">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <?php
+                    echo $this->Form->text('name',
+                        [
+                            'type' => 'text',
+                            'label' => false,
+                            'minlength' => 3,
+                            'maxlength' => 255,
+                            'required' => true,
+                            'class' => 'form-control',
+                            'placeholder' => 'Full Name'
+                        ]);
+                    ?>
+                    <div class="invalid-feedback">
+                        Full Name is required.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <?php
+                    echo $this->Form->text('username',
+                        [
+                            'type' => 'text',
+                            'label' => false,
+                            'text' => 'sss',
+                            'minlength' => 3,
+                            'maxlength' => 55,
+                            'required' => true,
+                            'class' => 'form-control',
+                            'placeholder' => 'Username'
+                        ]);
+                    ?>
+                    <div class="invalid-feedback">
+                        Username is required.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <?php
+                    echo $this->Form->password('password',
+                        [
+                            'type' => 'password',
+                            'label' => false,
+                            'minlength' => 5,
+                            'maxlength' => 55,
+                            'required' => true,
+                            'class' => 'form-control',
+                            'placeholder' => 'Password'
+                        ]);
+                    ?>
+                    <div class="invalid-feedback">
+                        Password is required.
+                    </div>
+                </div>
+
+                <?php
+        //        echo $this->Form->control('confirm',
+        //            [
+        //                'type' => 'password',
+        //                'label' => 'Confirm Password *',
+        //                'minlength' => 5,
+        //                'maxlength' => 55,
+        //                'required' => true,
+        //                'class' => 'form-control mb-3',
+        //            ]);
+                ?>
+            </div>
+            <div class="col-sm-6">
+                <div class="mb-3">
+                    <?php
+                    echo $this->Form->text('phone',
+                        [
+                            'type' => 'phone',
+                            'label' => false,
+                            'minlength' => 10,
+                            'maxlength' => 255,
+                            'required' => true,
+                            'class' => 'form-control',
+                            'placeholder' => 'Phone No.'
+                        ]);
+                    ?>
+                    <div class="invalid-feedback">
+                        Phone No. is required.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <?php
+                    echo $this->Form->email('email',
+                        [
+                            'type' => 'email',
+                            'minlength' => 5,
+                            'maxlength' => 255,
+                            'label' => false,
+                            'class' => 'form-control',
+                            'placeholder' => 'Email (optional)'
+                        ]);
+                    ?>
+                    <div class="invalid-feedback">
+                        Invalid Email.
+                    </div>
+                </div>
+
+                <?php
+                echo $this->Form->control('address',
+                    [
+                        'type' => 'textarea',
+                        'label' => false,
+                        'rows' => 1,
+                        'class' => 'form-control mb-3',
+                        'placeholder' => 'Address (optional)'
+                    ]);
+                ?>
+            </div>
+        </div>
+        <div class="row mt-3 mb-4">
+            <div class="col-12 text-center">
+                <div class="">
+                    <?= $this->Form->button(__('Create Account'), ['class' => 'btn btn-primary']) ?>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="mt-4 text-center">
+            <a href="/users/login" class='btn-orange btn'>Cancel</a>
+        </div>
     </div>
-    <div class="col-sm-6">
-        <?php
-
-        echo $this->Form->control('phone',
-            [
-                'type' => 'phone',
-                'label' => 'Phone Number *',
-                'minlength' => 10,
-                'maxlength' => 255,
-                'required' => true,
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        echo $this->Form->control('email',
-            [
-                'type' => 'email',
-                'minlength' => 5,
-                'maxlength' => 255,
-                'label' => 'Email',
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        echo $this->Form->control('address',
-            [
-                'type' => 'textarea',
-                'label' => 'Address',
-                'rows' => 3,
-                'class' => 'form-control form-control-sm mb-3',
-            ]);
-        ?>
-    </div>
 </div>
 
-<div class="mt-4">
-    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary']) ?>
-</div>
+
 
 <?php
     echo $this->Form->end();
 ?>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+
+

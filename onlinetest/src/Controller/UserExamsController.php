@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Model\Table\ExamsTable;
+use App\Model\Table\QuestionsTable;
 use App\Model\Table\UserExamQuestionAnswersTable;
 use App\Model\Table\UserExamsTable;
-use App\Model\Table\QuestionsTable;
 use DateTime;
 
 class UserExamsController extends AppController
@@ -20,6 +20,11 @@ class UserExamsController extends AppController
 
     public function index()
     {
+        if ($this->request->getSession()->check('User.isAdmin')
+            && $this->request->getSession()->read('User.isAdmin') == false) {
+            return $this->redirect('/UserExams/list/');
+        }
+
         $this->loadModel(ExamsTable::class);
         $this->loadComponent('Paginator');
 
@@ -40,6 +45,10 @@ class UserExamsController extends AppController
 
     public function view($examId)
     {
+        if ($this->request->getSession()->check('selectedExamId')) {
+            $this->request->getSession()->delete('selectedExamId');
+        }
+
         $examId = (int)base64_decode($examId);
         $error = $this->checkExamValidity($examId);
 
@@ -59,6 +68,49 @@ class UserExamsController extends AppController
         $userExamInfo = $this->getUserExamDetails($examId);
 
         $this->set(compact('exam', 'userExamInfo'));
+    }
+
+    private function checkExamValidity($examId)
+    {
+        $this->loadModel(ExamsTable::class);
+
+        $examExpired = $this->Exams->find('all')
+            ->where(['Exams.id' => $examId, 'Exams.deleted' => 0, 'Exams.end_date < ' => date('Y-m-d H:i:s')])
+            ->first();
+
+        if ($examExpired) {
+            return 'This exam "' . $examExpired->name . '" is no longer active.';
+        }
+
+        return null;
+    }
+
+    private function getUserExamDetails($examId)
+    {
+        $data = null;
+
+        if ($this->request->getSession()->check('userExamInfo.' . $examId)) {
+            $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
+            $data = $userExamInfo->toArray();
+            $minutes = $this->getUserExamElapsedTime($examId);
+            $data['time'] = (int)$minutes;
+            $data['duration'] = (int)$userExamInfo->duration;
+        }
+
+        return $data;
+    }
+
+    private function getUserExamElapsedTime($examId)
+    {
+        $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
+        $examStartTime = new DateTime($userExamInfo->created);
+        $now = new DateTime();
+        $diff = $now->diff($examStartTime);
+        $minutes = $diff->days * 24 * 60;
+        $minutes += $diff->h * 60;
+        $minutes += $diff->i;
+
+        return (int)$minutes;
     }
 
     public function startTest($examId)
@@ -104,7 +156,7 @@ class UserExamsController extends AppController
             $this->cleanUpUserExamSession($examId);
 
             $this->Flash->error(__($error));
-            $this->redirect('/UserExams/myResult/'. base64_encode($examId));
+            $this->redirect('/UserExams/myResult/' . base64_encode($examId));
 
             return;
         }
@@ -130,17 +182,6 @@ class UserExamsController extends AppController
         $this->set(compact('exam', 'examsQuestions', 'userExamId', 'selectedQAs'));
     }
 
-    private function cleanUpUserExamSession($examId)
-    {
-        $this->request->getSession()->delete('writingUserExam.' . $examId);
-        $this->request->getSession()->delete('userExamInfo.' . $examId);
-    }
-
-    public function clearUserExamSession($examId)
-    {
-        $this->cleanUpUserExamSession($examId);
-    }
-
     public function checkUserExamValidity($examId)
     {
         $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
@@ -155,17 +196,15 @@ class UserExamsController extends AppController
         return null;
     }
 
-    private function getUserExamElapsedTime($examId)
+    private function cleanUpUserExamSession($examId)
     {
-        $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
-        $examStartTime = new DateTime($userExamInfo->created);
-        $now = new DateTime();
-        $diff = $now->diff($examStartTime);
-        $minutes = $diff->days * 24 * 60;
-        $minutes += $diff->h * 60;
-        $minutes += $diff->i;
+        $this->request->getSession()->delete('writingUserExam.' . $examId);
+        $this->request->getSession()->delete('userExamInfo.' . $examId);
+    }
 
-        return (int)$minutes;
+    public function clearUserExamSession($examId)
+    {
+        $this->cleanUpUserExamSession($examId);
     }
 
     public function updateAnswer()
@@ -200,36 +239,6 @@ class UserExamsController extends AppController
         $data = $this->getUserExamDetails($examId);
 
         $this->set('data', $data);
-    }
-
-    private function getUserExamDetails($examId)
-    {
-        $data = null;
-
-        if ($this->request->getSession()->check('userExamInfo.' . $examId)) {
-            $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
-            $data = $userExamInfo->toArray();
-            $minutes = $this->getUserExamElapsedTime($examId);
-            $data['time'] = (int)$minutes;
-            $data['duration'] = (int)$userExamInfo->duration;
-        }
-
-        return $data;
-    }
-
-    private function checkExamValidity($examId)
-    {
-        $this->loadModel(ExamsTable::class);
-
-        $examExpired = $this->Exams->find('all')
-            ->where(['Exams.id' => $examId, 'Exams.deleted' => 0, 'Exams.end_date < ' => date('Y-m-d H:i:s')])
-            ->first();
-
-        if ($examExpired) {
-            return 'This exam "' . $examExpired->name . '" is no longer active.';
-        }
-
-        return null;
     }
 
     public function cancelTest($examId)
@@ -281,10 +290,11 @@ class UserExamsController extends AppController
 
         $this->cleanUpUserExamSession($examId);
 
-        return $this->redirect('/UserExams/myResult/'.base64_encode($userExamId));
+        return $this->redirect('/UserExams/myResult/' . base64_encode($userExamId));
     }
 
-    public function myResult($userExamId) {
+    public function myResult($userExamId)
+    {
         $userExamId = (int)base64_decode($userExamId);
 
         $this->loadModel(UserExamsTable::class);
@@ -338,4 +348,26 @@ class UserExamsController extends AppController
         $this->set(compact('userExams'));
     }
 
+    public function list()
+    {
+        $this->loadModel(ExamsTable::class);
+        $this->loadComponent('Paginator');
+
+        $exams = $this->Exams->find('all')
+                ->where(['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')])
+                ->order('Exams.id desc')->all();
+
+        $this->set(compact('exams'));
+    }
+
+    public function select($examId)
+    {
+        $this->request->getSession()->write('selectedExamId', $examId);
+
+        if($this->request->getSession()->check('User.id')) {
+            return $this->redirect('/UserExams/view/' . $examId);
+        }
+
+        return $this->redirect('/Users/login');
+    }
 }

@@ -33,7 +33,7 @@ class TagsController extends AppController
             $tagsList[] = $tag->name;
         }
 
-        $selectedTags = $data['selectedTags'];
+        $selectedTags = isset($data['selectedTags']) ? $data['selectedTags'] : [];
         $selectedTags[] = $data['name'];
 
         $this->set('error', $error);

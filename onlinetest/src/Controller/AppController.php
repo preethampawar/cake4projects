@@ -59,6 +59,8 @@ class AppController extends Controller
         if (
             $this->request->getParam('action') !== 'login'
             && $this->request->getParam('action') !== 'register'
+            && ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') !== 'list')
+            && ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') !== 'select')
             && $this->request->getSession()->check('User.id') !== true) {
             $this->redirect('/users/login');
             return;

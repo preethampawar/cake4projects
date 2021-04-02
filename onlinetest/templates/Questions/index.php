@@ -90,7 +90,7 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table small mt-3">
+    <table class="table mt-3 table-sm">
         <thead>
         <tr>
             <th>#</th>
@@ -108,10 +108,10 @@
             ?>
 
             <tr>
-                <td>
+                <td class="pt-2">
                     <?= $k ?>.
                 </td>
-                <td>
+                <td class="pt-2">
                     <div class="mb-2">
                         <a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="">
                             <?= $question->name ?>
@@ -153,7 +153,7 @@
                         }
                         ?>
                     </div>
-                    <div>
+                    <div class="mt-2 mb-3">
                         <?= $question->subject != '' ? '<span class="bg-orange me-1 px-1 border">'.$question->subject.'</span>' : null ?>
 
                         <?= $question->level != '' ? '<span class="bg-purple me-1 px-1 border">'.$question->level.'</span>' : null ?>
@@ -196,7 +196,7 @@
                         ?>
                     </div>
                 </td>
-                <td>
+                <td class="pt-2">
                     <?php
                     echo $this->Html->link(
                         'Delete',
@@ -217,7 +217,7 @@
         if (empty($questions->toArray())) {
             ?>
             <tr>
-                <td colspan="4">No questions found.</td>
+                <td colspan="3">No questions found.</td>
             </tr>
             <?php
         }

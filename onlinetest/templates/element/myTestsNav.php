@@ -3,6 +3,7 @@ $myTestsLinkClass = '';
 $indexLinkClass = '';
 
 $action = $this->request->getParam('action');
+
 switch ($action) {
     case 'myResult':
     case 'myTests':
@@ -10,6 +11,7 @@ switch ($action) {
         break;
     case 'index':
     case 'view':
+    case 'list':
         $indexLinkClass = 'active';
         break;
     default:
