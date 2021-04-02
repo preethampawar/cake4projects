@@ -10,10 +10,11 @@ if ($this->request->getSession()->check('User.isAdmin')
 }
 ?>
 
-<?= $this->request->getSession()->check('User.id') ? $this->element('myTestsNav') : null;?>
+<?= $this->request->getSession()->check('User.id') ? $this->element('myTestsNav') : null; ?>
 
 <div class="mt-3 text-muted alert bg-aliceblue shadow border">
-    Free online tests to practice for competitive and entrance exams. Prepare for your exam online with our many free tests.
+    Free online tests to practice for competitive and entrance exams. Prepare for your exam online with our many free
+    tests.
 </div>
 
 
@@ -31,13 +32,17 @@ if ($this->request->getSession()->check('User.isAdmin')
                 <div class="d-flex justify-content-between">
                     <div class="d-flex">
                         <span><?= $k ?>. </span>
-                        <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>" class="ms-1">
-                            <?= $exam->name ?>
-                        </a>
+                        <div>
+                            <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
+                               class="ms-1">
+                                <?= $exam->name ?>
+                            </a>
+                            <div class="text-muted">
+                                (<?= $exam->time ?> mins)
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-muted">
-                        <?= $exam->time ?> mins
-                    </div>
+
 
                 </div>
             </li>
