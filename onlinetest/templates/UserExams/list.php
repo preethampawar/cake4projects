@@ -27,24 +27,98 @@ if ($this->request->getSession()->check('User.isAdmin')
         $k = 0;
         foreach ($exams as $exam):
             $k++;
+
+            $fullUrl = $this->Url->build("/UserExams/select/" . base64_encode($exam->id), [
+                'escape' => false,
+                'fullBase' => true,
+            ]);
+            $fullUrl = urlencode($fullUrl);
+            $title = urlencode($exam->name);
             ?>
             <li class="list-group-item px-0">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex">
                         <span><?= $k ?>. </span>
-                        <div>
+                        <div class="">
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
                                class="ms-1">
                                 <?= $exam->name ?>
                             </a>
-                            <div class="text-muted">
-                                (<?= $exam->time ?> mins)
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <div class="text-muted">
+                        (<?= $exam->time ?> mins)
+                    </div>
+
+                    <div
+                        title="Share Test <?= $exam->name ?>"
+                        class="border shadow px-2 py-0 rounded  bg-ivory small fw-bold text-secondary"
+                        type="button"
+                        onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
+                        Share
+                        <img
+                            src="/img/share2.png"
+                            style="width: 15px;"
+                            class=""
+                            type="button"
+                        >
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="modalExam<?= $exam->id ?>" tabindex="-1" aria-labelledby="modalExam<?= $exam->id ?>Label" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalExam<?= $exam->id ?>Label">Share Online Test</h5>
+
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <h5><?= $exam->name ?></h5>
+                                    <hr>
+                                </div>
+
+                                <div class="text-center">
+                                    <a
+                                        href="#"
+                                        class="btn btn-success btn-md w-50 mt-3"
+                                        onclick="social.share('whatsapp', '<?= $fullUrl ?>', '<?= $title ?>')">
+                                        WhatsApp
+                                    </a>
+                                    <a
+                                        href="#"
+                                        class="btn btn-primary btn-md w-50 mt-3"
+                                        onclick="social.share('facebook', '<?= $fullUrl ?>', '<?= $title ?>')">
+                                        Facebook
+                                    </a>
+                                    <a
+                                        href="#"
+                                        class="btn btn-info btn-md w-50 mt-3"
+                                        onclick="social.share('twitter', '<?= $fullUrl ?>', '<?= $title ?>')">
+                                        Twitter
+                                    </a>
+                                    <a
+                                        href="#"
+                                        class="btn btn-orange btn-md w-50 mt-3"
+                                        onclick="social.share('email', '<?= $fullUrl ?>', '<?= $title ?>')">
+                                        Email
+                                    </a>
+                                    <br><br>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
+
             </li>
 
         <?php

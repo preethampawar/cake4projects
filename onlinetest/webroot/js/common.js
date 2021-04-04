@@ -261,3 +261,46 @@ var tags = {
     }
 }
 
+var social = {
+    shareDialog: function(modalId, encodedUrl, encodedTitle) {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Share Online Test - ' + encodedTitle,
+                url: encodedUrl
+            }).then(() => {
+                console.log('Thanks for sharing!');
+            })
+            .catch(console.error);
+        } else {
+            let myModal = new bootstrap.Modal(document.getElementById(modalId), {
+                keyboard: false
+            })
+            myModal.show()
+        }
+    },
+
+    share: function(media, encodedUrl, encodedTitle) {
+
+        switch (media) {
+            case 'facebook':
+                shareUrl = 'http://www.facebook.com/sharer.php?u=' + encodedUrl
+                break
+            case 'twitter':
+                shareUrl = 'http://twitter.com/share?text=' + encodedTitle + '&url=' + encodedUrl
+                break
+            case 'email':
+                shareUrl = 'mailto:?subject=' + encodedTitle + '&body=Check out this online test ' + encodedUrl
+                break
+            case 'whatsapp':
+                shareUrl = 'https://wa.me/?text=Online Test - ' + encodedTitle + ' ' + encodedUrl
+                break
+            default:
+                shareUrl = ''
+                break
+        }
+
+        window.open(shareUrl,'sharer','toolbar=0,status=0,width=500,height=400');
+        return true;
+    }
+}
+

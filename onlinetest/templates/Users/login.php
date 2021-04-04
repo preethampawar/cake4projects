@@ -3,6 +3,18 @@
 <div class="row">
     <div class="col-sm-9 col-md-7 col-lg-6 col-xl-5 mx-auto">
 
+        <?php
+        if ($examDetails) {
+            ?>
+            <div class="alert shadow bg-aliceblue border mb-4">
+                <div>You need to login to attend this online test</div>
+                <h5><?= $examDetails->name ?></h5>
+                <div class="mt-3">Register yourself if you don't have an account. It's easy.</div>
+            </div>
+            <?php
+        }
+        ?>
+
         <div class="alert shadow bg-light border">
             <div class="mt-3">
                 <?php

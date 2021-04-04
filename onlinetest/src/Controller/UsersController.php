@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Model\Table\ExamsTable;
+
 class UsersController extends AppController
 {
     public function initialize(): void
@@ -227,6 +229,15 @@ class UsersController extends AppController
 
             return;
         }
+
+        $examDetails = null;
+        if($this->request->getSession()->check('selectedExamId')) {
+            $examId = base64_decode($this->request->getSession()->read('selectedExamId'));
+            $this->loadModel(ExamsTable::class);
+            $examDetails = $this->Exams->findById($examId)->first();
+        }
+
+        $this->set('examDetails', $examDetails);
     }
 
     public function logout()
