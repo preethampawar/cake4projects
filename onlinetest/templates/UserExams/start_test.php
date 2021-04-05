@@ -85,6 +85,14 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
         }
         ?>
 
+        <?php
+        if($showFinishLink) {
+            ?>
+            <div class="text-danger text-center mb-3">This is your last Question. Click "<span class="fw-bold">Finish & Exit Test</span>" button to complete the test.</div>
+            <?php
+        }
+        ?>
+
         <div class="d-flex justify-content-center pagination">
             <ul class="list-unstyled <?= $showPrevLink ? null : 'disabled' ?> btn btn-secondary m-0 p-0" title="Previous">
                 <?= $this->Paginator->prev('« Previous') ?>

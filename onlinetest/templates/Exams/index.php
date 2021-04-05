@@ -1,3 +1,10 @@
+<?php
+$categoryList = null;
+foreach($categories as $category) {
+    $categoryList[$category->id] = (string)$category->name;
+}
+?>
+
 <h1>Exams List</h1>
 
 <div class="text-end">
@@ -54,41 +61,16 @@
                     <?= $k ?>.
                 </td>
                 <td>
-                    <div class="mb-2"><?= $exam->name ?></div>
+                    <div class=""><?= $exam->name ?></div>
 
-                    <div class="row">
+                    <div class="mb-3">
                         <?php
-                        if ($exam->question_options) {
-                            $i = 1;
-                            foreach ($exam->question_options as $row) {
+                        if ($categoryList && $exam->exam_categories) {
+                            foreach($exam->exam_categories as $examCategory) {
+                                $categoryName = $categoryList[$examCategory->category_id];
                                 ?>
-
-                                <div class="col-md-6">
-                                    <?php
-                                    $class = null;
-                                    $checked = null;
-                                    if ($i === (int)$exam->answer) {
-                                        $class = "fw-bold";
-                                        $checked = "checked";
-                                    }
-                                    ?>
-                                    <span class="<?= $class ?>">
-                                <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
-                                    <input class="form-check-input" type="radio" <?= $checked ?> disabled>
-                                    <label class="form-check-label2">
-                                        <?= $row->name ?>
-                                    </label>
-                                </div>
-
-                            </span>
-                                </div>
-
+                                <button class="btn btn-ivory btn-sm border disabled py-0 me-1 mt-1"><?= $categoryName ?></button>
                                 <?php
-                                if ($i % 2 == 0) {
-                                    echo '</div><div class="row">';
-                                }
-
-                                $i++;
                             }
                         }
                         ?>

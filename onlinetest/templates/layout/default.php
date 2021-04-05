@@ -72,8 +72,9 @@
                             <?php
                             if($isAdmin) {
                                 ?>
-                                <a class="nav-link <?= $questionsLinkActive?>" href="/questions">Question Bank</a>
-                                <a class="nav-link <?= $examsLinkActive?>" href="/exams">Exams</a>
+                                <a class="nav-link <?= $questionsLinkActive?>" href="/Questions">Question Bank</a>
+                                <a class="nav-link <?= $examsLinkActive?>" href="/Exams">Exams</a>
+                                <a class="nav-link <?= $examsLinkActive?>" href="/Categories">Categories</a>
                                 <?php
                             } else {
                                 ?>
@@ -84,13 +85,13 @@
 
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><?= ucwords($loggedInUser['username']) ?></a>
 
-                            <a class="nav-link" href="/users/logout">Logout</a>
+                            <a class="nav-link" href="/Users/logout">Logout</a>
 
                             <?php
                         } else {
                             ?>
-                            <a class="nav-link" href="/users/login">Login</a>
-                            <a class="nav-link" href="/users/register">Register</a>
+                            <a class="nav-link" href="/Users/login">Login</a>
+                            <a class="nav-link" href="/Users/register">Register</a>
                             <?php
                         }
                         ?>

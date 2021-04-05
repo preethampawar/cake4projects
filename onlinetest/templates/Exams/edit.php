@@ -63,6 +63,23 @@ echo $this->Form->control('time',
 //    ]);
 
 ?>
+<div class="mt-3">
+    <div class="">
+        <label>Categories</label>
+        <div id="categoriesDivAddQuestionForm">
+            <?php
+            $selectedCategories = null;
+            if($exam->exam_categories) {
+                foreach($exam->exam_categories as $category) {
+                    $selectedCategories[] = $category->category_id;
+                }
+            }
+            ?>
+
+            <?= $this->element('categoriesDropDown', ['categories' => $categories, 'selected' => $selectedCategories]) ?>
+        </div>
+    </div>
+</div>
 
 <div class="my-4">
     <?= $this->Form->button(__('Update Exam Details'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
@@ -71,3 +88,13 @@ echo $this->Form->control('time',
 <?php
 echo $this->Form->end();
 ?>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#categories').select2({
+        });
+    })
+</script>

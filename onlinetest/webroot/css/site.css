@@ -6,8 +6,10 @@
     --cus-maroon: #721c24;
     --cus-maroon-dark: #611c24;
     --cus-light-grey: #f8f8f8;
-    --cus-ivory: #fffff0;
+    --cus-ivory: #fdfde0;
+    --cus-ivory-plus: #FAFAC4;
     --cus-aliceblue: #f0f8ff;
+    --cus-aliceblue-plus: #d7f1fc;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -17,32 +19,51 @@
     color: rgba(255,255,255,1.0);
 }
 
+.text-purple {
+    color: var(--cus-purple);
+}
+.text-orange {
+    color: var(--cus-orange);
+}
+.text-maroon {
+    color: var(--cus-maroon);
+}
+.text-ivory {
+    color: var(--cus-ivory);
+}
+.text-aliceblue {
+    color: var(--cus-aliceblue);
+}
+
+
 .bg-purple {
     background-color: var(--cus-purple);
     color: var(--bs-white);
 }
-
-.text-purple {
-    color: var(--cus-purple);
+.bg-orange {
+    background-color: var(--cus-orange);
+    color: var(--bs-white);
+}
+.bg-maroon {
+    background-color: var(--cus-maroon);
+    color: var(--bs-white);
+}
+.bg-ivory {
+    background-color: var(--cus-ivory);
+    color: var(--bs-dark);
+}
+.bg-aliceblue {
+    background-color: var(--cus-aliceblue);
+    color: var(--bs-dark);
 }
 
 .btn-purple {
     background-color: var(--cus-purple);
     color: var(--cus-light-grey);
 }
-
 .btn-purple:hover {
     background-color: var(--cus-purple-dark);
     color: var(--bs-white);
-}
-
-.bg-orange {
-    background-color: var(--cus-orange);
-    color: var(--bs-white);
-}
-
-.text-orange {
-    color: var(--cus-orange);
 }
 
 .btn-orange {
@@ -55,31 +76,30 @@
     color: var(--bs-white);
 }
 
-.bg-maroon {
-    background-color: var(--cus-maroon);
-    color: var(--bs-white);
-}
-
-.text-maroon {
-    color: var(--cus-maroon);
-}
-
 .btn-maroon {
     background-color: var(--cus-maroon);
     color: var(--cus-light-grey);
 }
-
 .btn-maroon:hover {
     background-color: var(--cus-maroon-dark);
     color: var(--bs-white);
 }
 
-.bg-ivory {
+.btn-ivory {
     background-color: var(--cus-ivory);
+    color: var(--bs-secondary);
+}
+.btn-ivory:hover {
+    background-color: var(--cus-ivory-plus);
     color: var(--bs-dark);
 }
-.bg-aliceblue {
+
+.btn-aliceblue {
     background-color: var(--cus-aliceblue);
+    color: var(--bs-secondary);
+}
+.btn-aliceblue:hover {
+    background-color: var(--cus-aliceblue-plus);
     color: var(--bs-dark);
 }
 

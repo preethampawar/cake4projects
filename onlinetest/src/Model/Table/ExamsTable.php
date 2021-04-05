@@ -11,6 +11,10 @@ class ExamsTable extends Table
             'className' => 'ExamQuestions',
             'sort' => 'ExamQuestions.sort asc'
         ]);
+        $this->hasMany('ExamCategories', [
+            'className' => 'ExamCategories',
+            // 'sort' => 'ExamQuestions.sort asc'
+        ]);
 
         $this->addBehavior('Timestamp');
     }

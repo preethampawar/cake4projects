@@ -8,6 +8,7 @@
 //debug($userExamInfo);
 
 $correctQAs = [];
+$notAttemptedQAs = [];
 foreach ($userExamInfo->exam->exam_questions as $row) {
     $questionAnswer = $row->question->answer;
     $selectedAnswer = '';
@@ -15,10 +16,16 @@ foreach ($userExamInfo->exam->exam_questions as $row) {
     if (isset($selectedQAs[$row->question->id]) && $selectedQAs[$row->question->id] == $questionAnswer) {
         $correctQAs[$row->question->id] = $questionAnswer;
     }
+
+    if (!isset($selectedQAs[$row->question->id]) ) {
+        $notAttemptedQAs[$row->question->id] = $row->question->id;
+    }
 }
 
 $totalQuestions = count($userExamInfo->exam->exam_questions);
 $correctQuestions = count($correctQAs);
+$notAttemptedQuestions = count($notAttemptedQAs);
+$wrongQuestions = $totalQuestions - $correctQuestions - $notAttemptedQuestions;
 $percentage = round($correctQuestions * 100 / $totalQuestions, 2);
 
 $bgClass = "bg-danger";
@@ -65,7 +72,8 @@ if ($percentage >= 90) {
                     <div class="ms-3">
                         <h6 class="text-purple">You have scored - <b><?= $percentage ?>%</b></h6>
                         <div class="text-success">Correct: <?= $correctQuestions ?> </div>
-                        <div class="text-danger">Wrong: <?= ($totalQuestions - $correctQuestions) ?></div>
+                        <div class="text-danger">Wrong: <?= $wrongQuestions ?></div>
+                        <div class="text-danger">Not Attempted: <?= $notAttemptedQuestions ?></div>
                     </div>
 
                 </div>
@@ -75,15 +83,22 @@ if ($percentage >= 90) {
             <?php
             $k = 1;
             $correctQAs = [];
+            $notAttemptedQAs = [];
             foreach ($userExamInfo->exam->exam_questions as $row) {
                 $questionAnswer = $row->question->answer;
                 $selectedAnswer = '';
                 $isSelectedAnswerCorrect = false;
+                $isSelectedAnswerNotAttempted = false;
                 $questionOptions = $row->question->question_options;
 
                 if (isset($selectedQAs[$row->question->id]) && $selectedQAs[$row->question->id] == $questionAnswer) {
                     $isSelectedAnswerCorrect = true;
                     $correctQAs[$row->question->id] = $questionAnswer;
+                }
+
+                if (!isset($selectedQAs[$row->question->id])) {
+                    $isSelectedAnswerNotAttempted = true;
+                    $notAttemptedQAs[$row->question->id] = $row->question->id;
                 }
                 ?>
                 <div class="mb-3">
@@ -138,9 +153,11 @@ if ($percentage >= 90) {
                     ?>
                     <div class="fw-bold small">
                         <?=
-                        $isSelectedAnswerCorrect
-                            ? '<span class="text-success">Correct Answer</span>'
-                            : '<span class="text-danger">Wrong Answer</span>'
+                        $isSelectedAnswerNotAttempted
+                            ? '<span class="btn btn-warning btn-small py-0 disabled">Did not attempt</span>'
+                            : ($isSelectedAnswerCorrect
+                                ? '<span class="btn btn-success btn-small py-0 disabled">&check; Correct Answer</span>'
+                                : '<span class="btn btn-danger btn-small py-0 disabled">&#10005; Wrong Answer</span>')
                         ?>
                     </div>
                     <hr/>

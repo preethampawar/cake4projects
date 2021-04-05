@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Model\Table\CategoriesTable;
 use App\Model\Table\EducationLevelsTable;
+use App\Model\Table\ExamCategoriesTable;
+use App\Model\Table\QuestionOptionsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\SubjectsTable;
 use App\Model\Table\TagsTable;
@@ -22,6 +25,7 @@ class ExamsController extends AppController
         $this->loadComponent('Paginator');
         $exams = $this->Paginator->paginate(
             $this->Exams->find('all')
+                ->contain(['ExamCategories'])
                 ->where(['Exams.deleted' => 0]),
             [
                 'limit' => 50,
@@ -30,7 +34,12 @@ class ExamsController extends AppController
                 ]
             ]
         );
+
+        $this->loadModel(CategoriesTable::class);
+        $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
+
         $this->set(compact('exams'));
+        $this->set('categories', $categories);
     }
 
     public function view($id)
@@ -46,7 +55,8 @@ class ExamsController extends AppController
         $exam = $this->Exams->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            $error = $this->validateExam($this->request->getData());
+            $examData = $this->request->getData();
+            $error = $this->validateExam($examData);
 
             if ($error) {
                 $this->Flash->error(__($error));
@@ -54,9 +64,24 @@ class ExamsController extends AppController
                 return;
             }
 
-            $exam = $this->Exams->patchEntity($exam, $this->request->getData());
+            $exam = $this->Exams->patchEntity($exam, $examData);
 
             if ($examInfo = $this->Exams->save($exam)) {
+                $this->loadModel(ExamCategoriesTable::class);
+                $categoryIds = $examData['categories'];
+
+                if ($categoryIds) {
+                    foreach ($categoryIds as $categoryId) {
+                        $examCategory = $this->ExamCategories->newEmptyEntity();
+                        $data = [];
+                        $data['exam_id'] = $examInfo->id;
+                        $data['category_id'] = $categoryId;
+
+                        $examCategory = $this->ExamCategories->patchEntity($examCategory, $data);
+
+                        $this->ExamCategories->save($examCategory);
+                    }
+                }
 
                 $this->Flash->success(__('Your exam has been saved.'));
 
@@ -66,7 +91,11 @@ class ExamsController extends AppController
             $this->Flash->error(__('Unable to create new exam.'));
         }
 
+        $this->loadModel(CategoriesTable::class);
+        $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
+
         $this->set('exam', $exam);
+        $this->set('categories', $categories);
     }
 
     public function addQuestions($examId)
@@ -224,12 +253,30 @@ class ExamsController extends AppController
     {
         $exam = $this->Exams
             ->findById($id)
+            ->contain(['ExamCategories'])
             ->firstOrFail();
 
         if ($this->request->is(['post', 'put'])) {
-            $this->Exams->patchEntity($exam, $this->request->getData());
+            $examData = $this->request->getData();
+            $this->Exams->patchEntity($exam, $examData);
 
             if ($this->Exams->save($exam)) {
+                $this->Exams->ExamCategories->deleteAll(['exam_id' => $id]);
+                $categoryIds = $examData['categories'];
+
+                if ($categoryIds) {
+                    foreach ($categoryIds as $categoryId) {
+                        $examCategory = $this->Exams->ExamCategories->newEmptyEntity();
+                        $data = [];
+                        $data['exam_id'] = $id;
+                        $data['category_id'] = $categoryId;
+
+                        $examCategory = $this->Exams->ExamCategories->patchEntity($examCategory, $data);
+
+                        $this->Exams->ExamCategories->save($examCategory);
+                    }
+                }
+
                 $this->Flash->success(__('Exam details have been updated successfully.'));
 
                 return $this->redirect(['controller' => 'exams', 'action' => 'index']);
@@ -238,7 +285,11 @@ class ExamsController extends AppController
             $this->Flash->error(__('Unable to update your exam.'));
         }
 
+        $this->loadModel(CategoriesTable::class);
+        $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
+
         $this->set('exam', $exam);
+        $this->set('categories', $categories);
     }
 
     public function delete($id)

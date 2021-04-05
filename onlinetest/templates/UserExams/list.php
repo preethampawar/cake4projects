@@ -10,11 +10,51 @@ if ($this->request->getSession()->check('User.isAdmin')
 }
 ?>
 
+<?php
+$categoryList = null;
+foreach($categories as $category) {
+    $categoryList[$category->id] = (string)$category->name;
+}
+?>
+
 <?= $this->request->getSession()->check('User.id') ? $this->element('myTestsNav') : null; ?>
 
 <div class="mt-3 text-muted alert bg-aliceblue shadow border">
     Free online tests to practice for competitive and entrance exams. Prepare for your exam online with our many free
     tests.
+
+    <div class="mt-3">
+        <?php
+        if ($categoryList) {
+            if ($selectedCategoryId !== null) {
+                ?>
+                <a
+                    href="/UserExams/list/"
+                    class="btn btn-sm border py-0 me-1 mt-1 btn-ivory"
+                >Show All</a>
+                <?php
+            }
+            ?>
+
+            <?php
+            foreach($categoryList as $categoryId => $categoryName) {
+                $btnClass = 'btn-ivory';
+
+                if ($selectedCategoryId && $selectedCategoryId == $categoryId) {
+                    $btnClass = 'btn-orange';
+                }
+                ?>
+                <a
+                    href="/UserExams/list/<?= $categoryId ?>/<?= $categoryName ?>"
+                    class="btn btn-sm border py-0 me-1 mt-1 <?= $btnClass ?>"
+                >
+                    <?= $categoryName ?>
+                </a>
+                <?php
+            }
+        }
+        ?>
+    </div>
 </div>
 
 
@@ -56,7 +96,7 @@ if ($this->request->getSession()->check('User.isAdmin')
 
                     <div
                         title="Share Test <?= $exam->name ?>"
-                        class="border shadow px-2 py-0 rounded  bg-ivory small fw-bold text-secondary"
+                        class="border border-secondary shadow px-2 py-0 rounded  bg-light small fw-bold text-secondary"
                         type="button"
                         onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
                         Share
@@ -68,6 +108,24 @@ if ($this->request->getSession()->check('User.isAdmin')
                         >
                     </div>
                 </div>
+                <div class="mb-3">
+                    <?php
+                    if ($categoryList && $exam->exam_categories) {
+                        foreach($exam->exam_categories as $examCategory) {
+                            $categoryName = $categoryList[$examCategory->category_id];
+                            ?>
+                            <a
+                                href="/UserExams/list/<?= $examCategory->category_id ?>/<?= $categoryName ?>"
+                                class="btn btn-ivory btn-sm border py-0 me-1 mt-1"
+                            >
+                                <?= $categoryName ?>
+                            </a>
+                            <?php
+                        }
+                    }
+                    ?>
+                </div>
+
                 <!-- Modal -->
                 <div class="modal fade" id="modalExam<?= $exam->id ?>" tabindex="-1" aria-labelledby="modalExam<?= $exam->id ?>Label" aria-hidden="true">
                     <div class="modal-dialog">

@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Model\Table\CategoriesTable;
 use App\Model\Table\ExamsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\UserExamQuestionAnswersTable;
 use App\Model\Table\UserExamsTable;
+use Cake\ORM\Query;
 use DateTime;
 
 class UserExamsController extends AppController
@@ -348,16 +350,32 @@ class UserExamsController extends AppController
         $this->set(compact('userExams'));
     }
 
-    public function list()
+    public function list($categoryId = null)
     {
         $this->loadModel(ExamsTable::class);
         $this->loadComponent('Paginator');
 
-        $exams = $this->Exams->find('all')
-                ->where(['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')])
-                ->order('Exams.id desc')->all();
+        $conditions = ['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
+
+
+
+        $query = $this->Exams->find('all')->contain(['ExamCategories']);
+
+        if ($categoryId) {
+            $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId){
+                return $q->where(['ExamCategories.category_id' => $categoryId]);
+            });
+        }
+
+        $query = $query->where($conditions)->order('Exams.id desc');
+        $exams = $query->all();
+
+        $this->loadModel(CategoriesTable::class);
+        $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
 
         $this->set(compact('exams'));
+        $this->set('categories', $categories);
+        $this->set('selectedCategoryId', $categoryId);
     }
 
     public function select($examId)

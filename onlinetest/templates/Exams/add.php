@@ -8,6 +8,7 @@
 <h1>Add Exam</h1>
 
 <?php
+    $selectedCategory = null;
     echo $this->Form->create(null);
 ?>
 
@@ -59,10 +60,20 @@ echo $this->Form->hidden('end_date',
         'type' => 'datetime',
         'required' => true,
         'class' => 'form-control mb-3',
-        'default' => date('Y-m-d H:i:s', strtotime('+ 1 day'))
+        'default' => date('Y-m-d H:i:s', strtotime('+ 20 years'))
     ]);
 
 ?>
+
+<div class="mt-3">
+    <div class="">
+        <label>Categories</label>
+        <div id="categoriesDivAddQuestionForm">
+            <?= $this->element('categoriesDropDown', ['categories' => $categories, 'selected' => $selectedCategory]) ?>
+        </div>
+    </div>
+</div>
+
 
 <div class="my-4">
     <?= $this->Form->button(__('Create Exam'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
@@ -71,3 +82,14 @@ echo $this->Form->hidden('end_date',
 <?php
     echo $this->Form->end();
 ?>
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#categories').select2({
+        });
+    })
+</script>
