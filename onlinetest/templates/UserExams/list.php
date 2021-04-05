@@ -26,7 +26,7 @@ foreach($categories as $category) {
     <div class="mt-3">
         <?php
         if ($categoryList) {
-            if ($selectedCategoryId !== null) {
+            if ($selectedCategoryId != null) {
                 ?>
                 <a
                     href="/UserExams/list/"
