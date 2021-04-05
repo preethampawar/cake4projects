@@ -1,7 +1,7 @@
 <h1>Categories List</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/Categories/add">+ New Exam</a>
+    <a class="btn btn-primary btn-sm" href="/Categories/add">+ New Category</a>
 </div>
 
 <div>
