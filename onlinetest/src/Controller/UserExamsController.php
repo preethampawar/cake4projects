@@ -380,6 +380,23 @@ class UserExamsController extends AppController
 
     public function select($examId)
     {
+        $this->loadModel(ExamsTable::class);
+
+        if($this->request->getSession()->check('User.id')) {
+            return $this->redirect('/UserExams/view/' . $examId);
+        }
+
+        $examId = (int)base64_decode($examId);
+        $exam = $this->Exams->findById($examId)
+            ->contain(['ExamQuestions.Questions.QuestionOptions'])
+            ->firstOrFail();
+
+        $title = 'Select';
+        $this->set(compact('exam', 'title'));
+    }
+
+    public function initiate($examId)
+    {
         $this->request->getSession()->write('selectedExamId', $examId);
 
         if($this->request->getSession()->check('User.id')) {

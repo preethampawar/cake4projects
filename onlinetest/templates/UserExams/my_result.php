@@ -26,7 +26,7 @@ $totalQuestions = count($userExamInfo->exam->exam_questions);
 $correctQuestions = count($correctQAs);
 $notAttemptedQuestions = count($notAttemptedQAs);
 $wrongQuestions = $totalQuestions - $correctQuestions - $notAttemptedQuestions;
-$percentage = round($correctQuestions * 100 / $totalQuestions, 2);
+$percentage = ($totalQuestions > 0) ? round($correctQuestions * 100 / $totalQuestions, 2) : 0;
 
 $bgClass = "bg-danger";
 if ($percentage >= 90) {

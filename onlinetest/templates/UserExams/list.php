@@ -136,12 +136,24 @@ foreach($categories as $category) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="text-center">
+                                <div class="text-start">
                                     <h5><?= $exam->name ?></h5>
-                                    <hr>
+                                    <div>
+                                        <div class="d-flex justify-content-center bg-aliceblue py-2 rounded shadow">
+                                            <div class="me-2 text-underline text-primary">
+                                                <input
+                                                    type="text"
+                                                    id="copyExamLink<?= $exam->id ?>"
+                                                    value="<?= urldecode($fullUrl) ?>"
+                                                    class="form-control form-control-sm">
+                                            </div>
+                                            <div><button type="button" class="btn btn-md btn-orange py-0" onclick="copy.text('#copyExamLink<?= $exam->id ?>')">Copy Link</button></div>
+                                        </div>
+
+                                    </div>
                                 </div>
 
-                                <div class="text-center">
+                                <div class="text-center mt-3">
                                     <a
                                         href="#"
                                         class="btn btn-success btn-md w-50 mt-3"
@@ -166,12 +178,12 @@ foreach($categories as $category) {
                                         onclick="social.share('email', '<?= $fullUrl ?>', '<?= $title ?>')">
                                         Email
                                     </a>
-                                    <br><br>
+                                    <br>
                                 </div>
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>

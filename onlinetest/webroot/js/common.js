@@ -304,3 +304,12 @@ var social = {
     }
 }
 
+var copy = {
+    text: function copyToClipboard(element) {
+        let text = $(element).select();
+        if(document.execCommand("copy")) {
+            alert('Link copied')
+        }
+    }
+}
+

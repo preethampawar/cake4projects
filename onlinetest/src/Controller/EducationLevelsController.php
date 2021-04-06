@@ -10,6 +10,13 @@ class EducationLevelsController extends AppController
 
         $this->loadComponent('Paginator');
         $this->loadComponent('Flash'); // Include the FlashComponent
+
+        if ($this->request->getSession()->check('User.isAdmin')
+            && $this->request->getSession()->read('User.isAdmin') == false) {
+            $this->Flash->error('You are not authorized to access this page');
+            $this->redirect('/UserExams/list/');
+            return;
+        }
     }
 
     public function add()
