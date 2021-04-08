@@ -24,7 +24,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="/js/common.js"></script>
     </head>
-    <body>
+    <body class="">
         <?php
         $loggedIn = $this->getRequest()->getSession()->check('User.id');
         $isAdmin = (bool) $this->getRequest()->getSession()->read('User.isAdmin');
@@ -101,8 +101,8 @@
             </div>
         </nav>
 
-        <main class="main mb-5">
-            <div class="container py-4">
+        <main class="main my-md-5">
+            <div id="mainDiv" class="container py-md-5 py-3 rounded shadow bg-white min-vh-100 px-md-5" >
                 <?php
                 $message = $this->Flash->render();
 
@@ -118,9 +118,8 @@
 
                 <?= $this->fetch('content') ?>
             </div>
+            <footer class="d-print-none"></footer>
         </main>
-
-        <footer class="d-print-none"></footer>
 
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

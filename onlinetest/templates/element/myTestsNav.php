@@ -18,8 +18,8 @@ switch ($action) {
         break;
 }
 ?>
-<nav class="d-print-none mb-3">
-    <div class="nav nav-tabs nav-sm">
+<nav class="d-print-none mb-3 card-header">
+    <div class="nav nav-tabs card-header-tabs nav-sm">
         <a class="nav-link px-2 <?= $indexLinkClass ?>" href="/UserExams/">Online Exams</a>
         <a class="nav-link px-2 <?= $myTestsLinkClass ?>" href="/UserExams/myTests">Completed Tests</a>
     </div>

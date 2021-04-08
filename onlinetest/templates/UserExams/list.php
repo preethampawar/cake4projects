@@ -19,41 +19,53 @@ foreach($categories as $category) {
 
 <?= $this->request->getSession()->check('User.id') ? $this->element('myTestsNav') : null; ?>
 
-<div class="mt-3 text-muted alert bg-aliceblue shadow border">
-    Free online tests to practice for competitive and entrance exams. Prepare for your exam online with our many free
-    tests.
-
-    <div class="mt-3">
+<div class="mb-3">
+    <?php
+    if(!$this->request->getSession()->check('User.id')) {
+        ?>
+        <img src="/img/learning.jpg" class="card-img mb-4" alt="..." style="max-height: 400px">
         <?php
-        if ($categoryList) {
-            if ($selectedCategoryId != null) {
-                ?>
-                <a
-                    href="/UserExams/list/"
-                    class="btn btn-sm border py-0 me-1 mt-1 btn-ivory"
-                >Show All</a>
-                <?php
-            }
-            ?>
+    }
+    ?>
 
+    <div class="">
+        <h5 class="card-title">Free online tests to practice for competitive and entrance exams.</h5>
+
+        <div class="mt-3">
+            <p class="card-text"> Prepare for your exam online with our many free
+                tests.</p>
             <?php
-            foreach($categoryList as $categoryId => $categoryName) {
-                $btnClass = 'btn-ivory';
-
-                if ($selectedCategoryId && $selectedCategoryId == $categoryId) {
-                    $btnClass = 'btn-orange';
+            if ($categoryList) {
+                if ($selectedCategoryId != null) {
+                    ?>
+                    <a
+                        href="/UserExams/list/"
+                        class="btn btn-sm border py-0 me-1 mt-1 btn-ivory"
+                    >Show All</a>
+                    <?php
                 }
                 ?>
-                <a
-                    href="/UserExams/list/<?= $categoryId ?>/<?= $categoryName ?>"
-                    class="btn btn-sm border py-0 me-1 mt-1 <?= $btnClass ?>"
-                >
-                    <?= $categoryName ?>
-                </a>
+
                 <?php
+                foreach($categoryList as $categoryId => $categoryName) {
+                    $btnClass = 'btn-ivory';
+
+                    if ($selectedCategoryId && $selectedCategoryId == $categoryId) {
+                        $btnClass = 'btn-orange';
+                    }
+                    ?>
+                    <a
+                        href="/UserExams/list/<?= $categoryId ?>/<?= $categoryName ?>"
+                        class="btn btn-sm border py-0 me-1 mt-1 <?= $btnClass ?>"
+                    >
+                        <?= $categoryName ?>
+                    </a>
+                    <?php
+                }
             }
-        }
-        ?>
+            ?>
+        </div>
+
     </div>
 </div>
 
@@ -61,7 +73,7 @@ foreach($categories as $category) {
 <div class="alert shadow mt-3 border">
     <ul class="list-group list-group-flush">
         <li class="list-group-item px-0">
-            <h5>Total <?php echo count($exams) ?> test(s)</h5>
+            <h5><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </h5>
         </li>
         <?php
         $k = 0;
@@ -78,7 +90,7 @@ foreach($categories as $category) {
             <li class="list-group-item px-0">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                        <span><?= $k ?>. </span>
+                        <span class=""><?= $k ?>.</span>
                         <div class="">
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
                                class="ms-1">
@@ -88,25 +100,22 @@ foreach($categories as $category) {
 
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <div class="text-muted">
-                        (<?= $exam->time ?> mins)
-                    </div>
-
+                    <div>
                     <div
                         title="Share Test <?= $exam->name ?>"
-                        class="border border-secondary shadow px-2 py-0 rounded  bg-light small fw-bold text-secondary"
+                        class="btn btn-orange btn-sm py-0"
                         type="button"
                         onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
                         Share
-                        <img
-                            src="/img/share2.png"
-                            style="width: 15px;"
-                            class=""
-                            type="button"
-                        >
                     </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 pt-1">
+                    <span class="btn btn-aliceblue border btn-sm py-0">
+                        <?= $exam->time ?> mins
+                    </span>
+
+
                 </div>
                 <div class="mb-3">
                     <?php

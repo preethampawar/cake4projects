@@ -125,3 +125,9 @@
     opacity: 0.4;
 }
 
+body {
+    background: url("/img/edu_poster2.jpg") repeat center center fixed;
+    background-size: contain;
+    height: 100%;
+    width: 100%;
+}

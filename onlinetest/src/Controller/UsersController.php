@@ -227,7 +227,6 @@ class UsersController extends AppController
 
             $this->Flash->error(__('User not found.'));
 
-            return;
         }
 
         $examDetails = null;
