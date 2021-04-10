@@ -15,20 +15,25 @@
 <h1><?= $exam->name ?></h1>
 
 <p class="mt-2 small">
-    Duration: <?= $exam->time ?> mins &nbsp;|&nbsp;
+    Total Questions: <span class="selectedQuestionsSpan">0</span>
+    <br>
+    Duration: <?= $exam->time ?> mins
+    <!--
+    &nbsp;|&nbsp;
     Start Date: <?= $exam->start_date->format('d/m/Y h:i A') ?> &nbsp;|&nbsp;
     End Date: <?= $exam->end_date->format('d/m/Y h:i A') ?>
+    -->
 </p>
 
 <hr>
 <div class="text-end mt-3">
-    <a class="btn btn-info btn-sm py-0" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
+    <a class="btn btn-purple btn-sm py-0" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
 </div>
 <div id="FilterQuestionBank" class="alert alert-secondary bg-light d-none mt-3">
     <?= $this->Form->create(null, ['method' => 'get']) ?>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-md-4 mb-3">
             <div id="subjectDivAddQuestionForm">
                 <div class="">
                     <label>Subjects</label>
@@ -44,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-md-4 mb-3">
             <div class="">
                 <label>Education</label>
                 <div id="educationLevelDivAddQuestionForm">
@@ -57,11 +62,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-md-4 mb-3">
             <div class="">
+                <label>Difficulty</label>
                 <?php
                 echo $this->Form->control('difficulty_level', [
                     'type' => 'select',
+                    'label' => false,
                     'class' => 'form-control form-control-sm',
                     'options' => [
                         '1' => 'Easy',
@@ -75,7 +82,16 @@
                 ?>
             </div>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="">
+                <label>Tags</label>
+                <div id="tagsDivAddQuestionForm">
+                    <?= $this->element('tagsDropDown', ['tags' => $tags, 'selected' => $selectedTags]) ?>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="mt-3 text-start">
         <button type="submit" class="btn btn-sm btn-primary">Filter Question Bank</button>
@@ -84,23 +100,10 @@
 </div>
 
 
-<div class="row mt-2">
+<div class="row mt-3">
 
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header fw-bold">
-                Selected questions for Exam
-            </div>
-            <div class="card-body">
-                <div class="" id="examSelectedQuestions" style="height: 300px; overflow: auto;">
-                    Click "Add" button on the right pane to add questions
-                </div>
-            </div>
-        </div>
 
-    </div>
-
-    <div class="col-6">
+    <div class="col-sm-6 mb-4">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <div class="fw-bold">Question Bank</div>
@@ -135,7 +138,7 @@
                                 <td>
                                     <?= $question->name ?>
                                 </td>
-                                <td class="text-center">
+                                <td class="text-end">
                                     <button
                                         id = "addQuestionButton<?= $question->id ?>"
                                         class="btn btn-sm btn-primary py-0"
@@ -164,6 +167,20 @@
             </div>
 
         </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-header fw-bold">
+                Selected - <span class="selectedQuestionsSpan">0</span>
+            </div>
+            <div class="card-body">
+                <div class="" id="examSelectedQuestions" style="height: 300px; overflow: auto;">
+                    Click "Add" button on the left pane to add questions
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
@@ -200,6 +217,9 @@ echo $this->Form->end();
             placeholder: '-',
         });
         $('#difficulty-level').select2({
+            placeholder: '-',
+        });
+        $('#tags').select2({
             placeholder: '-',
         });
     })

@@ -1,12 +1,14 @@
 
 
 <div class="row">
-    <div class="col-sm-9 col-md-7 col-lg-6 col-xl-5 mx-auto">
-
+    <div class="">
+        <h1>Login</h1>
+        <hr>
         <?php
         if ($examDetails) {
             ?>
-            <div class="alert shadow bg-aliceblue border mb-4">
+
+            <div class="mb-4 mt-3 mb-3">
                 <div>You need to login to attend this online test</div>
                 <h5><?= $examDetails->name ?></h5>
                 <div class="mt-3">Register yourself if you don't have an account. It's easy.</div>
@@ -15,7 +17,7 @@
         }
         ?>
 
-        <div class="alert shadow bg-light border">
+        <div class="mt-4 alert shadow bg-light border">
             <div class="mt-3">
                 <?php
                 echo $this->Form->create(null, ['class' => 'needs-validation', 'novalidate']);
@@ -51,7 +53,7 @@
                 </div>
 
                 <div class="mt-4 mb-3">
-                    <?= $this->Form->button(__('Login'), ['class' => 'btn btn-md btn-primary w-100']) ?>
+                    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-md btn-primary']) ?>
                 </div>
 
                 <?php
@@ -59,7 +61,7 @@
                 ?>
             </div>
         </div>
-        <div class="alert shadow bg-aliceblue border text-center">
+        <div class="mt-4 alert shadow bg-aliceblue border text-center">
             Don't have an account? <br>
             <a href="/users/register" class="mt-2 btn btn-orange">Click here to register</a>
         </div>

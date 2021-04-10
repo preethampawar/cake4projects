@@ -23,7 +23,7 @@ foreach($categories as $category) {
     <?php
     if(!$this->request->getSession()->check('User.id')) {
         ?>
-        <img src="/img/learning.jpg" class="card-img mb-4" alt="..." style="max-height: 400px">
+        <img src="/img/learning.jpg" class="w-100 mb-4" alt="..." style="max-height: 500px">
         <?php
     }
     ?>
@@ -69,12 +69,12 @@ foreach($categories as $category) {
     </div>
 </div>
 
-
-<div class="alert shadow mt-3 border">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item px-0">
-            <h5><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </h5>
-        </li>
+<hr>
+<div class="mt-3">
+    <div class="">
+        <div class="px-2 py-2 mb-3 rounded bg-purple">
+            <div class="fs-5"><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </div>
+        </div>
         <?php
         $k = 0;
         foreach ($exams as $exam):
@@ -87,17 +87,15 @@ foreach($categories as $category) {
             $fullUrl = urlencode($fullUrl);
             $title = urlencode($exam->name);
             ?>
-            <li class="list-group-item px-0">
+            <div class="bg-light p-2 mb-3 rounded">
                 <div class="d-flex justify-content-between">
                     <div class="d-flex">
-                        <span class=""><?= $k ?>.</span>
+                        <span class="text-muted"><?= $k ?>.</span>
                         <div class="">
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                               class="ms-1">
+                               class="ms-1 fw-bold text-purple">
                                 <?= $exam->name ?>
                             </a>
-
-
                         </div>
                     </div>
                     <div>
@@ -111,13 +109,14 @@ foreach($categories as $category) {
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mb-1 pt-1">
-                    <span class="btn btn-aliceblue border btn-sm py-0">
+                    <span class="text-muted small">
+                        <?= count($exam->exam_questions) ?> questions,
+
                         <?= $exam->time ?> mins
                     </span>
 
-
                 </div>
-                <div class="mb-3">
+                <div class="mb-0">
                     <?php
                     if ($categoryList && $exam->exam_categories) {
                         foreach($exam->exam_categories as $examCategory) {
@@ -198,7 +197,7 @@ foreach($categories as $category) {
                     </div>
                 </div>
 
-            </li>
+            </div>
 
         <?php
         endforeach;

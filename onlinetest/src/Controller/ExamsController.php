@@ -32,7 +32,7 @@ class ExamsController extends AppController
         $this->loadComponent('Paginator');
         $exams = $this->Paginator->paginate(
             $this->Exams->find('all')
-                ->contain(['ExamCategories'])
+                ->contain(['ExamCategories', 'ExamQuestions'])
                 ->where(['Exams.deleted' => 0]),
             [
                 'limit' => 50,
@@ -111,6 +111,7 @@ class ExamsController extends AppController
         $selectedSubject = null;
         $selectedEducationLevel = null;
         $selectedDifficultyLevel = null;
+        $selectedTags = null;
 
         if (isset($params['subject']) and !empty($params['subject'])) {
             $selectedSubject = $params['subject'];
@@ -120,6 +121,9 @@ class ExamsController extends AppController
         }
         if (isset($params['difficulty_level']) and !empty($params['difficulty_level'])) {
             $selectedDifficultyLevel = $params['difficulty_level'];
+        }
+        if (isset($params['tags']) and !empty($params['tags'])) {
+            $selectedTags = $params['tags'];
         }
 
         $this->loadModel(QuestionsTable::class);
@@ -138,6 +142,15 @@ class ExamsController extends AppController
         if ($selectedDifficultyLevel) {
             $query->andWhere(['Questions.difficulty_level in' => $selectedDifficultyLevel]);
         }
+        if ($selectedTags) {
+            $likeTags = [];
+
+            foreach ($selectedTags as $tag) {
+                $likeTags[] = ['Questions.tags like ' => "%$tag%"];
+            }
+
+            $query->andWhere(['OR' => $likeTags]);
+        }
 
         $questions = $this->Paginator->paginate(
             $query,
@@ -155,14 +168,18 @@ class ExamsController extends AppController
 
         $this->loadModel(SubjectsTable::class);
         $this->loadModel(EducationLevelsTable::class);
+        $this->loadModel(TagsTable::class);
 
         $subjects = $this->Subjects->find('all')->select(['Subjects.name'])->order('name asc')->all();
         $educationLevels = $this->EducationLevels->find('all')->select(['EducationLevels.name'])->order('name asc')->all();
+        $tags = $this->Tags->find('all')->select(['Tags.name'])->order('name asc')->all();
 
         $this->set('subjects', $subjects);
         $this->set('selectedSubject', $selectedSubject);
         $this->set('educationLevels', $educationLevels);
         $this->set('selectedEducationLevel', $selectedEducationLevel);
+        $this->set('tags', $tags);
+        $this->set('selectedTags', $selectedTags);
         $this->set('selectedDifficultyLevel', $selectedDifficultyLevel);
 
         $this->set(compact('questions'));

@@ -43,7 +43,7 @@ foreach($categories as $category) {
         <tr>
             <th>#</th>
             <th>Exam Name</th>
-            <th>Actions</th>
+            <th></th>
         </tr>
         </thead>
 
@@ -61,7 +61,17 @@ foreach($categories as $category) {
                     <?= $k ?>.
                 </td>
                 <td>
-                    <div class=""><?= $exam->name ?></div>
+                    <div class="">
+                        <a href="/exams/edit/<?= $exam->id ?>" title="Edit Exam details" class="">
+                            <?= $exam->name ?>
+                        </a>
+                        <div class="">
+                            <span class="text-muted small">
+                                <?= count($exam->exam_questions) ?> questions,
+                                <?= $exam->time ?> mins
+                            </span>
+                        </div>
+                    </div>
 
                     <div class="mb-3">
                         <?php
@@ -69,25 +79,27 @@ foreach($categories as $category) {
                             foreach($exam->exam_categories as $examCategory) {
                                 $categoryName = $categoryList[$examCategory->category_id];
                                 ?>
-                                <button class="btn btn-ivory btn-sm border disabled py-0 me-1 mt-1"><?= $categoryName ?></button>
+                                <button class="btn btn-ivory btn-sm border py-0 me-1 mt-1 active"><?= $categoryName ?></button>
                                 <?php
                             }
                         }
                         ?>
                     </div>
                 </td>
-                <td>
-                    <a href="/exams/view/<?= $exam->id ?>" title="Show details" class="">Preview</a>
-                    &nbsp;|&nbsp;
-                    <a href="/exams/addQuestions/<?= $exam->id ?>" title="Add or Remove Questions" class="">Add/Remove Questions</a>
-                    &nbsp;|&nbsp;
-                    <a href="/exams/edit/<?= $exam->id ?>" title="Edit Exam details" class="">Edit Exam Details</a>
-                    &nbsp;|&nbsp;
+                <td class="text-end">
+                    <a href="/exams/view/<?= $exam->id ?>" title="Show details" class="btn btn-purple btn-sm py-0">Preview</a>
+
+                    <a href="/exams/addQuestions/<?= $exam->id ?>" title="Add or Remove Questions" class="btn btn-primary btn-sm py-0 ms-2">Add Questions</a>
+
                     <?php
                     echo $this->Html->link(
-                        'Delete',
+                        'X',
                         ['controller' => 'Exams', 'action' => 'delete', $exam->id],
-                        ['confirm' => 'E.ID.' . $exam->id . '. Are you sure you want to delete this exam?']
+                        [
+                            'confirm' => 'Are you sure you want to delete this exam?',
+                            'class' => 'btn btn-danger btn-sm py-0 ms-2',
+                            'title' => $exam->name
+                        ]
                     );
                     ?>
                 </td>

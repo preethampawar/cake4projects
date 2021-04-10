@@ -56,8 +56,8 @@
                 <td>
                     <?= $category->active == 1 ? '<span class="">'.$category->name.'</span>' : '<span class="text-danger">'.$category->name.'</span>' ?>
                 </td>
-                <td>
-                    <a href="/Categories/edit/<?= $category->id ?>" title="Edit Category details" class="btn btn-sm btn-secondary py-0">Edit</a>
+                <td class="text-end">
+                    <a href="/Categories/edit/<?= $category->id ?>" title="Edit Category details" class="btn btn-sm btn-primary py-0">Edit</a>
 
                     <?php
                     echo $this->Html->link('X',

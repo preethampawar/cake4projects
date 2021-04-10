@@ -333,11 +333,20 @@ class UserExamsController extends AppController
         $this->loadModel(ExamsTable::class);
         $this->loadModel(UserExamsTable::class);
         $this->loadComponent('Paginator');
+        $this->loadModel(UserExamQuestionAnswersTable::class);
 
         $userExams = $this->Paginator->paginate(
             $userExamInfo = $this->UserExams->find('all')
                 ->where(['UserExams.user_id' => $loggedInUserId])
-                ->contain(['Exams']),
+                ->contain([
+                    'Exams' => [
+                        'ExamQuestions' => [
+                            'Questions' => [
+                                'QuestionOptions'
+                            ]
+                        ]
+                    ]
+                ]),
             [
                 'limit' => '50',
                 'order' => [
@@ -347,7 +356,9 @@ class UserExamsController extends AppController
 
         );
 
-        $this->set(compact('userExams'));
+        $userExamQuestionAnswersModel = $this->UserExamQuestionAnswers;
+
+        $this->set(compact('userExams', 'userExamQuestionAnswersModel'));
     }
 
     public function list($categoryId = null)
@@ -356,10 +367,7 @@ class UserExamsController extends AppController
         $this->loadComponent('Paginator');
 
         $conditions = ['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
-
-
-
-        $query = $this->Exams->find('all')->contain(['ExamCategories']);
+        $query = $this->Exams->find('all')->contain(['ExamCategories', 'ExamQuestions']);
 
         if ($categoryId) {
             $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId){

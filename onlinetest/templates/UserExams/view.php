@@ -7,7 +7,7 @@
     <?php
     echo $exam->exam_questions ? count($exam->exam_questions) : 0;
     ?>
-    &nbsp;|&nbsp;
+    <br>
     Duration: <?= $exam->time ?> mins
 </p>
 
@@ -62,7 +62,7 @@ if ($userExamInfo) {
 ?>
 <div class="row d-print-none mt-4">
     <div class="text-center">
-        <a class="btn btn-danger" href="/UserExams/">Cancel</a>
+        <a class="btn btn-danger btn-sm" href="/UserExams/">Cancel</a>
     </div>
 </div>
 

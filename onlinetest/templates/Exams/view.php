@@ -21,9 +21,14 @@
 <h1><?= $exam->name ?></h1>
 
 <p class="mt-2 small">
-    Duration: <?= $exam->time ?> mins &nbsp;|&nbsp;
+    Total Questions: <?= $exam->exam_questions ? count($exam->exam_questions) : 0 ?>
+    <br>
+    Duration: <?= $exam->time ?> mins
+    <!--
+    &nbsp;|&nbsp;
     Start Date: <?= $exam->start_date->format('d/m/Y h:i A') ?> &nbsp;|&nbsp;
     End Date: <?= $exam->end_date->format('d/m/Y h:i A') ?>
+    -->
 </p>
 
 <hr>
@@ -32,7 +37,7 @@
     <table class="table table-hover table-sm mb-3">
         <thead>
         <tr>
-            <th>#</th>
+            <th style="width: 25px;">#</th>
             <th>Question</th>
         </tr>
         </thead>

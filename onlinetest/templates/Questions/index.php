@@ -2,15 +2,15 @@
 
 
 <div class="text-end mt-3">
-    <a class="btn btn-info btn-sm" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
-    <a class="btn btn-primary btn-sm ms-3" href="/questions/add">+ Add New Question</a>
+    <a class="btn btn-purple btn-sm" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
+    <a class="btn btn-primary btn-sm ms-3" href="/questions/add">Add Question</a>
 </div>
 
 <div id="FilterQuestionBank" class="alert alert-secondary bg-light mt-3 d-none">
     <?= $this->Form->create(null, ['method' => 'get']) ?>
 
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-md-4 mb-3">
             <div id="subjectDivAddQuestionForm">
                 <div class="">
                     <label>Subjects</label>
@@ -19,14 +19,14 @@
                             'subjects' => $subjects,
                             'selectedSubject' => $selectedSubject,
                             'empty' => true,
-                            'multiple' => true
+                            'multiple' => true,
                         ])
                         ?>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-md-4 mb-3">
             <div class="">
                 <label>Education</label>
                 <div id="educationLevelDivAddQuestionForm">
@@ -39,9 +39,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-4 col-md-4 mb-3">
             <div class="">
-                <label>Difficulty Level</label>
+                <label>Difficulty</label>
                 <?php
                 echo $this->Form->control('difficulty_level', [
                     'label' => false,
@@ -59,7 +59,16 @@
                 ?>
             </div>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="">
+                <label>Tags</label>
+                <div id="tagsDivAddQuestionForm">
+                    <?= $this->element('tagsDropDown', ['tags' => $tags, 'selected' => $selectedTags]) ?>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="mt-3 text-start">
         <button type="submit" class="btn btn-sm btn-primary">Filter Question Bank</button>
@@ -153,10 +162,10 @@
                         }
                         ?>
                     </div>
-                    <div class="mt-2 mb-3">
-                        <?= $question->subject != '' ? '<span class="bg-orange me-1 px-1 border">'.$question->subject.'</span>' : null ?>
+                    <div class="mt-2 mb-3 small">
+                        <?= $question->subject != '' ? '<span class="bg-orange me-1 px-1 rounded pb-1">'.$question->subject.'</span>' : null ?>
 
-                        <?= $question->level != '' ? '<span class="bg-purple me-1 px-1 border">'.$question->level.'</span>' : null ?>
+                        <?= $question->level != '' ? '<span class="bg-purple me-1 px-1 rounded pb-1">'.$question->level.'</span>' : null ?>
 
                         <?php
                         $difficulty = null;
@@ -172,19 +181,19 @@
                                 break;
                         }
                         ?>
-                        <?= $difficulty ? '<span class="bg-aliceblue me-1 px-1 border">'.$difficulty.'</span>' : null ?>
+                        <?= $difficulty ? '<span class="bg-maroon me-1 px-1 rounded pb-1">'.$difficulty.'</span>' : null ?>
 
                         <?php
                         if(!empty($question->tags)) {
                             ?>
 
-                            <div class="mt-1">
+                            <div class="mt-3">
                             <b>Tags: </b>
                             <?php
                             $tags = explode(',', $question->tags);
                             foreach($tags as $tag) {
                                 ?>
-                                <span class="bg-light me-1 px-1 border">
+                                <span class="bg-ivory me-1 px-1 border rounded pb-1">
                                     <?= $tag ?>
                                 </span>
                                 <?php
@@ -199,11 +208,11 @@
                 <td class="pt-2">
                     <?php
                     echo $this->Html->link(
-                        'Delete',
+                        'X',
                         ['controller' => 'Questions', 'action' => 'delete', $question->id],
                         [
                             'confirm' => 'Are you sure you want to delete this question?',
-                            'class' => 'btn btn-danger btn-sm'
+                            'class' => 'btn btn-danger btn-sm py-0'
                         ]
                     );
                     ?>
@@ -242,6 +251,9 @@
             placeholder: '-',
         });
         $('#difficulty-level').select2({
+            placeholder: '-',
+        });
+        $('#tags').select2({
             placeholder: '-',
         });
     })

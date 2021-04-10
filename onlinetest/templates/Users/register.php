@@ -1,14 +1,15 @@
 <h1>Register</h1>
-<h6 class="text-muted">It's quick and easy.</h6>
 <hr>
+<div class="text-muted">Create your account. It's quick and easy.</div>
+
 <?php
     echo $this->Form->create(null, ['class' => 'needs-validation', 'novalidate']);
 ?>
 
 
-<div class="">
+<div class="mt-4">
     <div class="alert bg-light border shadow">
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-sm-6">
                 <div class="mb-3">
                     <?php
@@ -125,17 +126,18 @@
                 ?>
             </div>
         </div>
-        <div class="row mt-3 mb-4">
-            <div class="col-12 text-center">
+        <div class="row mt-2 mb-3">
+            <div class="col-12">
                 <div class="">
                     <?= $this->Form->button(__('Create Account'), ['class' => 'btn btn-primary']) ?>
                 </div>
             </div>
         </div>
-        <hr>
-        <div class="mt-4 text-center">
-            <a href="/users/login" class='btn-orange btn'>Cancel</a>
-        </div>
+
+
+    </div>
+    <div class="mt-5 text-center">
+        <a href="/users/login" class='btn-orange btn'>Cancel</a>
     </div>
 </div>
 

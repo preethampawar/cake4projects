@@ -24,7 +24,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="/js/common.js"></script>
     </head>
-    <body class="">
+    <body class="bg-dark">
         <?php
         $loggedIn = $this->getRequest()->getSession()->check('User.id');
         $isAdmin = (bool) $this->getRequest()->getSession()->read('User.isAdmin');
@@ -54,7 +54,7 @@
             $navBarClass = 'd-none';
         }
         ?>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-purple d-print-none <?= $navBarClass ?>">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-purple d-print-none bg-gradient <?= $navBarClass ?>">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Online Tests</a>
 
@@ -64,10 +64,10 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
+                        <a class="nav-link <?= $homeLinkActive?>" aria-current="page" href="/">Home</a>
                         <?php
                         if ($loggedIn) {
                             ?>
-                            <a class="nav-link <?= $homeLinkActive?>" aria-current="page" href="/">Home</a>
 
                             <?php
                             if($isAdmin) {
@@ -101,8 +101,8 @@
             </div>
         </nav>
 
-        <main class="main my-md-5">
-            <div id="mainDiv" class="container py-md-5 py-3 rounded shadow bg-white min-vh-100 px-md-5" >
+        <main class="main">
+            <div id="mainDiv" class="container my-md-5 bg-white pt-3 pb-5 rounded">
                 <?php
                 $message = $this->Flash->render();
 
