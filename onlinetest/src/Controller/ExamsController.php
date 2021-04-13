@@ -155,7 +155,7 @@ class ExamsController extends AppController
         $questions = $this->Paginator->paginate(
             $query,
             [
-                'limit' => 50,
+                'limit' => 1000,
                 'order' => [
                     'Questions.id' => 'desc'
                 ]
