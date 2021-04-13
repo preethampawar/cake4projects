@@ -7,6 +7,8 @@ use App\Model\Table\ExamsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\UserExamQuestionAnswersTable;
 use App\Model\Table\UserExamsTable;
+use App\Model\Table\UsersTable;
+use Cake\Datasource\ConnectionManager;
 use Cake\ORM\Query;
 use DateTime;
 
@@ -115,6 +117,20 @@ class UserExamsController extends AppController
         return (int)$minutes;
     }
 
+    public function newTest($encodedExamId)
+    {
+        $examId = (int)base64_decode($encodedExamId);
+        $userId = $this->request->getSession()->read('User.id');
+
+        $this->loadModel(UserExamsTable::class);
+        $this->loadModel(UserExamQuestionAnswersTable::class);
+
+        $this->UserExams->deleteAll(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
+        $this->UserExamQuestionAnswers->deleteAll(['UserExamQuestionAnswers.user_id' => $userId, 'UserExamQuestionAnswers.exam_id' => $examId]);
+
+        $this->redirect('/UserExams/startTest/'.$encodedExamId);
+    }
+
     public function startTest($examId)
     {
         $examId = (int)base64_decode($examId);
@@ -217,6 +233,8 @@ class UserExamsController extends AppController
         $userExamQuestionAnswer['user_exam_id'] = base64_decode($data['userExamId']);
         $userExamQuestionAnswer['question_id'] = base64_decode($data['examQuestionId']);
         $userExamQuestionAnswer['answer'] = $data['selectedOption'];
+        $userExamQuestionAnswer['exam_id'] = base64_decode($data['examId']);
+        $userExamQuestionAnswer['user_id'] = $this->request->getSession()->read('User.id');
 
         $this->loadModel(UserExamQuestionAnswersTable::class);
         $userExamQA = $this->UserExamQuestionAnswers->find('all')
@@ -412,5 +430,236 @@ class UserExamsController extends AppController
         }
 
         return $this->redirect('/Users/login');
+    }
+
+    public function users()
+    {
+        $this->allowAdmin();
+
+        $userIds = [];
+
+        $this->loadModel(UsersTable::class);
+        $this->loadComponent('Paginator');
+
+        $users = $this->Paginator->paginate(
+            $this->Users->find('all')
+                ->where(['Users.deleted' => 0, 'Users.is_admin ' => 0]),
+            [
+                'limit' => '50',
+                'order' => [
+                    'Users.name' => 'asc'
+                ]
+            ]
+        );
+
+        $userIds = [];
+        foreach($users as $user) {
+            $userIds[] = $user->id;
+        }
+
+        $stats = $this->basicStats($userIds);
+
+        $this->set(compact('users', 'stats'));
+    }
+
+    public function userAttendedExams($userId, $examId = null)
+    {
+        $this->allowAdmin();
+
+        $stats = $this->allStats($userId);
+        $this->set(compact('stats'));
+    }
+
+    public function details($userId, $examId = null)
+    {
+        $this->allowAdmin();
+
+        $stats = $this->allStats($userId);
+        $this->set(compact('stats'));
+    }
+
+    public function allStats($userIds = null, $params = [])
+    {
+        if ($userIds != null && !is_array($userIds)) {
+            $userIds = [$userIds];
+        }
+
+        $query = $this->getAllStatsQuery($userIds);
+
+
+        $results = $this->query($query);
+
+        $formattedResults = [];
+        if ($results) {
+            foreach ($results as $row) {
+                $formattedResults[$row['user_id']]['id'] = $row['user_id'];
+                $formattedResults[$row['user_id']]['name'] = $row['name'];
+                $formattedResults[$row['user_id']]['username'] = $row['username'];
+                $formattedResults[$row['user_id']]['phone'] = $row['phone'];
+                $formattedResults[$row['user_id']]['email'] = $row['email'];
+
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['id'] = $row['exam_id'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['name'] = $row['exam_name'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['duration'] = $row['duration'];
+
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['id']  = $row['ue_id'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['created']  = $row['ue_created'];
+
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['Questions'][$row['question_id']]['id']  = $row['question_id'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['Questions'][$row['question_id']]['name']  = $row['question_name'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['Questions'][$row['question_id']]['options']  = $row['question_options'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['Questions'][$row['question_id']]['default_answer']  = $row['question_answer'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['Questions'][$row['question_id']]['selected_answer']  = $row['selected_answer'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['Questions'][$row['question_id']]['selected_answer_status']  = $row['answer_status'];
+
+            }
+
+            foreach($formattedResults as &$user) {
+                $user['exams_attended'] = isset($user['Exams']) ? count($user['Exams']) : 0;
+
+                foreach($user['Exams'] as &$exam) {
+                    $exam['attempts'] = 0;
+                    if (isset($exam['UserExams'])) {
+                        $attempts = isset($exam['UserExams']) ? count($exam['UserExams']) : 0;
+                        $exam['attempts'] = $attempts;
+
+                        foreach($exam['UserExams'] as &$userExam) {
+
+                            if (isset($userExam['Questions'])) {
+                                $exam['total_questions'] = $userExam['total_questions'] = count($userExam['Questions']);
+
+                                $correct = 0;
+                                $wrong = 0;
+                                $not_attempted = 0;
+                                foreach($userExam['Questions'] as $question) {
+                                    switch($question['selected_answer_status']) {
+                                        case '0':
+                                            $wrong++;
+                                            break;
+                                        case '1':
+                                            $correct++;
+                                            break;
+                                        default:
+                                            $not_attempted++;
+                                            break;
+                                    }
+                                }
+
+                                $userExam['correct'] = $correct;
+                                $userExam['wrong'] = $wrong;
+                                $userExam['not_attempted'] = $not_attempted;
+                                $percent = $userExam['total_questions'] > 0 ? (($correct*100) / $userExam['total_questions']) : 0;
+                                $userExam['score_percentage'] = round($percent, 2);
+
+                            }
+
+                        }
+
+                    }
+
+
+
+                }
+
+            }
+        }
+
+        return $formattedResults;
+    }
+
+    public function basicStats($userIds = null, $params = [])
+    {
+        if ($userIds != null && !is_array($userIds)) {
+            $userIds = [$userIds];
+        }
+
+        $query = $this->getBasicStatsQuery($userIds);
+        $results = $this->query($query);
+
+        $formattedResults = [];
+
+        if ($results) {
+            foreach ($results as $row) {
+                $formattedResults[$row['user_id']]['id'] = $row['user_id'];
+                $formattedResults[$row['user_id']]['name'] = $row['name'];
+                $formattedResults[$row['user_id']]['username'] = $row['username'];
+                $formattedResults[$row['user_id']]['phone'] = $row['phone'];
+                $formattedResults[$row['user_id']]['email'] = $row['email'];
+
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['id'] = $row['exam_id'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['name'] = $row['exam_name'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['duration'] = $row['duration'];
+
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['id']  = $row['ue_id'];
+                $formattedResults[$row['user_id']]['Exams'][$row['exam_id']]['UserExams'][$row['ue_id']]['created']  = $row['ue_created'];
+            }
+
+            foreach($formattedResults as &$user) {
+                $user['exams_attended'] = isset($user['Exams']) ? count($user['Exams']) : 0;
+
+                foreach($user['Exams'] as &$exam) {
+                    $exam['attempts'] = 0;
+                    if (isset($exam['UserExams'])) {
+                        $attempts = isset($exam['UserExams']) ? count($exam['UserExams']) : 0;
+                        $exam['attempts'] = $attempts;
+                    }
+                }
+
+            }
+        }
+
+        return $formattedResults;
+    }
+
+    public function getAllStatsQuery($userIds=[])
+    {
+        $userIdsCondition = '';
+        if ($userIds) {
+            $userIdsCondition = sprintf(' and u.id IN (%s) ', implode(',', $userIds));
+        }
+
+        return "
+            select
+                u.id user_id, u.name, u.username, u.phone, u.email,
+                ue.id ue_id, ue.created ue_created,
+                e.id exam_id, e.name exam_name, e.time duration,
+                eq.id eq_id,
+                q.id question_id, q.name question_name, q.answer question_answer,
+                group_concat(qo.name) question_options,
+                ueqa.id ueqa_id, ueqa.answer selected_answer,
+                if(isnull(ueqa.answer), '-1', (if(q.answer = ueqa.answer, '1', '0'))) answer_status
+            from users u
+                left join user_exams ue on ue.user_id = u.id
+                left join exams e on e.id = ue.exam_id
+                left join exam_questions eq on eq.exam_id = e.id
+                left join questions q on q.id = eq.question_id
+                left join question_options qo on qo.question_id = q.id
+                left join user_exam_question_answers ueqa on (ueqa.user_exam_id = ue.id and ueqa.question_id = q.id)
+            where u.is_admin = 0 and ue.cancelled = 0 " . $userIdsCondition . "
+            group by u.id, e.id, ue.id, q.id
+            order by user_id desc, ue.created desc, eq.id asc, qo.sort asc
+        ";
+    }
+
+    public function getBasicStatsQuery($userIds=[])
+    {
+        $userIdsCondition = '';
+        if ($userIds) {
+            $userIdsCondition = sprintf(' and u.id IN (%s) ', implode(',', $userIds));
+        }
+
+        return "
+            select
+                u.id user_id, u.name, u.username, u.phone, u.email,
+                ue.id ue_id, ue.created ue_created,
+                e.id exam_id, e.name exam_name, e.time duration
+
+            from users u
+                left join user_exams ue on ue.user_id = u.id
+                left join exams e on e.id = ue.exam_id
+            where u.is_admin = 0 and ue.cancelled = 0 " . $userIdsCondition . "
+            group by u.id, e.id, ue.id
+            order by u.id desc
+        ";
     }
 }

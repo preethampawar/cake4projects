@@ -16,7 +16,7 @@ if ($questionOptions) {
 
         <div
             id="examQuestion-<?= $questionId ?>-<?= ($i+1) ?>"
-            class="ms-3 small examQuestion-<?= $questionId ?> examQuestion-<?= $questionId ?>-<?= ($i+1) ?> <?= $class ?>"
+            class="ms-3 examQuestion-<?= $questionId ?> examQuestion-<?= $questionId ?>-<?= ($i+1) ?> <?= $class ?>"
         >
             <div class="form-check">
                 <input
@@ -29,11 +29,12 @@ if ($questionOptions) {
                         '<?= base64_encode($userExamId) ?>',
                         '<?= base64_encode($questionId) ?>',
                         this.value,
+                        '<?= base64_encode($examId) ?>',
                         )"
                     <?= $checked ?>
                 >
                 <label class="form-check-label2" for="<?= $radioButtonId ?>">
-                    <span class="text-secondary d-flex">
+                    <span class="d-flex">
                         <span><?= $chars[$i] ?>)&nbsp;</span>
                         <span><?= $questionOption->name ?></span>
                     </span>

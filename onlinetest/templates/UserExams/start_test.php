@@ -1,25 +1,32 @@
-
-
 <?php
 $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
 ?>
 
-<div class="card">
-    <div class="card-header">
-        <h5><?= $exam->name ?></h5>
-        <div class="small">
-            Duration: <?= $exam->time ?> mins
-            <br>
-            Questions: <?php echo (int)$this->Paginator->counter('{{count}}'); ?>
-            &nbsp;|&nbsp;
-            <b>Answered: <span class="badge rounded-pill bg-success"><?= count($selectedQAs) ?></span></b>
-            <br>
-            <div class="">
-                Remaining Time: <span id="examTimeDisplay" class="badge rounded-pill bg-danger"></span>
+<div class="">
+    <div class="">
+        <div class="">
+            <h5 class="mb-0"><?= $exam->name ?></h5>
+            <span class="small text-muted"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
+        </div>
+
+        <div class="small bg-aliceblue p-2 rounded mt-2">
+
+            <div class="d-flex justify-content-between">
+                <div class="text-center">
+                    Remaining Time<br>
+                    <span id="examTimeDisplay" class="badge rounded-pill bg-danger"></span>
+                </div>
+                <div class="text-center">
+                    <b>Attempted</b><br>
+                    <div class="badge rounded-pill bg-success">
+                        <?= count($selectedQAs) ?>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
-    <div class="card-body">
+    <div class="mt-3">
         <?php
         echo $this->Form->create();
         echo $this->Form->end();
@@ -66,7 +73,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
         }
         ?>
     </div>
-    <div class="card-footer">
+    <div class="mb-4 mt-3 bg-light py-2 rounded">
         <?php
         $showNextLink = false;
         $showPrevLink = false;
@@ -85,43 +92,66 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
         }
         ?>
 
-        <?php
-        if($showFinishLink) {
-            ?>
-            <div class="text-danger text-center mb-3">This is your last Question. Click "<span class="fw-bold">Finish & Exit Test</span>" button to complete the test.</div>
-            <?php
-        }
-        ?>
-
         <div class="d-flex justify-content-center pagination">
-            <ul class="list-unstyled <?= $showPrevLink ? null : 'disabled' ?> btn btn-secondary m-0 p-0" title="Previous">
-                <?= $this->Paginator->prev('« Previous') ?>
+            <?php
+            if($showPrevLink) {
+            ?>
+            <ul class="list-unstyled btn btn-secondary m-0 p-0 me-4" title="Previous">
+                <?= $this->Paginator->prev('« Back') ?>
             </ul>
+            <?php
+            }
+            ?>
 
-            <ul class="list-unstyled <?= $showNextLink ? null : 'disabled' ?> btn btn-primary m-0 p-0 ms-4" title="Next">
-                <?= $this->Paginator->next('Next »') ?>
-            </ul>
+            <?php
+            if($showNextLink) {
+                ?>
+                <ul class="list-unstyled btn btn-primary m-0 p-0" title="Next">
+                    <?= $this->Paginator->next('Next »') ?>
+                </ul>
+                <?php
+            } else {
+                ?>
+                <div class="text-center">
+                    <?php
+                    echo $this->Html->link(
+                        'Finish & Exit Test',
+                        ['controller' => 'UserExams', 'action' => 'finishTest', base64_encode($exam->id)],
+                        [
+                            'confirm' => 'Are you sure you want to finish and exit this online exam?',
+                            'class' => 'btn btn-orange btn-sm',
+                            'escape' => false
+                        ]
+                    );
+                    ?>
+                </div>
+                <?php
+            }
+            ?>
         </div>
     </div>
 </div>
 
-
-
-
-
-<div class="my-4 text-center">
+<?php
+if($showNextLink) {
+?>
+<div class="text-center mt-4">
     <?php
     echo $this->Html->link(
         'Finish & Exit Test',
         ['controller' => 'UserExams', 'action' => 'finishTest', base64_encode($exam->id)],
         [
             'confirm' => 'Are you sure you want to finish and exit this online exam?',
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-orange btn-sm',
             'escape' => false
         ]
     );
     ?>
 </div>
+<?php
+}
+?>
+<!--
 <hr>
 <div class="row d-print-none mb-4">
     <div class="text-center small">
@@ -137,6 +167,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
         ?>
     </div>
 </div>
+-->
 
 
 

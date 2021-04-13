@@ -1,3 +1,25 @@
+var fullScreenElement = document.documentElement;
+var fullScreen = {
+    open: function() {
+        if (fullScreenElement.requestFullscreen) {
+            fullScreenElement.requestFullscreen();
+        } else if (fullScreenElement.webkitRequestFullscreen) { /* Safari */
+            fullScreenElement.webkitRequestFullscreen();
+        } else if (fullScreenElement.msRequestFullscreen) { /* IE11 */
+            fullScreenElement.msRequestFullscreen();
+        }
+    },
+    close: function () {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+    }
+}
+
 var exams = {
     loadSelectedExamQuestions: function(examId) {
         let url = '/exams/loadSelectedExamQuestions/' + examId
@@ -31,7 +53,7 @@ var exams = {
             data: data,
             success: function (data, obj) {
                 if (data.error && data.error.length > 0) {
-                    alert(data.error)
+                    popup.alert('#', '', data.error, '')
                 } else {
                     exams.loadSelectedExamQuestions(examId)
                 }
@@ -73,7 +95,7 @@ var exams = {
 }
 
 var userExam = {
-    updateAnswer: function(userExamId, questionId, selectedOption) {
+    updateAnswer: function(userExamId, questionId, selectedOption, examId) {
         let url = '/UserExams/updateAnswer'
         let dataType = 'json'
         let csrfToken = $( "input[name='_csrfToken']" ).val()
@@ -81,6 +103,7 @@ var userExam = {
             userExamId: userExamId,
             examQuestionId: questionId,
             selectedOption: selectedOption,
+            examId: examId,
             _csrfToken: csrfToken
         }
         let decodedQuestionId = atob(questionId)
@@ -121,7 +144,7 @@ var userExam = {
                     let text = (duration - time) + ' mins';
 
                     if (time >= duration) {
-                        userExam.clearUserExamSession(examId);
+                        userExam.finishTest(examId);
                     }
 
                     $('#examTimeDisplay')
@@ -138,13 +161,19 @@ var userExam = {
         });
     },
 
+    finishTest: function(examId) {
+        let url = '/UserExams/finishTest/'+btoa(examId)
+        popup.alert(url, 'Time up!', 'Your exam time is over', '')
+    },
+
     clearUserExamSession: function(examId) {
         $.ajax({
             type: "GET",
             url: '/UserExams/clearUserExamSession/'+examId,
             success: function (data, obj) {
-                alert('Your exam time is over.')
-                window.location = '/UserExams/myResult/'+btoa(examId)
+                console.log('User previous session is cleared')
+                // alert('Your exam time is over.')
+                // window.location = '/UserExams/finishTest/'+btoa(examId)
             },
             dataType: 'json',
         });
@@ -312,4 +341,75 @@ var copy = {
         }
     }
 }
+
+var popup = {
+    confirm: function(url, title = '', content = '', okText = '') {
+        let confirmPopup;
+
+        title = title ? title : '';
+        content = content ? content : 'Are you sure?';
+        okText = okText ? okText : 'Ok';
+
+        $("#confirmPopup .modal-content .modal-header .modal-title").html(title);
+        $("#confirmPopup .modal-content .modal-body .content").html(content);
+        $("#confirmPopup .modal-footer .ok").html(okText);
+
+        $("#confirmPopup .modal-content .modal-header").show();
+        if (title == '') {
+            $("#confirmPopup .modal-content .modal-header").hide();
+        }
+
+        if ('#' !== url) {
+            $("#confirmPopup .modal-content .actionLink").attr('href', url);
+            $("#confirmPopup .modal-content .actionLink").removeClass('d-none');
+            $("#confirmPopup .modal-content .cancelButton").removeClass('d-none');
+            $("#confirmPopup .modal-content .actionLinkButton").addClass('d-none');
+        } else {
+            $("#confirmPopup .modal-content .actionLink").addClass('d-none');
+            $("#confirmPopup .modal-content .cancelButton").addClass('d-none');
+            $("#confirmPopup .modal-content .actionLinkButton").removeClass('d-none');
+        }
+
+        confirmPopup = new bootstrap.Modal(document.getElementById('confirmPopup'), {
+            keyboard: false,
+            backdrop: 'static'
+        });
+
+        confirmPopup.show();
+    },
+
+    alert: function(url, title = '', content = '', okText = '') {
+        let alertPopup;
+
+        title = title ? title : '';
+        content = content ? content : '...';
+        okText = okText ? okText : 'Ok';
+
+        $("#alertPopup .modal-content .modal-header .modal-title").html(title);
+        $("#alertPopup .modal-content .modal-body .content").html(content);
+        $("#alertPopup .modal-footer .ok").html(okText);
+
+        $("#alertPopup .modal-content .modal-header").show();
+        if (title == '') {
+            $("#alertPopup .modal-content .modal-header").hide();
+        }
+
+        if ('#' !== url) {
+            $("#alertPopup .modal-content .actionLink").attr('href', url);
+            $("#alertPopup .modal-content .actionLink").removeClass('d-none');
+            $("#alertPopup .modal-content .actionLinkButton").addClass('d-none');
+        } else {
+            $("#alertPopup .modal-content .actionLink").addClass('d-none');
+            $("#alertPopup .modal-content .actionLinkButton").removeClass('d-none');
+        }
+
+        alertPopup = new bootstrap.Modal(document.getElementById('alertPopup'), {
+            keyboard: false,
+            backdrop: 'static'
+        });
+
+        alertPopup.show();
+    },
+}
+
 

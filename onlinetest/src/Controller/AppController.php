@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Datasource\ConnectionManager;
 use Cake\Event\EventInterface;
 
 /**
@@ -64,6 +65,35 @@ class AppController extends Controller
             && $this->request->getSession()->check('User.id') !== true) {
             $this->redirect('/users/login');
             return;
+        }
+    }
+
+    protected function getDbConnection()
+    {
+        return ConnectionManager::get('default');
+    }
+
+    protected function query($query)
+    {
+        return $this->getDbConnection()
+            ->execute($query)
+            ->fetchAll('assoc');
+    }
+
+    public function isAdmin()
+    {
+        if($this->request->getSession()->check('User.isAdmin') == true) {
+           return $this->request->getSession()->read('User.isAdmin') == true;
+        }
+
+        return false;
+    }
+
+    public function allowAdmin()
+    {
+        if (! $this->isAdmin()) {
+            $this->Flash->error('You are not authorized to access this page');
+            $this->redirect('/');
         }
     }
 }

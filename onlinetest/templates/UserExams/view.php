@@ -11,8 +11,14 @@
     Duration: <?= $exam->time ?> mins
 </p>
 
+<div class="text-center mt-3">
+    <a href="/UserExams/newTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
+        Start Online Test &raquo;
+    </a>
+</div>
 
 <?php
+/*
 if ($userExamInfo) {
     ?>
     <div class="text-center mt-3">
@@ -53,12 +59,14 @@ if ($userExamInfo) {
 } else {
     ?>
     <div class="text-center mt-3">
-        <a href="/UserExams/startTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
+        <a href="/UserExams/newTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
             Start Online Test &raquo;
         </a>
     </div>
     <?php
 }
+
+*/
 ?>
 <div class="row d-print-none mt-4">
     <div class="text-center">
@@ -69,6 +77,12 @@ if ($userExamInfo) {
 <p>
     <?= $exam->description ?>
 </p>
+
+<script>
+    $(document).ready(function () {
+        userExam.clearUserExamSession('<?= $exam->id ?>')
+    })
+</script>
 
 
 
