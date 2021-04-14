@@ -32,8 +32,8 @@ foreach($categories as $category) {
         <h5 class="card-title">Free online tests to practice for competitive and entrance exams.</h5>
 
         <div class="mt-3">
-            <p class="card-text"> Prepare for your exam online with our many free
-                tests.</p>
+<!--            <p class="card-text"> Prepare for your exam online with our many free
+                tests.</p>-->
             <?php
             if ($categoryList) {
                 if ($selectedCategoryId != null) {
@@ -73,7 +73,8 @@ foreach($categories as $category) {
 <div class="mt-3">
     <div class="">
         <div class="px-2 py-2 mb-3 rounded bg-purple">
-            <div class="fs-5"><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </div>
+            <!-- <div class="fs-5"><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </div> -->
+            <div class="fs-5">Free Practice Tests</div>
         </div>
         <?php
         $k = 0;
