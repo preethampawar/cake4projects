@@ -40,7 +40,7 @@ foreach($categories as $category) {
                     ?>
                     <a
                         href="/UserExams/list/"
-                        class="btn btn-sm border py-0 me-1 mt-1 btn-ivory"
+                        class="btn btn-sm py-0 me-1 mt-1 btn-orange"
                     >Show All</a>
                     <?php
                 }
@@ -48,15 +48,15 @@ foreach($categories as $category) {
 
                 <?php
                 foreach($categoryList as $categoryId => $categoryName) {
-                    $btnClass = 'btn-ivory';
+                    $btnClass = 'btn-orange';
 
                     if ($selectedCategoryId && $selectedCategoryId == $categoryId) {
-                        $btnClass = 'btn-orange';
+                        $btnClass = 'btn-primary';
                     }
                     ?>
                     <a
                         href="/UserExams/list/<?= $categoryId ?>/<?= $categoryName ?>"
-                        class="btn btn-sm border py-0 me-1 mt-1 <?= $btnClass ?>"
+                        class="btn btn-sm py-0 me-1 mt-1 <?= $btnClass ?>"
                     >
                         <?= $categoryName ?>
                     </a>

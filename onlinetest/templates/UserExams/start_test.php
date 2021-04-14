@@ -45,7 +45,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
                 <h6 class="card-title">
                     <div class="d-flex">
                         <div><?= $k ?>.</div>
-                        <div class="ms-1"><?= $question->name ?></div>
+                        <div class="ms-1 fw-bold"><?= $question->name ?></div>
                     </div>
                 </h6>
                 <div class="card-text">
