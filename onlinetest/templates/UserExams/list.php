@@ -101,7 +101,7 @@ foreach($categories as $category) {
                     <div>
                     <div
                         title="Share Test <?= $exam->name ?>"
-                        class="btn btn-orange btn-sm py-0"
+                        class="btn btn-success btn-sm py-0"
                         type="button"
                         onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
                         Share
