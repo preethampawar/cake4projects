@@ -52,7 +52,15 @@ if ($percentage >= 90) {
                 <div>
 
                 </div>
-                <div class="d-flex justify-content-start small">
+                <div class="d-flex justify-content-between small">
+
+                    <div class="me-3">
+                        <div class="text-primary fw-bold fs-5">You have scored - <b><?= $correctQuestions ?></b> (<?= $percentage ?>%)</div>
+                        <div class="text-success">Correct: <?= $correctQuestions ?> </div>
+                        <div class="text-danger">Wrong: <?= $wrongQuestions ?></div>
+                        <div class="text-danger">Not Attempted: <?= $notAttemptedQuestions ?></div>
+                    </div>
+
                     <div class="badge rounded-circle fs-6 <?= $bgClass ?> bg-gradient"
                          title="You got <?= $correctQuestions ?> answers correct out of <?= $totalQuestions ?>">
                         <table class="table text-center text-white m-0">
@@ -67,13 +75,6 @@ if ($percentage >= 90) {
                                 </td>
                             </tr>
                         </table>
-                    </div>
-
-                    <div class="ms-3">
-                        <h6 class="text-purple">You have scored - <b><?= $percentage ?>%</b></h6>
-                        <div class="text-success">Correct: <?= $correctQuestions ?> </div>
-                        <div class="text-danger">Wrong: <?= $wrongQuestions ?></div>
-                        <div class="text-danger">Not Attempted: <?= $notAttemptedQuestions ?></div>
                     </div>
 
                 </div>
@@ -104,7 +105,7 @@ if ($percentage >= 90) {
                 <div class="mb-3">
                     <div class="d-flex mt-3">
                         <div><?= $k ?>.</div>
-                        <div class="ms-1"><?= $row->question->name ?></div>
+                        <div class="ms-1 fw-bold"><?= $row->question->name ?></div>
                     </div>
 
                     <?php
@@ -154,10 +155,10 @@ if ($percentage >= 90) {
                     <div class="fw-bold small">
                         <?=
                         $isSelectedAnswerNotAttempted
-                            ? '<span class="btn btn-warning btn-small py-0 disabled">Did not attempt</span>'
+                            ? '<span class="btn btn-warning btn-small py-0">Did not attempt</span>'
                             : ($isSelectedAnswerCorrect
-                                ? '<span class="btn btn-success btn-small py-0 disabled">&check; Correct Answer</span>'
-                                : '<span class="btn btn-danger btn-small py-0 disabled">&#10005; Wrong Answer</span>')
+                                ? '<span class="btn btn-success btn-small py-0">&check; Correct Answer</span>'
+                                : '<span class="btn btn-danger btn-small py-0">&#10005; Wrong Answer</span>')
                         ?>
                     </div>
                     <hr/>
