@@ -1,6 +1,6 @@
 <?= $this->element('myTestsNav');?>
 
-<h1 class="mt-3 fw-bold"><?= $exam->name ?></h1>
+<h4 class="mt-3 fw-bold"><?= $exam->name ?></h4>
 
 <p class="text-muted">
     Total Questions:
