@@ -5,7 +5,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
 <div class="">
     <div class="">
         <div class="">
-            <h5 class="mb-0"><?= $exam->name ?></h5>
+            <h4 class="mb-0 text-primary fw-bold"><?= $exam->name ?></h4>
             <span class="small text-muted"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
         </div>
 
