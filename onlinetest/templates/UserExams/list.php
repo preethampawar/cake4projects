@@ -23,7 +23,7 @@ foreach($categories as $category) {
     <?php
     if(!$this->request->getSession()->check('User.id')) {
         ?>
-        <img src="/img/learning.jpg" class="w-100 mb-4" alt="..." style="max-height: 500px">
+        <img src="/img/learning.jpg" class="w-100 mb-4" alt="..." style="max-height: 400px">
         <?php
     }
     ?>
