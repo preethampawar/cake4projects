@@ -130,3 +130,7 @@
     background: url("/img/edu_poster2.jpg") repeat;
     /*background: url("/img/pattern1.png") repeat;*/
 }
+
+#at4-share {
+    background-color: var(--bs-light);
+}

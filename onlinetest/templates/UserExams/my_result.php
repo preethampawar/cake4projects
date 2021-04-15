@@ -1,6 +1,11 @@
 <?= $this->element('myTestsNav'); ?>
 
-<h1>Exam Result</h1>
+<div class="d-flex justify-content-between">
+    <h2>Exam Result</h2>
+    <div>
+        <a href="/UserExams/myTests" class="btn btn-primary btn-sm">&laquo; Back</a>
+    </div>
+</div>
 
 
 <?php
@@ -35,7 +40,7 @@ if ($percentage >= 90) {
     $bgClass = "bg-warning";
 }
 ?>
-<h2 class="mt-4"><?= $userExamInfo->exam->name ?></h2>
+<h4 class="mt-4"><?= $userExamInfo->exam->name ?></h4>
 <p class="small">
     Total Questions:
     <?php
@@ -55,15 +60,25 @@ if ($percentage >= 90) {
                 <div class="d-flex justify-content-between small">
 
                     <div class="me-3">
-                        <div class="text-primary fw-bold fs-5">You have scored - <b><?= $correctQuestions ?></b> (<?= $percentage ?>%)</div>
+                        <div class="text-primary">
+                            <span class="fw-bold fs-5">You have scored - <?= $correctQuestions ?></span>
+                            <span class="small">(<?= $percentage ?>%)</span>
+                        </div>
                         <div class="text-success">Correct: <?= $correctQuestions ?> </div>
                         <div class="text-danger">Wrong: <?= $wrongQuestions ?></div>
                         <div class="text-danger">Not Attempted: <?= $notAttemptedQuestions ?></div>
                     </div>
 
-                    <div class="badge rounded-circle fs-6 <?= $bgClass ?> bg-gradient"
+                    <div
                          title="You got <?= $correctQuestions ?> answers correct out of <?= $totalQuestions ?>">
-                        <table class="table text-center text-white m-0">
+                        <div class="badge rounded-circle fs-6 <?= $bgClass ?> py-3 px-3">
+                            <div class=""><i>Score</i></div>
+                            <div class="mt-2">
+                                <?= $percentage ?>%
+                            </div>
+                        </div>
+
+                        <table class="table text-center text-white m-0 d-none">
                             <tr>
                                 <td style="width: 55px;">
                                     <?= $correctQuestions ?>

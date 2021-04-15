@@ -3,7 +3,7 @@
     <head>
         <?= $this->Html->charset() ?>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>OnlineTests: <?= $this->fetch('title') ?></title>
+        <title>OnlineTest: <?= $this->fetch('title') ?></title>
 
         <link rel="shortcut icon" type="image/png" href="/images.png" />
 
@@ -48,6 +48,7 @@
         $examsLinkActive = null;
         $homeLinkActive = null;
         $userExamsLinkActive = null;
+        $showSocialShare = $this->fetch('showSocialShare');
 
         switch($controller) {
             case 'Questions':
@@ -117,7 +118,7 @@
         </nav>
 
         <main class="main">
-            <div id="mainDiv" class="container my-md-5 bg-white pt-3 pb-5 rounded">
+            <div id="mainDiv" class="container mb-md-5 mt-md-3 bg-white pt-3 pb-3 rounded">
                 <?php
                 $message = $this->Flash->render();
 
@@ -183,5 +184,15 @@
         <!-- Option 1: Bootstrap Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
+        <?php
+        if ($showSocialShare) {
+            ?>
+            <!-- inline share buttons - Go to www.addthis.com/dashboard to customize your tools -->
+            <!-- <div class="addthis_inline_share_toolbox"></div><script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60782f65edd7a313"></script> -->
+            <!-- floating share buttons -->
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60782f65edd7a313"></script>
+            <?php
+        }
+        ?>
     </body>
 </html>

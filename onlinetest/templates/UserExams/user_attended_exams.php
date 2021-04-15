@@ -54,7 +54,11 @@
                     <?= date('d/m/Y', strtotime($userExam['created'])) ?>
                 </td>
                 <td class="text-end">
-
+                    <span
+                        class="btn btn-sm btn-danger py-0"
+                        onclick="popup.confirm('/UserExams/delete/<?= $userExam['id'] ?>', 'Delete User Exam', 'Are you sure you want to delete this exam <b><?= htmlentities($exam['name']) ?></b> for username <b><?= $user['username'] ?></b>', '')">
+                        X
+                    </span>
                 </td>
             </tr>
         <?php

@@ -164,7 +164,7 @@ class UserExamsController extends AppController
             if ($userExamInfo = $this->UserExams->save($userExam)) {
                 $this->request->getSession()->write('writingUserExam.' . $exam->id, $userExam->id);
                 $this->request->getSession()->write('userExamInfo.' . $exam->id, $userExamInfo);
-                $this->Flash->success(__('Online test has started. You have ' . $examDuration . ' mins to finish it.'));
+                $this->Flash->success(__('Online test has started.'));
             }
         }
 
@@ -445,7 +445,7 @@ class UserExamsController extends AppController
             $this->Users->find('all')
                 ->where(['Users.deleted' => 0, 'Users.is_admin ' => 0]),
             [
-                'limit' => '50',
+                'limit' => '100',
                 'order' => [
                     'Users.name' => 'asc'
                 ]
@@ -637,7 +637,7 @@ class UserExamsController extends AppController
                 left join user_exam_question_answers ueqa on (ueqa.user_exam_id = ue.id and ueqa.question_id = q.id)
             where u.is_admin = 0 and ue.cancelled = 0 " . $userIdsCondition . "
             group by u.id, e.id, ue.id, q.id
-            order by user_id desc, ue.created desc, eq.id asc, qo.sort asc
+            order by ue.created desc, eq.id asc, qo.sort asc
         ";
     }
 
@@ -661,5 +661,18 @@ class UserExamsController extends AppController
             group by u.id, e.id, ue.id
             order by u.id desc
         ";
+    }
+
+    public function delete($userExamId) {
+        $this->allowAdmin();
+
+        $this->loadModel(UserExamsTable::class);
+        $this->loadModel(UserExamQuestionAnswersTable::class);
+
+        $this->UserExams->deleteAll(['UserExams.id' => $userExamId]);
+        $this->UserExamQuestionAnswers->deleteAll(['UserExamQuestionAnswers.user_exam_id' => $userExamId]);
+
+        $this->Flash->success("User exam deleted successfully.");
+        $this->redirect($this->referer());
     }
 }

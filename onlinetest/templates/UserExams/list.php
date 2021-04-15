@@ -7,6 +7,8 @@ if ($this->request->getSession()->check('User.isAdmin')
     </div>
     <?php
     return;
+} else {
+    $this->assign('showSocialShare', true);
 }
 ?>
 
@@ -27,13 +29,24 @@ foreach($categories as $category) {
         <?php
     }
     ?>
+    <h5 class="card-title">Free online tests to practice for competitive and entrance exams.</h5>
+</div>
+
+<div class="mt-3">
 
     <div class="">
-        <h5 class="card-title">Free online tests to practice for competitive and entrance exams.</h5>
+        <div class="px-2 py-2 mb-1 rounded bg-purple">
+            <!-- <div class="fs-5"><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </div> -->
+            <div class="fs-5">
+                <span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span>
+                Free Practice Tests
+            </div>
+        </div>
 
-        <div class="mt-3">
-<!--            <p class="card-text"> Prepare for your exam online with our many free
-                tests.</p>-->
+
+        <div class="mb-3">
+            <!--            <p class="card-text"> Prepare for your exam online with our many free
+                            tests.</p>-->
             <?php
             if ($categoryList) {
                 if ($selectedCategoryId != null) {
@@ -56,7 +69,7 @@ foreach($categories as $category) {
                     ?>
                     <a
                         href="/UserExams/list/<?= $categoryId ?>/<?= $categoryName ?>"
-                        class="btn btn-sm py-0 me-1 mt-1 <?= $btnClass ?>"
+                        class="btn btn-sm py-0 me-1 mt-2 <?= $btnClass ?>"
                     >
                         <?= $categoryName ?>
                     </a>
@@ -66,18 +79,9 @@ foreach($categories as $category) {
             ?>
         </div>
 
-    </div>
-</div>
-
-<hr>
-<div class="mt-3">
-    <div class="">
-        <div class="px-2 py-2 mb-3 rounded bg-purple">
-            <!-- <div class="fs-5"><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </div> -->
-            <div class="fs-5">Free Practice Tests</div>
-        </div>
         <?php
         $k = 0;
+        $examNames = [];
         foreach ($exams as $exam):
             $k++;
 
@@ -87,45 +91,55 @@ foreach($categories as $category) {
             ]);
             $fullUrl = urlencode($fullUrl);
             $title = urlencode($exam->name);
+            $examNames[] = $exam->name;
             ?>
             <div class="bg-light p-2 mb-3 rounded">
                 <div class="d-flex justify-content-between">
+
                     <div class="d-flex">
                         <span class="text-muted"><?= $k ?>.</span>
-                        <div class="">
+                        <div class="ms-1">
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                               class="ms-1 fw-bold text-purple">
-                                <?= $exam->name ?>
+                               class="ms-0 text-primary">
+                                <b><?= $exam->name ?></b>
                             </a>
+                            <br>
+                            <span class="text-muted small">
+                                <?= count($exam->exam_questions) ?> questions,
+
+                                <?= $exam->time ?> mins
+                            </span>
+
                         </div>
                     </div>
-                    <div>
-                    <div
-                        title="Share Test <?= $exam->name ?>"
-                        class="btn btn-success btn-sm py-0"
-                        type="button"
-                        onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
-                        Share
+                    <div class="d-flex justify-content-between ms-1">
+                        <div>
+                            <span
+                                title="Share Test <?= $exam->name ?>"
+                                class="btn btn-success btn-sm py-0"
+                                role="button"
+                                onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
+                                &#10162;&nbsp;Share
+                            </span>
+                        </div>
                     </div>
-                    </div>
-                </div>
-                <div class="d-flex justify-content-between mb-1 pt-1">
-                    <span class="text-muted small">
-                        <?= count($exam->exam_questions) ?> questions,
-
-                        <?= $exam->time ?> mins
-                    </span>
 
                 </div>
-                <div class="mb-0">
+
+                <div class="mt-1 mb-0">
                     <?php
                     if ($categoryList && $exam->exam_categories) {
                         foreach($exam->exam_categories as $examCategory) {
                             $categoryName = $categoryList[$examCategory->category_id];
+                            $btnClass = 'btn-orange';
+
+                            if ($selectedCategoryId && $selectedCategoryId == $examCategory->category_id) {
+                                $btnClass = 'btn-primary';
+                            }
                             ?>
                             <a
                                 href="/UserExams/list/<?= $examCategory->category_id ?>/<?= $categoryName ?>"
-                                class="btn btn-ivory btn-sm border py-0 me-1 mt-1"
+                                class="btn <?= $btnClass ?> btn-sm py-0 me-1 mt-1"
                             >
                                 <?= $categoryName ?>
                             </a>
@@ -134,6 +148,7 @@ foreach($categories as $category) {
                     }
                     ?>
                 </div>
+
 
                 <!-- Modal -->
                 <div class="modal fade" id="modalExam<?= $exam->id ?>" tabindex="-1" aria-labelledby="modalExam<?= $exam->id ?>Label" aria-hidden="true">
@@ -208,6 +223,19 @@ foreach($categories as $category) {
             <li class="list-group-item">No exams found.</li>
             <?php
         }
+        ?>
+
+        <?php
+        $this->Html->meta(
+            'keywords',
+            'online tests, '. implode(',', $examNames),
+            ['block' => true]
+        );
+        $this->Html->meta(
+            'description',
+            'Free online tests. '. implode(',', $examNames),
+            ['block' => true]
+        );
         ?>
 
 

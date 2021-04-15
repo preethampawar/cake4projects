@@ -4,12 +4,12 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
 
 <div class="">
     <div class="">
-        <div class="">
+        <div class="text-center">
             <h4 class="mb-0 text-primary fw-bold"><?= $exam->name ?></h4>
             <span class="small text-muted"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
         </div>
 
-        <div class="small bg-aliceblue p-2 rounded mt-2">
+        <div class="small bg-light pt-1 pb-2 px-1 rounded mt-2 border">
 
             <div class="d-flex justify-content-between">
                 <div class="text-center">
@@ -17,7 +17,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
                     <span id="examTimeDisplay" class="badge rounded-pill bg-danger"></span>
                 </div>
                 <div class="text-center">
-                    <b>Attempted</b><br>
+                    Attempted<br>
                     <div class="badge rounded-pill bg-success">
                         <?= count($selectedQAs) ?>
                     </div>
@@ -113,17 +113,13 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
             } else {
                 ?>
                 <div class="text-center">
-                    <?php
-                    echo $this->Html->link(
-                        'Finish & Exit Test',
-                        ['controller' => 'UserExams', 'action' => 'finishTest', base64_encode($exam->id)],
-                        [
-                            'confirm' => 'Are you sure you want to finish and exit this online exam?',
-                            'class' => 'btn btn-orange btn-sm',
-                            'escape' => false
-                        ]
-                    );
-                    ?>
+                    <button
+                        type="button"
+                        class="btn btn-orange btn-sm"
+                        onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
+                    >
+                        Finish & Exit Test
+                    </button>
                 </div>
                 <?php
             }
@@ -135,18 +131,14 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
 <?php
 if($showNextLink) {
 ?>
-<div class="text-center mt-4">
-    <?php
-    echo $this->Html->link(
-        'Finish & Exit Test',
-        ['controller' => 'UserExams', 'action' => 'finishTest', base64_encode($exam->id)],
-        [
-            'confirm' => 'Are you sure you want to finish and exit this online exam?',
-            'class' => 'btn btn-orange btn-sm',
-            'escape' => false
-        ]
-    );
-    ?>
+<div class="text-center mt-5">
+    <button
+        type="button"
+        class="btn btn-orange btn-sm"
+        onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
+    >
+        Finish & Exit Test
+    </button>
 </div>
 <?php
 }
