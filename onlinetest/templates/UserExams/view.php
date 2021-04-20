@@ -1,19 +1,20 @@
 <?= $this->element('myTestsNav');?>
 
-<h4 class="mt-3 fw-bold"><?= $exam->name ?></h4>
+<h1 class="mt-3 fw-bold"><?= $exam->name ?></h1>
 
-<p class="text-muted">
-    Total Questions:
+<div class="text-muted">
     <?php
     echo $exam->exam_questions ? count($exam->exam_questions) : 0;
-    ?>
-    <br>
-    Duration: <?= $exam->time ?> mins
-</p>
+    ?> questions, <?= $exam->time ?> mins
+</div>
 
-<div class="text-center mt-3">
+<div class="text-center mt-4 mb-4">
     <a href="/UserExams/newTest/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
-        Start Online Test &raquo;
+        <i class="fas fa-play-circle"></i> Start Test
+    </a>
+
+    <a class="btn btn-danger ms-3" href="/UserExams/">
+        <i class="fas fa-times"></i> Cancel
     </a>
 </div>
 
@@ -68,15 +69,7 @@ if ($userExamInfo) {
 
 */
 ?>
-<div class="row d-print-none mt-4">
-    <div class="text-center">
-        <a class="btn btn-danger btn-sm" href="/UserExams/">Cancel</a>
-    </div>
-</div>
 
-<p>
-    <?= $exam->description ?>
-</p>
 
 <script>
     $(document).ready(function () {

@@ -3,7 +3,7 @@
 <div class="d-flex justify-content-between">
     <h2>Exam Result</h2>
     <div>
-        <a href="/UserExams/myTests" class="btn btn-primary btn-sm">&laquo; Back</a>
+        <a href="/UserExams/myTests" class="btn btn-primary btn-sm"><i class="fas fa-chevron-circle-left"></i> Back</a>
     </div>
 </div>
 
@@ -32,6 +32,8 @@ $correctQuestions = count($correctQAs);
 $notAttemptedQuestions = count($notAttemptedQAs);
 $wrongQuestions = $totalQuestions - $correctQuestions - $notAttemptedQuestions;
 $percentage = ($totalQuestions > 0) ? round($correctQuestions * 100 / $totalQuestions, 2) : 0;
+$wrongPercentage = ($totalQuestions > 0) ? round($wrongQuestions * 100 / $totalQuestions, 2) : 0;
+$skippedPercentage = ($totalQuestions > 0) ? round($notAttemptedQuestions * 100 / $totalQuestions, 2) : 0;
 
 $bgClass = "bg-danger";
 if ($percentage >= 90) {
@@ -53,45 +55,28 @@ if ($percentage >= 90) {
 <div class="mt-3">
     <div class="card">
         <div class="card-header">
-            <div class="">
-                <div>
-
+            <div class="text-primary">
+                <span class="fw-bold fs-5">Score - <?= $correctQuestions ?></span>
+                <span class="small">(<?= $percentage ?>%)</span>
+            </div>
+            <div class="small mb-2">
+                <div class="mt-2">
+                    <div class="text-success">Correct: <?= $correctQuestions ?> (<?= $percentage ?>%)</div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $percentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between small">
-
-                    <div class="me-3">
-                        <div class="text-primary">
-                            <span class="fw-bold fs-5">You have scored - <?= $correctQuestions ?></span>
-                            <span class="small">(<?= $percentage ?>%)</span>
-                        </div>
-                        <div class="text-success">Correct: <?= $correctQuestions ?> </div>
-                        <div class="text-danger">Wrong: <?= $wrongQuestions ?></div>
-                        <div class="text-danger">Not Attempted: <?= $notAttemptedQuestions ?></div>
+                <div class="mt-2">
+                    <div class="text-danger">Wrong: <?= $wrongQuestions ?> (<?= $wrongPercentage ?>%)</div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: <?= $wrongPercentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-
-                    <div
-                         title="You got <?= $correctQuestions ?> answers correct out of <?= $totalQuestions ?>">
-                        <div class="badge rounded-circle fs-6 <?= $bgClass ?> py-3 px-3">
-                            <div class=""><i>Score</i></div>
-                            <div class="mt-2">
-                                <?= $percentage ?>%
-                            </div>
-                        </div>
-
-                        <table class="table text-center text-white m-0 d-none">
-                            <tr>
-                                <td style="width: 55px;">
-                                    <?= $correctQuestions ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="border-bottom-0">
-                                    <?= $totalQuestions ?>
-                                </td>
-                            </tr>
-                        </table>
+                </div>
+                <div class="mt-2">
+                    <div class="text-warning">Not Attempted: <?= $notAttemptedQuestions ?> (<?= $skippedPercentage ?>%)</div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $skippedPercentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-
                 </div>
             </div>
         </div>

@@ -23,6 +23,7 @@
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="/js/common.js"></script>
+        <script src="https://kit.fontawesome.com/231b614f56.js" crossorigin="anonymous"></script>
 
 
         <?php
@@ -118,7 +119,10 @@
         </nav>
 
         <main class="main">
-            <div id="mainDiv" class="container mb-md-5 mt-md-3 bg-white pt-3 pb-3 rounded">
+            <div id="mainDiv" class="container mb-5 mt-md-4 bg-white pt-2 pb-4 rounded">
+                <div class="d-flex justify-content-end bg-ivory-light rounded-top d-none">
+                    <div id="google_translate_element" class="d-flex"><b>Language Translator</b>&nbsp; </div>
+                </div>
                 <?php
                 $message = $this->Flash->render();
 
@@ -190,9 +194,18 @@
             <!-- inline share buttons - Go to www.addthis.com/dashboard to customize your tools -->
             <!-- <div class="addthis_inline_share_toolbox"></div><script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60782f65edd7a313"></script> -->
             <!-- floating share buttons -->
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60782f65edd7a313"></script>
+<!--            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-60782f65edd7a313"></script>-->
             <?php
         }
         ?>
+
+        <!--
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        -->
     </body>
 </html>

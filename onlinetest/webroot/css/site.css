@@ -10,6 +10,11 @@
     --cus-ivory-plus: #FAFAC4;
     --cus-aliceblue: #f0f8ff;
     --cus-aliceblue-plus: #d7f1fc;
+    --cus-ivory-light: #fffff099;
+}
+
+h1,h2,h3,h4 {
+    font-size: 1.5em;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -31,10 +36,12 @@
 .text-ivory {
     color: var(--cus-ivory);
 }
+.text-ivory-light {
+    color: var(--cus-ivory-light);
+}
 .text-aliceblue {
     color: var(--cus-aliceblue);
 }
-
 
 .bg-purple {
     background-color: var(--cus-purple);
@@ -50,6 +57,14 @@
 }
 .bg-ivory {
     background-color: var(--cus-ivory);
+    color: var(--bs-dark);
+}
+.bg-ivory-light {
+    background-color: var(--cus-ivory-light);
+    color: var(--bs-dark);
+}
+.bg-aliceblue {
+    background-color: var(--cus-aliceblue);
     color: var(--bs-dark);
 }
 .bg-aliceblue {

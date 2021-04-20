@@ -5,7 +5,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
 <div class="">
     <div class="">
         <div class="text-center">
-            <h4 class="mb-0 text-primary fw-bold"><?= $exam->name ?></h4>
+            <h5 class="mb-0 text-primary fw-bold"><?= $exam->name ?></h5>
             <span class="small text-muted"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
         </div>
 
@@ -92,57 +92,43 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
         }
         ?>
 
-        <div class="d-flex justify-content-center pagination">
-            <?php
-            if($showPrevLink) {
-            ?>
-            <ul class="list-unstyled btn btn-secondary m-0 p-0 me-4" title="Previous">
-                <?= $this->Paginator->prev('« Back') ?>
-            </ul>
-            <?php
-            }
-            ?>
-
-            <?php
-            if($showNextLink) {
+        <div class="d-flex justify-content-between pagination">
+            <div>
+                <?php
+                if($showPrevLink) {
                 ?>
-                <ul class="list-unstyled btn btn-primary m-0 p-0" title="Next">
-                    <?= $this->Paginator->next('Next »') ?>
+                <ul class="list-unstyled btn btn-primary m-0 p-0 me-3" title="Back">
+                    <?= $this->Paginator->prev('<i class="fas fa-chevron-circle-left"></i><span class=""> Back</span>', ['escape' => false]) ?>
                 </ul>
                 <?php
-            } else {
+                }
                 ?>
-                <div class="text-center">
-                    <button
-                        type="button"
-                        class="btn btn-orange btn-sm"
-                        onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
-                    >
-                        Finish & Exit Test
-                    </button>
-                </div>
+
                 <?php
-            }
-            ?>
+                if($showNextLink) {
+                    ?>
+                    <ul class="list-unstyled btn btn-primary m-0 p-0" title="Next">
+                        <?= $this->Paginator->next('<span class="">Next </span><i class="fas fa-chevron-circle-right"></i>', ['escape' => false]) ?>
+                    </ul>
+                    <?php
+                }
+                ?>
+            </div>
+
+            <div class="text-center">
+                <button
+                    type="button"
+                    class="btn btn-orange btn-sm"
+                    onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
+                >
+                    Exit <i class="fas fa-external-link-alt"></i>
+                </button>
+            </div>
+
         </div>
     </div>
 </div>
 
-<?php
-if($showNextLink) {
-?>
-<div class="text-center mt-5">
-    <button
-        type="button"
-        class="btn btn-orange btn-sm"
-        onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
-    >
-        Finish & Exit Test
-    </button>
-</div>
-<?php
-}
-?>
 <!--
 <hr>
 <div class="row d-print-none mb-4">

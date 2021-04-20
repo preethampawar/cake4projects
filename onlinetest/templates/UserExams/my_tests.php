@@ -92,7 +92,9 @@
                         <?php
                     } else {
                         ?>
-                        <a href="/UserExams/myResult/<?= base64_encode($userExam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary">Show Result</a>
+                        <a href="/UserExams/myResult/<?= base64_encode($userExam->id) ?>" title="<?= $exam->name ?>" class="btn btn-sm btn-primary">
+                            Result <i class="fas fa-angle-double-right"></i>
+                        </a>
                         <?php
                     }
                     ?>
