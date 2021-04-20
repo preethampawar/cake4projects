@@ -141,7 +141,7 @@ var userExam = {
                     let duration = data.userExamInfo.duration
                     let examId = data.userExamInfo.exam_id
                     let time = data.userExamInfo.time
-                    let text = (duration - time) + ' mins';
+                    let text = (duration - time);
 
                     if (time >= duration) {
                         userExam.finishTest(examId);

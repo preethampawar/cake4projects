@@ -127,21 +127,21 @@ foreach($categories as $category) {
 
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between ms-1">
-                        <div>
+                    <div class="ms-1 text-end w-25">
+
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                               class="btn btn-primary btn-sm py-0" title="Start Test">
-                                <i class="fas fa-play-circle"></i><span class="d-none d-md-inline"> Start Test</span>
+                               class="btn btn-primary btn-sm mb-1" title="Start Test">
+                                <i class="fas fa-play-circle"></i><span class="d-none d-sm-inline"> Start Test</span>
                             </a>
 
                             <span
                                 title="Share Test <?= $exam->name ?>"
-                                class="btn btn-success btn-sm py-0"
+                                class="btn btn-success btn-sm ms-2 mb-1"
                                 role="button"
                                 onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
                                 <i class="fas fa-share"></i><span class="d-none d-md-inline"> Share</span>
                             </span>
-                        </div>
+
                     </div>
 
                 </div>

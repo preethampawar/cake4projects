@@ -5,22 +5,26 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
 <div class="">
     <div class="">
         <div class="text-center">
-            <h5 class="mb-0 text-primary fw-bold"><?= $exam->name ?></h5>
-            <span class="small text-muted"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
+            <h1 class="mb-0 fw-bold text-primary"><?= $exam->name ?></h1>
+            <span class="small text-muted d-none"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
         </div>
 
         <div class="small bg-light pt-1 pb-2 px-1 rounded mt-2 border">
-
             <div class="d-flex justify-content-between">
                 <div class="text-center">
                     Remaining Time<br>
                     <span id="examTimeDisplay" class="badge rounded-pill bg-danger"></span>
+                     /
+                    <span class="badge rounded-pill bg-info"><?= $exam->time ?> mins</span>
                 </div>
                 <div class="text-center">
                     Attempted<br>
-                    <div class="badge rounded-pill bg-success">
+                    <span class="badge rounded-pill bg-danger">
                         <?= count($selectedQAs) ?>
-                    </div>
+                    </span> /
+                    <span class="badge rounded-pill bg-info">
+                        <?php echo (int)$this->Paginator->counter('{{count}}'); ?>
+                    </span>
                 </div>
             </div>
 
@@ -73,7 +77,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
         }
         ?>
     </div>
-    <div class="mb-4 mt-3 bg-light py-2 rounded">
+    <div class="mb-4 mt-4 bg-light py-2 px-1 rounded">
         <?php
         $showNextLink = false;
         $showPrevLink = false;
@@ -97,7 +101,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
                 <?php
                 if($showPrevLink) {
                 ?>
-                <ul class="list-unstyled btn btn-primary m-0 p-0 me-3" title="Back">
+                <ul class="list-unstyled btn btn-primary m-0 p-0 me-2 me-sm-4" title="Back">
                     <?= $this->Paginator->prev('<i class="fas fa-chevron-circle-left"></i><span class=""> Back</span>', ['escape' => false]) ?>
                 </ul>
                 <?php
@@ -121,7 +125,7 @@ $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $exam->id);
                     class="btn btn-orange btn-sm"
                     onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
                 >
-                    Exit <i class="fas fa-external-link-alt"></i>
+                    <i class="fas fa-external-link-alt"></i> Finish & Exit
                 </button>
             </div>
 
