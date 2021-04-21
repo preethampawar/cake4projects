@@ -8,6 +8,7 @@ use App\Model\Table\QuestionsTable;
 use App\Model\Table\UserExamQuestionAnswersTable;
 use App\Model\Table\UserExamsTable;
 use App\Model\Table\UsersTable;
+use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
 use Cake\ORM\Query;
 use DateTime;
@@ -125,10 +126,20 @@ class UserExamsController extends AppController
         $this->loadModel(UserExamsTable::class);
         $this->loadModel(UserExamQuestionAnswersTable::class);
 
+        $userExams = $this->UserExams->find('all')->where(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
+
+        $userExamCacheKeys = [];
+        foreach($userExams as $row) {
+            $userExamCacheKeys[] = $this->getUserExamCacheKey($row->id);
+            $userExamCacheKeys[] = $this->getUserExamSelectedQACacheKey($row->id);
+        }
+        $result = Cache::deleteMany($userExamCacheKeys);
+
         $this->UserExams->deleteAll(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
         $this->UserExamQuestionAnswers->deleteAll(['UserExamQuestionAnswers.user_id' => $userId, 'UserExamQuestionAnswers.exam_id' => $examId]);
 
         $this->redirect('/UserExams/startTest/'.$encodedExamId);
+        return;
     }
 
     public function startTest($examId)
@@ -147,9 +158,15 @@ class UserExamsController extends AppController
         $this->loadModel(UserExamsTable::class);
         $this->loadModel(UserExamQuestionAnswersTable::class);
 
-        $exam = $this->Exams->findById($examId)
-            // ->contain(['ExamQuestions.Questions.QuestionOptions'])
-            ->firstOrFail();
+        $examCacheKey = $this->getExamCacheKey($examId);
+        $exam = Cache::read($examCacheKey);
+
+        if ($exam === null) {
+            $exam = $this->Exams->findById($examId)
+                // ->contain(['ExamQuestions.Questions.QuestionOptions'])
+                ->firstOrFail();
+            Cache::write($examCacheKey, $exam);
+        }
 
         $examDuration = (int)$exam->time;
 
@@ -321,24 +338,40 @@ class UserExamsController extends AppController
         $this->loadModel(UserExamQuestionAnswersTable::class);
         $this->loadModel(QuestionsTable::class);
 
-        $userExamInfo = $this->UserExams
-            ->findById($userExamId)
-            ->contain([
-                'Exams' => [
-                    'ExamQuestions' => [
-                        'Questions' => [
-                            'QuestionOptions'
+        $userExamCacheKey = $this->getUserExamCacheKey($userExamId);
+        $userExamSelectedQACacheKey = $this->getUserExamSelectedQACacheKey($userExamId);
+        $result = Cache::readMany([
+            $userExamCacheKey,
+            $userExamSelectedQACacheKey
+        ]);
+        $userExamInfo = $result[$userExamCacheKey];
+        $selectedQAs = $result[$userExamSelectedQACacheKey];
+
+        if ($userExamInfo === null) {
+            $userExamInfo = $this->UserExams
+                ->findById($userExamId)
+                ->contain([
+                    'Exams' => [
+                        'ExamQuestions' => [
+                            'Questions' => [
+                                'QuestionOptions'
+                            ]
                         ]
                     ]
-                ]
-            ])
-            ->first();
+                ])
+                ->first();
+            Cache::write($userExamCacheKey, $userExamInfo);
+        }
 
-        $userExamQAs = $this->UserExamQuestionAnswers->findByUserExamId($userExamId)->all();
+        if ($selectedQAs === null) {
+            $userExamQAs = $this->UserExamQuestionAnswers->findByUserExamId($userExamId)->all();
 
-        $selectedQAs = [];
-        foreach ($userExamQAs as $row) {
-            $selectedQAs[$row->question_id] = $row->answer;
+            $selectedQAs = [];
+            foreach ($userExamQAs as $row) {
+                $selectedQAs[$row->question_id] = $row->answer;
+            }
+
+            Cache::write($userExamSelectedQACacheKey, $selectedQAs);
         }
 
         $this->set(compact('userExamInfo', 'selectedQAs'));
@@ -383,21 +416,31 @@ class UserExamsController extends AppController
     {
         $this->loadModel(ExamsTable::class);
         $this->loadComponent('Paginator');
+        $examsCacheKey = $this->getExamsCacheKey($categoryId);
+        $allCategoriesCacheKey = $this->getAllCategoriesCacheKey();
+        $exams = Cache::read($examsCacheKey, 'short');
+        $categories = Cache::read($allCategoriesCacheKey, 'short');
 
-        $conditions = ['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
-        $query = $this->Exams->find('all')->contain(['ExamCategories', 'ExamQuestions']);
+        if ($exams === null) {
+            $conditions = ['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
+            $query = $this->Exams->find('all')->contain(['ExamCategories', 'ExamQuestions']);
 
-        if ($categoryId) {
-            $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId){
-                return $q->where(['ExamCategories.category_id' => $categoryId]);
-            });
+            if ($categoryId) {
+                $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId){
+                    return $q->where(['ExamCategories.category_id' => $categoryId]);
+                });
+            }
+
+            $query = $query->where($conditions)->order('Exams.id desc');
+            $exams = $query->all();
+            Cache::write($examsCacheKey, $exams, 'short');
         }
 
-        $query = $query->where($conditions)->order('Exams.id desc');
-        $exams = $query->all();
-
-        $this->loadModel(CategoriesTable::class);
-        $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
+        if ($categories === null) {
+            $this->loadModel(CategoriesTable::class);
+            $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
+            Cache::write($allCategoriesCacheKey, $categories, 'short');
+        }
 
         $this->set(compact('exams'));
         $this->set('categories', $categories);
@@ -663,16 +706,28 @@ class UserExamsController extends AppController
         ";
     }
 
-    public function delete($userExamId) {
-        $this->allowAdmin();
-
+    private function deleteByUserExamId($userExamId)
+    {
         $this->loadModel(UserExamsTable::class);
         $this->loadModel(UserExamQuestionAnswersTable::class);
 
         $this->UserExams->deleteAll(['UserExams.id' => $userExamId]);
         $this->UserExamQuestionAnswers->deleteAll(['UserExamQuestionAnswers.user_exam_id' => $userExamId]);
 
+        $userExamCacheKey = $this->getUserExamCacheKey($userExamId);
+        $userExamSelectedQACacheKey = $this->getUserExamSelectedQACacheKey($userExamId);
+        $result = Cache::deleteMany([
+            $userExamCacheKey,
+            $userExamSelectedQACacheKey
+        ]);
+    }
+
+    public function delete($userExamId) {
+        $this->allowAdmin();
+        $this->deleteByUserExamId($userExamId);
         $this->Flash->success("User exam deleted successfully.");
+
         $this->redirect($this->referer());
+        return;
     }
 }

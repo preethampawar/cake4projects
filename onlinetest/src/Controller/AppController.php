@@ -96,4 +96,29 @@ class AppController extends Controller
             $this->redirect('/');
         }
     }
+
+    // all cache keys
+    protected function getExamCacheKey($examId = null)
+    {
+        return 'exam'.$examId;
+    }
+
+    protected function getExamsCacheKey($categoryId = null)
+    {
+        return 'examsList'.$categoryId;
+    }
+
+    protected function getAllCategoriesCacheKey()
+    {
+        return 'allCategories';
+    }
+
+    protected function getUserExamCacheKey($userExamId)
+    {
+        return 'userExam'.$userExamId;
+    }
+    protected function getUserExamSelectedQACacheKey($userExamId)
+    {
+        return 'userExamSelectedQA'.$userExamId;
+    }
 }

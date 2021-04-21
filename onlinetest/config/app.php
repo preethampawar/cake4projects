@@ -88,8 +88,8 @@ return [
      * enable timestamping regardless of debug value.
      */
     'Asset' => [
-        //'timestamp' => true,
-        // 'cacheTime' => '+1 year'
+        'timestamp' => true,
+        'cacheTime' => '+1 year'
     ],
 
     /*
@@ -98,7 +98,7 @@ return [
     'Cache' => [
         'default' => [
             'className' => FileEngine::class,
-            'path' => CACHE,
+            'path' => CACHE . 'default' . DS,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
@@ -145,6 +145,20 @@ return [
             'duration' => '+1 years',
             'url' => env('CACHE_CAKEROUTES_URL', null),
         ],
+
+        'short' => [
+            'className' => FileEngine::class,
+            'duration' => '+1 hours',
+            'path' => CACHE . 'short' . DS,
+            'prefix' => 'cake_short_'
+        ],
+
+        'long' => [
+            'className' => FileEngine::class,
+            'duration' => '+1 week',
+            'probability' => 100,
+            'path' => CACHE . 'long' . DS,
+        ]
     ],
 
     /*
@@ -183,7 +197,7 @@ return [
         'errorLevel' => E_ALL,
         'exceptionRenderer' => ExceptionRenderer::class,
         'skipLog' => [],
-        'log' => true,
+        'log' => false,
         'trace' => true,
         'ignoredDeprecationPaths' => [],
     ],

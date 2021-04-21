@@ -9,6 +9,7 @@ use App\Model\Table\QuestionOptionsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\SubjectsTable;
 use App\Model\Table\TagsTable;
+use Cake\Cache\Cache;
 
 class ExamsController extends AppController
 {
@@ -326,6 +327,10 @@ class ExamsController extends AppController
             $this->Flash->success(__('Exam E.ID = ' . $exam->id . ' has been deleted'));
         }
 
-        return $this->redirect(['controller' => 'exams', 'action' => 'index']);
+        $examCacheKey = $this->getExamCacheKey($exam->id);
+        Cache::delete($examCacheKey);
+
+        $this->redirect(['controller' => 'exams', 'action' => 'index']);
+        return;
     }
 }
