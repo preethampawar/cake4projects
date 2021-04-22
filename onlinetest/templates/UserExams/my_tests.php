@@ -1,7 +1,4 @@
-<?= $this->element('myTestsNav');?>
-
-
-<h4>My Completed Tests</h4>
+<h4>Test Results</h4>
 
 
 <div class="">

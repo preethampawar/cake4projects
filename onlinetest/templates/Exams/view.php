@@ -1,16 +1,18 @@
-<div class="row d-print-none">
-    <div class="col-md-10">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Add Exam Questions</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="col-md-2 text-end small">
-        <a class="btn btn-sm btn-danger" href="/exams/">Back</a>
+<div class="d-print-none">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
+            <li class="breadcrumb-item"><a href="/exams/edit/<?= $exam->id ?>"><?= $exam->name ?></a></li>
+            <li class="breadcrumb-item"><a href="/exams/addQuestions/<?= $exam->id ?>">Select Questions</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Preview</li>
+        </ol>
+    </nav>
+
+    <div class="text-end">
+        <a class="btn btn-sm btn-danger" href="/exams/">Exit Preview</a>
     </div>
 </div>
+
 
 
 <?php
@@ -66,7 +68,7 @@
                                     $class = null;
                                     $checked = null;
                                     if ($i === (int)$question->answer) {
-                                        $class = "fw-bold";
+                                        $class = "fw-bold text-success";
                                         $checked = "checked";
                                     }
                                     ?>
@@ -74,7 +76,7 @@
                                         <div class="form-check" title="<?= $checked ? 'Correct Answer' : '' ?>">
                                             <input class="form-check-input" type="radio" <?= $checked ?> disabled>
                                             <label class="form-check-label2">
-                                                <span class="text-secondary d-flex">
+                                                <span class="d-flex">
                                                     <span><?= $chars[$i - 1] ?>)&nbsp;</span>
                                                     <span><?= $row->name ?></span>
                                                 </span>

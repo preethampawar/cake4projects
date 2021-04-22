@@ -1,19 +1,20 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Edit Details</li>
+        <li class="breadcrumb-item active" aria-current="page"><?= $exam->name ?></li>
     </ol>
 </nav>
+<div class="text-end">
+    <a class="btn btn-sm btn-danger" href="/exams/">Cancel</a>
+</div>
 
-<h1>Edit Exam</h1>
+<h1>Edit Exam - <?= $exam->name ?></h1>
 
 <?php
 echo $this->Form->create($exam);
 ?>
 
-<div class="text-end">
-    <a class="btn btn-sm btn-danger" href="/exams/">Cancel</a>
-</div>
+
 
 <?php
 echo $this->Form->control('name',
@@ -82,7 +83,7 @@ echo $this->Form->control('time',
 </div>
 
 <div class="my-4">
-    <?= $this->Form->button(__('Update Exam Details'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
+    <?= $this->Form->button(__('Save & Continue'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
 </div>
 
 <?php

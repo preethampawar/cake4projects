@@ -66,6 +66,8 @@ class AppController extends Controller
             $this->redirect('/users/login');
             return;
         }
+
+        $this->setLayout();
     }
 
     protected function getDbConnection()
@@ -95,6 +97,21 @@ class AppController extends Controller
             $this->Flash->error('You are not authorized to access this page');
             $this->redirect('/');
         }
+    }
+
+    protected function setLayout($layout = null)
+    {
+        if ($layout !== null) {
+            $this->viewBuilder()->setLayout($layout);
+            return;
+        }
+
+        if ($this->isAdmin()) {
+            $this->viewBuilder()->setLayout('admin');
+            return;
+        }
+
+        $this->viewBuilder()->setLayout('default');
     }
 
     // all cache keys

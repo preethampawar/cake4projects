@@ -1,6 +1,4 @@
-<?= $this->element('adminUsersNav') ?>
-
-<h1>User Attended Exams</h1>
+<h1>Results</h1>
 
 <div class="table-responsive">
     <table class="table mt-3">

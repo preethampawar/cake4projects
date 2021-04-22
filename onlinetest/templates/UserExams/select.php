@@ -14,25 +14,23 @@ $this->Html->meta(
     ['block' => true]
 );
 ?>
-<h4>Test your knowledge</h4>
-<p class="text-muted">You are about the attempt the following online test.</p>
-<div class="alert bg-aliceblue border shadow mt-3">
+<h1 class="">Online Test</h1>
+<div class="text-center">
 
-    <h4 class=""><?= $exam->name ?></h4>
+    <b class=""><?= $exam->name ?></b>
 
-    <p class="text-muted">
-        <p>Total Questions:
+    <div class="text-muted">
+        <div>
             <?php
             echo $exam->exam_questions ? count($exam->exam_questions) : 0;
             ?>
-        </p>
+            questions, <?= $exam->time ?> mins
+        </div>
+    </div>
 
-        <p>Duration: <?= $exam->time ?> mins</p>
-    </p>
-
-    <div class="text-start mt-4">
+    <div class="mt-4">
         <a href="/UserExams/initiate/<?= base64_encode($exam->id) ?>" class="btn btn-primary">
-            Continue &raquo;
+            Continue <i class="fas fa-angle-right"></i>
         </a>
     </div>
 

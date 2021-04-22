@@ -1,34 +1,29 @@
 <h1>Register</h1>
-<hr>
+
 <div class="text-muted">Create your account. It's quick and easy.</div>
 
 <?php
     echo $this->Form->create(null, ['class' => 'needs-validation', 'novalidate']);
 ?>
 
+<?php
+//        echo $this->Form->control('confirm',
+//            [
+//                'type' => 'password',
+//                'label' => 'Confirm Password *',
+//                'minlength' => 5,
+//                'maxlength' => 55,
+//                'required' => true,
+//                'class' => 'form-control mb-3',
+//            ]);
+?>
+
 
 <div class="mt-4">
-    <div class="alert bg-light border shadow">
-        <div class="row mt-3">
-            <div class="col-sm-6">
-                <div class="mb-3">
-                    <?php
-                    echo $this->Form->text('name',
-                        [
-                            'type' => 'text',
-                            'label' => false,
-                            'minlength' => 3,
-                            'maxlength' => 255,
-                            'required' => true,
-                            'class' => 'form-control',
-                            'placeholder' => 'Full Name'
-                        ]);
-                    ?>
-                    <div class="invalid-feedback">
-                        Full Name is required.
-                    </div>
-                </div>
+    <div class="">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
 
+            <div class="col">
                 <div class="mb-3">
                     <?php
                     echo $this->Form->text('username',
@@ -48,6 +43,8 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col">
                 <div class="mb-3">
                     <?php
                     echo $this->Form->password('password',
@@ -66,19 +63,27 @@
                     </div>
                 </div>
 
-                <?php
-        //        echo $this->Form->control('confirm',
-        //            [
-        //                'type' => 'password',
-        //                'label' => 'Confirm Password *',
-        //                'minlength' => 5,
-        //                'maxlength' => 55,
-        //                'required' => true,
-        //                'class' => 'form-control mb-3',
-        //            ]);
-                ?>
             </div>
-            <div class="col-sm-6">
+            <div class="col">
+                <div class="mb-3">
+                    <?php
+                    echo $this->Form->text('name',
+                        [
+                            'type' => 'text',
+                            'label' => false,
+                            'minlength' => 3,
+                            'maxlength' => 255,
+                            'required' => true,
+                            'class' => 'form-control',
+                            'placeholder' => 'Full Name'
+                        ]);
+                    ?>
+                    <div class="invalid-feedback">
+                        Full Name is required.
+                    </div>
+                </div>
+            </div>
+            <div class="col">
                 <div class="mb-3">
                     <?php
                     echo $this->Form->text('phone',
@@ -97,6 +102,8 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col">
                 <div class="mb-3">
                     <?php
                     echo $this->Form->email('email',
@@ -105,8 +112,9 @@
                             'minlength' => 5,
                             'maxlength' => 255,
                             'label' => false,
+                            'required' => true,
                             'class' => 'form-control',
-                            'placeholder' => 'Email (optional)'
+                            'placeholder' => 'Email'
                         ]);
                     ?>
                     <div class="invalid-feedback">
@@ -114,6 +122,8 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col">
                 <?php
                 echo $this->Form->control('address',
                     [
@@ -125,19 +135,18 @@
                     ]);
                 ?>
             </div>
+
         </div>
-        <div class="row mt-2 mb-3">
+        <div class="row mt-3">
             <div class="col-12">
-                <div class="">
-                    <?= $this->Form->button(__('Create Account'), ['class' => 'btn btn-primary']) ?>
+                <div class="text-center">
+                    <?= $this->Form->button(__('Register'), ['class' => 'btn btn-primary mb-3']) ?>
+                    <a href="/users/login" class='btn-orange btn ms-3 mb-3'>Cancel</a>
                 </div>
             </div>
         </div>
 
 
-    </div>
-    <div class="mt-5 text-center">
-        <a href="/users/login" class='btn-orange btn'>Cancel</a>
     </div>
 </div>
 

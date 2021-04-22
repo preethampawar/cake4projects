@@ -1,23 +1,23 @@
-<div class="row">
-    <div class="col-md-10">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Add Exam Questions</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="col-md-2 text-end small">
-        <a class="btn btn-sm btn-danger" href="/exams/">Back</a>
-    </div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
+        <li class="breadcrumb-item"><a href="/exams/edit/<?= $exam->id ?>"><?= $exam->name ?></a></li>
+        <li class="breadcrumb-item active" aria-current="page">Select Questions</li>
+    </ol>
+</nav>
+
+
+<div class="text-end">
+    <a href="/exams/edit/<?= $exam->id ?>" class="btn btn-sm btn-danger">Back</a>
 </div>
 
-<h1><?= $exam->name ?></h1>
+<h1>Select Questions</h1>
 
 <p class="mt-2 small">
-    Total Questions: <span class="selectedQuestionsSpan">0</span>
-    <br>
-    Duration: <?= $exam->time ?> mins
+    <div class="fw-bold">
+        <?= $exam->name ?>
+    </div>
+    <span class="selectedQuestionsSpan">0</span> questions, <?= $exam->time ?> mins
     <!--
     &nbsp;|&nbsp;
     Start Date: <?= $exam->start_date->format('d/m/Y h:i A') ?> &nbsp;|&nbsp;
@@ -124,7 +124,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class=""  style="height: 300px; overflow: auto;">
+                <div class=""  style="height: 400px; overflow: auto;">
                     <table class="table table-sm table-hover small mb-3">
 
                         <tbody>
@@ -175,16 +175,18 @@
                 Selected - <span class="selectedQuestionsSpan">0</span>
             </div>
             <div class="card-body">
-                <div class="" id="examSelectedQuestions" style="height: 300px; overflow: auto;">
+                <div class="" id="examSelectedQuestions" style="height: 400px; overflow: auto;">
                     Click "Add" button on the left pane to add questions
                 </div>
             </div>
         </div>
-
     </div>
 
+</div>
 
-
+<div class="text-center">
+    <a href="/Exams" class="btn btn-sm btn-danger">Cancel</a>
+    <a href="/Exams/view/<?= $exam->id ?>" class="btn btn-sm btn-purple ms-3">Preview Test</a>
 </div>
 
 

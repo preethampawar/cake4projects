@@ -1,15 +1,20 @@
 <?php
-if ($this->request->getSession()->check('User.isAdmin')
-    && $this->request->getSession()->read('User.isAdmin') == true) {
+
+if ($isAdmin) {
     ?>
-    <div class="text-center">
+
+    <div class="">
         <h1>Welcome Admin</h1>
+        <div class="mt-3">
+            Use this platform to create Online Tests
+        </div>
     </div>
+
     <?php
     return;
-} else {
-    $this->assign('showSocialShare', true);
 }
+
+$this->assign('showSocialShare', true);
 ?>
 
 <?php
@@ -19,7 +24,7 @@ foreach($categories as $category) {
 }
 ?>
 
-<?= $this->request->getSession()->check('User.id') ? $this->element('myTestsNav') : null; ?>
+
 
 <div class="mb-3">
     <?php
@@ -109,9 +114,9 @@ foreach($categories as $category) {
             $examNames[] = $exam->name;
             ?>
             <div class="bg-light p-2 mb-3 rounded">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex">
 
-                    <div class="d-flex">
+                    <div class="d-flex flex-grow-1">
                         <span class="text-muted"><?= $k ?>.</span>
                         <div class="ms-1">
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
@@ -127,19 +132,21 @@ foreach($categories as $category) {
 
                         </div>
                     </div>
-                    <div class="ms-1 text-end w-25">
+                    <div class="ms-1 text-end">
 
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                               class="btn btn-primary btn-sm mb-1" title="Start Test">
+                               class="btn btn-primary btn-sm mb-2 " title="Start Test">
                                 <i class="fas fa-play-circle"></i><span class="d-none d-sm-inline"> Start Test</span>
                             </a>
+                    </div>
+                    <div class="ms-1 text-end">
 
                             <span
                                 title="Share Test <?= $exam->name ?>"
-                                class="btn btn-success btn-sm ms-2 mb-1"
+                                class="btn btn-success btn-sm ms-1 mb-2"
                                 role="button"
                                 onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
-                                <i class="fas fa-share"></i><span class="d-none d-md-inline"> Share</span>
+                                <i class="fas fa-share"></i><span class="d-none d-sm-inline"> Share</span>
                             </span>
 
                     </div>

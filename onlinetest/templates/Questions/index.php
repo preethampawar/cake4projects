@@ -3,7 +3,7 @@
 
 <div class="text-end mt-3">
     <a class="btn btn-purple btn-sm" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
-    <a class="btn btn-primary btn-sm ms-3" href="/questions/add">Add Question</a>
+    <a class="btn btn-primary btn-sm ms-3" href="/questions/add">+ Add Question</a>
 </div>
 
 <div id="FilterQuestionBank" class="alert alert-secondary bg-light mt-3 d-none">
@@ -80,7 +80,7 @@
 <div class="mt-3">
     <div>
         <b><?php echo $this->Paginator->counter(
-                'Total Records: {{count}}'
+                'Total Questions: {{count}}'
             ); ?></b>
     </div>
 
@@ -205,17 +205,10 @@
                         ?>
                     </div>
                 </td>
-                <td class="pt-2">
-                    <?php
-                    echo $this->Html->link(
-                        'X',
-                        ['controller' => 'Questions', 'action' => 'delete', $question->id],
-                        [
-                            'confirm' => 'Are you sure you want to delete this question?',
-                            'class' => 'btn btn-danger btn-sm py-0'
-                        ]
-                    );
-                    ?>
+                <td class="pt-2 text-end" style="width:100px;">
+                    <a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="btn btn-sm btn-primary py-0">Edit</a>
+                    <span class="btn btn-danger btn-sm py-0 ms-1" onclick="popup.confirm('/Questions/delete/<?= $question->id ?>', 'Delete Question', 'Are you sure you want to delete this question?', '')">X</span>
+
                 </td>
             </tr>
 

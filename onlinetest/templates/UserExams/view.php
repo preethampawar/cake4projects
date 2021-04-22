@@ -1,4 +1,9 @@
-<?= $this->element('myTestsNav');?>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/UserExams/list">Tests</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><?= $exam->name ?></li>
+    </ol>
+</nav>
 
 <h1 class="mt-3 fw-bold"><?= $exam->name ?></h1>
 

@@ -188,6 +188,8 @@ class ExamsController extends AppController
     }
 
     public function loadSelectedExamQuestions($examId) {
+        $this->setLayout('ajax');
+
         $examQuestions = $this->getExamQuestions($examId);
 
         $this->set('examId', $examId);
@@ -304,7 +306,7 @@ class ExamsController extends AppController
 
                 $this->Flash->success(__('Exam details have been updated successfully.'));
 
-                return $this->redirect(['controller' => 'exams', 'action' => 'index']);
+                return $this->redirect(['controller' => 'Exams', 'action' => 'addQuestions', $exam->id]);
             }
 
             $this->Flash->error(__('Unable to update your exam.'));

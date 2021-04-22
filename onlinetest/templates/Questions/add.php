@@ -46,7 +46,7 @@ $required = $editorEnabled ? false : true;
 $selectedTag = null;
 
 ?>
-<div class="bg-light alert alert-secondary">
+<div class="bg-light alert alert-light">
     <?php
     echo $this->Form->control('name',
         [
@@ -101,7 +101,7 @@ $selectedTag = null;
 </div>
 
 
-<div class="bg-light alert alert-secondary">
+<div class="bg-light alert alert-light mt-4">
 
     <div class="row">
         <div class="col-sm-4">
@@ -148,7 +148,7 @@ $selectedTag = null;
 </div>
 
 <div class="my-4 text-center">
-    <?= $this->Form->button(__('Save Question'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
+    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
 </div>
 
 <?php

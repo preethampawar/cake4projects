@@ -6,6 +6,7 @@
     --cus-maroon: #721c24;
     --cus-maroon-dark: #611c24;
     --cus-light-grey: #f8f8f8;
+    --cus-grey: #efefef;
     --cus-ivory: #fdfde0;
     --cus-ivory-plus: #FAFAC4;
     --cus-aliceblue: #f0f8ff;
@@ -15,6 +16,10 @@
 
 h1,h2,h3,h4 {
     font-size: 1.5em;
+    color: var(--cus-purple);
+    line-height: 1.6em;
+    border-bottom: 2px solid var(--cus-grey);
+    margin-bottom: 1rem;
 }
 
 .navbar-dark .navbar-nav .nav-link {

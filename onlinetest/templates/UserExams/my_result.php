@@ -1,12 +1,9 @@
-<?= $this->element('myTestsNav'); ?>
-
-<div class="d-flex justify-content-between">
-    <h2>Exam Result</h2>
-    <div>
-        <a href="/UserExams/myTests" class="btn btn-primary btn-sm"><i class="fas fa-chevron-circle-left"></i> Back</a>
-    </div>
-</div>
-
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/UserExams/myTests">Results</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><?= $userExamInfo->exam->name ?></li>
+    </ol>
+</nav>
 
 <?php
 //debug($selectedQAs);
@@ -42,45 +39,53 @@ if ($percentage >= 90) {
     $bgClass = "bg-warning";
 }
 ?>
-<h4 class="mt-4"><?= $userExamInfo->exam->name ?></h4>
-<p class="small">
-    Total Questions:
-    <?php
-    echo $userExamInfo->exam->exam_questions ? count($userExamInfo->exam->exam_questions) : 0;
-    ?>
-    &nbsp;|&nbsp;
-    Duration: <?= $userExamInfo->exam->time ?> mins
-</p>
+<h1><?= $userExamInfo->exam->name ?> - Result</h1>
 
-<div class="mt-3">
-    <div class="card">
-        <div class="card-header">
-            <div class="text-primary">
-                <span class="fw-bold fs-5">Score - <?= $correctQuestions ?></span>
-                <span class="small">(<?= $percentage ?>%)</span>
+<div class="row">
+    <div class="col-md-3">
+        <div class="text-primary fs-4 fw-bold text-center">
+            <div class="">Score - <?= $correctQuestions ?></div>
+            <div class=""><?= $percentage ?>%</div>
+        </div>
+        <div class="text-center mb-2">
+            [<?php
+            echo $userExamInfo->exam->exam_questions ? count($userExamInfo->exam->exam_questions) : 0;
+            ?>
+            questions, <?= $userExamInfo->exam->time ?> mins]
+        </div>
+    </div>
+    <div class="col">
+        <div class="small mb-2 fw-bold alert bg-light">
+            <div class="">
+                <div class="text-success">Correct: <?= $correctQuestions ?> (<?= $percentage ?>%)</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $percentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
-            <div class="small mb-2">
-                <div class="mt-2">
-                    <div class="text-success">Correct: <?= $correctQuestions ?> (<?= $percentage ?>%)</div>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <?= $percentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+            <div class="mt-2">
+                <div class="text-danger">Wrong: <?= $wrongQuestions ?> (<?= $wrongPercentage ?>%)</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: <?= $wrongPercentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <div class="mt-2">
-                    <div class="text-danger">Wrong: <?= $wrongQuestions ?> (<?= $wrongPercentage ?>%)</div>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: <?= $wrongPercentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="text-warning">Not Attempted: <?= $notAttemptedQuestions ?> (<?= $skippedPercentage ?>%)</div>
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $skippedPercentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+            </div>
+            <div class="mt-2">
+                <div class="text-warning">Not Attempted: <?= $notAttemptedQuestions ?> (<?= $skippedPercentage ?>%)</div>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: <?= $skippedPercentage ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
-        <div class="card-body">
+    </div>
+</div>
+
+
+
+
+<div class="mt-3">
+    <div class="">
+
+        <div class="">
+            <h4>Question Answers</h4>
             <?php
             $k = 1;
             $correctQAs = [];

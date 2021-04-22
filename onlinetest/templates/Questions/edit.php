@@ -47,7 +47,7 @@ $selectedEducationLevel = null;
 $selectedTags = !empty($question->tags) ? explode(',', $question->tags) : [];
 ?>
 
-<div class="bg-light alert alert-secondary">
+<div class="bg-light alert alert-light mt-4">
     <?php
     echo $this->Form->control('name',
         [
@@ -101,7 +101,7 @@ $selectedTags = !empty($question->tags) ? explode(',', $question->tags) : [];
     ?>
 </div>
 
-<div class="bg-light alert alert-secondary">
+<div class="bg-light alert alert-light mt-4">
 
     <div class="row">
         <div class="col-sm-4">
@@ -147,7 +147,7 @@ $selectedTags = !empty($question->tags) ? explode(',', $question->tags) : [];
 </div>
 
 <div class="my-4 text-center">
-    <?= $this->Form->button(__('Update Question'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
+    <?= $this->Form->button(__('Update'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
 </div>
 
 <?php

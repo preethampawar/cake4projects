@@ -1,3 +1,5 @@
+
+
 <?php
 $categoryList = null;
 foreach($categories as $category) {
@@ -14,7 +16,7 @@ foreach($categories as $category) {
 <div>
     <div>
         <b><?php echo $this->Paginator->counter(
-                'Total Records: {{count}}'
+                'Total Tests: {{count}}'
             ); ?></b>
     </div>
 
@@ -87,9 +89,9 @@ foreach($categories as $category) {
                     </div>
                 </td>
                 <td class="text-end">
-                    <a href="/exams/view/<?= $exam->id ?>" title="Show details" class="btn btn-purple btn-sm py-0">Preview</a>
+                    <a href="/exams/edit/<?= $exam->id ?>" title="Show details" class="btn btn-primary btn-sm py-0">Edit</a>
+                    <a href="/exams/view/<?= $exam->id ?>" title="Show details" class="btn btn-purple btn-sm py-0 ms-2">Preview</a>
 
-                    <a href="/exams/addQuestions/<?= $exam->id ?>" title="Add or Remove Questions" class="btn btn-primary btn-sm py-0 ms-2">Add Questions</a>
 
                     <?php
                     echo $this->Html->link(

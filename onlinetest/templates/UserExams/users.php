@@ -1,11 +1,9 @@
-<?= $this->element('adminUsersNav') ?>
-
-<h1>Users</h1>
+<h1>Candidates</h1>
 
 <div>
     <div>
         <b><?php echo $this->Paginator->counter(
-                'Total Records: {{count}}'
+                'Total: {{count}}'
             ); ?></b>
     </div>
 
@@ -29,14 +27,14 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table mt-3">
+    <table class="table small">
         <thead>
         <tr>
             <th>#</th>
             <th>Username</th>
             <th>Name</th>
             <th>Phone</th>
-            <th>Exams Attended</th>
+            <th>Tests</th>
             <th></th>
         </tr>
         </thead>
@@ -65,7 +63,7 @@
                 </td>
                 <td class="text-end">
                     <a href="/UserExams/userAttendedExams/<?= $user->id ?>" class="btn btn-primary btn-sm py-0">
-                        Attempted Exams
+                        Results
                     </a>
                  </td>
             </tr>

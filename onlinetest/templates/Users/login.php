@@ -1,28 +1,26 @@
-
-
 <div class="row">
     <div class="">
         <h1>Login</h1>
-        <hr>
+
         <?php
         if ($examDetails) {
             ?>
 
-            <div class="mb-4 mt-3 mb-3">
-                <div>You need to login to attend this online test</div>
-                <h5><?= $examDetails->name ?></h5>
-                <div class="mt-3">Register yourself if you don't have an account. It's easy.</div>
+            <div class="alert alert-danger mb-4">
+                <div>You need to login to attend this test - <b><?= $examDetails->name ?></b></div>
+                <div class=""><a href="/users/register">Register</a> yourself if you don't have an account. It's easy.</div>
+                <div class="text-end"><a href="/users/list" class="btn btn-sm btn-danger py-0">Cancel</a></div>
             </div>
             <?php
         }
         ?>
 
-        <div class="mt-4 alert shadow bg-light border">
+        <div class="">
             <div class="mt-3">
                 <?php
                 echo $this->Form->create(null, ['class' => 'needs-validation', 'novalidate']);
                 ?>
-                <div class="mb-3">
+                <div class="">
                     <?php
                     echo $this->Form->text('username', [
                         'type' => 'text',
@@ -37,7 +35,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
+                <div class="mt-3">
                     <?php
                     echo $this->Form->password('kunji', [
                         'type' => 'password',
@@ -61,9 +59,9 @@
                 ?>
             </div>
         </div>
-        <div class="mt-4 alert shadow bg-aliceblue border text-center">
+        <div class="mt-5 alert bg-light text-center mx-auto">
             Don't have an account? <br>
-            <a href="/users/register" class="mt-2 btn btn-orange">Click here to register</a>
+            <a href="/users/register" class="mt-2 btn btn-sm btn-orange">Click here to register</a>
         </div>
     </div>
 </div>

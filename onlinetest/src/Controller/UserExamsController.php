@@ -414,6 +414,10 @@ class UserExamsController extends AppController
 
     public function list($categoryId = null)
     {
+        if ($this->request->getSession()->check('selectedExamId')) {
+            $this->request->getSession()->delete('selectedExamId');
+        }
+
         $this->loadModel(ExamsTable::class);
         $this->loadComponent('Paginator');
         $examsCacheKey = $this->getExamsCacheKey($categoryId);
@@ -445,6 +449,7 @@ class UserExamsController extends AppController
         $this->set(compact('exams'));
         $this->set('categories', $categories);
         $this->set('selectedCategoryId', $categoryId);
+        $this->set('isAdmin', $this->isAdmin());
     }
 
     public function select($examId)

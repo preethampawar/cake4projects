@@ -17,7 +17,7 @@ switch ($action) {
 ?>
 <nav class="d-print-none mb-3 card-header">
     <div class="nav nav-tabs card-header-tabs nav-sm">
-        <a class="nav-link px-2 <?= $usersLinkClass ?>" href="/UserExams/users">Users</a>
-        <a class="nav-link px-2 <?= $userAttendedExamsClass ?>" href="/UserExams/userAttendedExams">User Attempted Exams</a>
+        <a class="nav-link px-2 <?= $usersLinkClass ?>" href="/UserExams/users">Candidates</a>
+        <a class="nav-link px-2 <?= $userAttendedExamsClass ?>" href="/UserExams/userAttendedExams">Results</a>
     </div>
 </nav>
