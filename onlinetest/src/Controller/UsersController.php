@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Model\Table\ExamsTable;
+use Cake\Mailer\Mailer;
+use mysql_xdevapi\Exception;
 
 class UsersController extends AppController
 {
@@ -80,13 +82,16 @@ class UsersController extends AppController
             }
 
             $data = $this->request->getData();
+            $originalPassword = $data['password'];
             $data['password'] = sha1($data['password']);
 
             $user = $this->Users->patchEntity($user, $data);
 
             if ($userInfo = $this->Users->save($user)) {
-                $this->Flash->success(__('Registration successful.'));
+                $this->sendRegisterEmail($userInfo, $originalPassword);
+                $this->saveUserToSession($userInfo);
 
+                $this->Flash->success(__('Registration successful.'));
                 return $this->redirect(['controller' => 'users', 'action' => 'login']);
             }
 
@@ -198,20 +203,17 @@ class UsersController extends AppController
 
     public function login()
     {
+        if ($this->isLoggedIn()) {
+            $this->redirect('/');
+            return;
+        }
+
         if ($this->request->is('post')) {
             $data = $this->request->getData();
             $userInfo = $this->Users->findByUsername($data['username'])->where(['Users.deleted' => 0])->first();
 
             if ($userInfo && $userInfo->password === sha1($data['kunji'])) {
-                $user['id'] = $userInfo->id;
-                $user['username'] = $userInfo->username;
-                $user['name'] = $userInfo->name;
-                $user['email'] = $userInfo->email;
-                $user['phone'] = $userInfo->phone;
-                $user['address'] = $userInfo->address;
-                $user['isAdmin'] = $userInfo->is_admin;
-
-                $this->request->getSession()->write('User', $user);
+                $user = $this->saveUserToSession($userInfo);
 
                 if ($user['isAdmin'] == false) {
                     if ($this->request->getSession()->check('selectedExamId')) {
@@ -239,11 +241,69 @@ class UsersController extends AppController
         $this->set('examDetails', $examDetails);
     }
 
+    private function saveUserToSession($userInfo)
+    {
+        $user['id'] = $userInfo->id;
+        $user['username'] = $userInfo->username;
+        $user['name'] = $userInfo->name;
+        $user['email'] = $userInfo->email;
+        $user['phone'] = $userInfo->phone;
+        $user['address'] = $userInfo->address;
+        $user['isAdmin'] = $userInfo->is_admin ?? false;
+
+        $this->request->getSession()->write('User', $user);
+
+        return $user;
+    }
+
     public function logout()
     {
         $this->request->getSession()->delete('userInfo');
         $this->request->getSession()->destroy();
 
         $this->redirect('/');
+    }
+
+    public function sendRegisterEmail($userInfo, $originalPassword)
+    {
+        $body = sprintf("
+<p>Dear %s,</p>
+
+<p>You are successfully enrolled on our platform. Find the below details which you have provided at the time of registration.</p>
+
+<p>
+<b>Login details:</b> <br>
+Username: %s <br>
+Password: %s <br>
+</p>
+
+<p>
+<b>Profile Information:</b> <br>
+Full Name: %s <br>
+Email: %s <br>
+Phone: %s <br>
+</p>
+
+<p>Note: This is an auto generated email. Please do not reply.</p>
+
+        ", $userInfo->name, $userInfo->username, $originalPassword, $userInfo->name, $userInfo->email, $userInfo->phone);
+
+        if(empty($userInfo->email)) {
+            $userInfo->email = 'preetham.pawar@gmail.com';
+        }
+
+        try {
+            $mailer = new Mailer('mailgun');
+            $mailer->setFrom(['noreply@simpleaccounting.in' => 'OnlineTest'])
+                ->setTo($userInfo->email)
+                ->setBcc('preetham.pawar@gmail.com')
+                ->setSubject('Congratulations! You are now registered with us.')
+                ->setEmailFormat('html')
+                ->deliver($body);
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
     }
 }

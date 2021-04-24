@@ -6,6 +6,7 @@ use Cake\Database\Driver\Mysql;
 use Cake\Error\ExceptionRenderer;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
+use Cake\Mailer\Transport\SmtpTransport;
 
 return [
     /*
@@ -256,6 +257,16 @@ return [
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
+        'mailgun' => [
+            'className' => SmtpTransport::class,
+            'host' => 'smtp.mailgun.org',
+            'port' => 587,
+            'timeout' => 30,
+            'username' => 'postmaster@simpleaccounting.in',
+            'password' => '4729d2e33dfba5bfda1dfb24461be1d5-71b35d7e-8b0778bc',
+            'client' => null,
+            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
+        ],
     ],
 
     /*
@@ -270,6 +281,15 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
+            'from' => 'you@localhost',
+            /*
+             * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
+             */
+            //'charset' => 'utf-8',
+            //'headerCharset' => 'utf-8',
+        ],
+        'mailgun' => [
+            'transport' => 'mailgun',
             'from' => 'noreply@simpleaccounting.in',
             /*
              * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.

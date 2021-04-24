@@ -82,6 +82,15 @@ class AppController extends Controller
             ->fetchAll('assoc');
     }
 
+    public function isLoggedIn()
+    {
+        if($this->request->getSession()->check('User') == true) {
+           return true;
+        }
+
+        return false;
+    }
+
     public function isAdmin()
     {
         if($this->request->getSession()->check('User.isAdmin') == true) {
