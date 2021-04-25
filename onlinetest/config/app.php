@@ -257,16 +257,6 @@ return [
             'tls' => false,
             'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
         ],
-        'mailgun' => [
-            'className' => SmtpTransport::class,
-            'host' => 'smtp.mailgun.org',
-            'port' => 587,
-            'timeout' => 30,
-            'username' => 'postmaster@simpleaccounting.in',
-            'password' => '4729d2e33dfba5bfda1dfb24461be1d5-71b35d7e-8b0778bc',
-            'client' => null,
-            'url' => env('EMAIL_TRANSPORT_DEFAULT_URL', null),
-        ],
     ],
 
     /*
