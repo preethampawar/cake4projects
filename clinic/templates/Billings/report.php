@@ -67,7 +67,7 @@ endforeach;
             data.addRows(billingData);
 
             var options = {
-                title: 'Total Billing ' . $totalBillingAmount,
+                title: 'Billed Amount - <?= $totalBillingAmount ?> (From: <?= date('d M yy' , strtotime($fromDate)) ?>, To: <?= $toDate?>)',
                 width: '100%',
                 height: '50%',
                 hAxis: {
@@ -91,7 +91,7 @@ endforeach;
 </div>
 
 
-<div class="">
+<div class="table-responsive">
     <table class="table table-sm small mt-3">
         <thead>
         <tr>
@@ -134,8 +134,7 @@ endforeach;
         endforeach;
         ?>
         <tr>
-            <td colspan="3" class="text-end fw-bold">Total Amount:</td>
-            <td class="fw-bold"><?= $totalAmount ?></td>
+            <td colspan="4" class="text-end">Total Amount: <b><?= $totalAmount ?></b></td>
         </tr>
         </tbody>
 
