@@ -67,7 +67,7 @@ endforeach;
             data.addRows(billingData);
 
             var options = {
-                title: 'Billed Amount - <?= $totalBillingAmount ?> (From: <?= date('d M yy' , strtotime($fromDate)) ?>, To: <?= date('d M yy' , strtotime($toDate)) ?>)',
+                title: 'Billed Amount - <?= $totalBillingAmount ?> (From: <?= date('d M y' , strtotime($fromDate)) ?>, To: <?= date('d M y' , strtotime($toDate)) ?>)',
                 width: '100%',
                 height: '50%',
                 hAxis: {
