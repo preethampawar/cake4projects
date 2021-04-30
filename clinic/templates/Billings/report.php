@@ -99,7 +99,7 @@ endforeach;
             <th>Patient Name</th>
 
             <th>Date</th>
-            <th>Amount</th>
+            <th class="text-end">Amount</th>
         </tr>
         </thead>
 
@@ -125,7 +125,7 @@ endforeach;
                 <td>
                     <?= $billing->bill_date->format('d/m/Y') ?>
                 </td>
-                <td>
+                <td class="text-end">
                     <?= $billing->amount ?>
                 </td>
             </tr>
