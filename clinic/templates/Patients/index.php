@@ -1,7 +1,7 @@
 <h1>Patients List</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/patients/add">Register Patient</a>
+    <a class="btn btn-primary btn-sm" href="/patients/add">+ Add New Patient</a>
 </div>
 
 <div>

@@ -38,6 +38,7 @@
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                             <a class="nav-link" href="/patients">Patients</a>
                             <a class="nav-link" href="/billings">Billing</a>
+                            <a class="nav-link" href="/billings/report">Billing Report</a>
                             <a class="nav-link" href="/patients/search">Search</a>
                             <a class="nav-link" href="/patients/logout">Logout</a>
                             <?php

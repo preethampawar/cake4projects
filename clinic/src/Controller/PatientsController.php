@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -35,7 +36,7 @@ class PatientsController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            if(empty($data['join_date'])) {
+            if (empty($data['join_date'])) {
                 $data['join_date'] = date('Y-m-d');
             }
 
@@ -43,6 +44,7 @@ class PatientsController extends AppController
 
             if ($this->Patients->save($patient)) {
                 $this->Flash->success(__('Your patient has been saved.'));
+
                 return $this->redirect(['action' => 'index']);
             }
 
@@ -53,7 +55,7 @@ class PatientsController extends AppController
 
         $maxOpdNo = 100;
         if ($maxOpd) {
-            $maxOpdNo = (int) $maxOpd->opd_no + 1;
+            $maxOpdNo = (int)$maxOpd->opd_no + 1;
         }
 
         $this->set('patient', $patient);
@@ -67,10 +69,9 @@ class PatientsController extends AppController
             ->firstOrFail();
 
         if ($this->request->is(['post', 'put'])) {
-
             $data = $this->request->getData();
 
-            if(empty($data['join_date'])) {
+            if (empty($data['join_date'])) {
                 $data['join_date'] = date('Y-m-d');
             }
 
@@ -78,6 +79,7 @@ class PatientsController extends AppController
 
             if ($this->Patients->save($patient)) {
                 $this->Flash->success(__('Your patient has been updated.'));
+
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('Unable to update your patient.'));
@@ -120,11 +122,11 @@ class PatientsController extends AppController
 
     public function download()
     {
-        $this->layout = false;
-        
+        $this->viewBuilder()->setLayout('ajax');
+
         $filename = 'Patients_List_' . date('d_m_Y') . '.csv';
         header('Content-Type: application/csv');
-        header('Content-Disposition: attachment; filename="'.$filename.'";');
+        header('Content-Disposition: attachment; filename="' . $filename . '";');
 
         if ($this->request->getSession()->read('loggedIn') != true) {
             return $this->redirect('/', 401);
@@ -135,13 +137,12 @@ class PatientsController extends AppController
         $out = fopen('php://output', 'w');
 
         $csvData = [
-            'Id', 'OPD No.', 'Join Date', 'Name', 'Age', 'Sex', 'Phone', 'Blood Group', 'Address', 'Referred By'
+            'Id', 'OPD No.', 'Join Date', 'Name', 'Age', 'Sex', 'Phone', 'Blood Group', 'Address', 'Referred By',
         ];
 
         fputcsv($out, $csvData);
 
-        foreach($patients as $patient) {
-
+        foreach ($patients as $patient) {
             $csvData = [
                 $patient->id,
                 $patient->opd_no,
@@ -149,16 +150,14 @@ class PatientsController extends AppController
                 addslashes($patient->name),
                 $patient->age,
                 addslashes($patient->sex),
-                $patient->phone . ",",
+                $patient->phone . ',',
                 addslashes($patient->blood_group),
                 addslashes($patient->address),
-                addslashes($patient->referred_by)
+                addslashes($patient->referred_by),
             ];
 
             fputcsv($out, $csvData);
         }
-
-
 
         fpassthru($out);
         //fclose($out);
@@ -172,10 +171,11 @@ class PatientsController extends AppController
 
             $credentials = [
                 'user' => 'Subbi',
-                'password' => '9848597878'
+                'password' => '9848597878',
             ];
 
-            if (trim($data['user']) === $credentials['user'] &&
+            if (
+                trim($data['user']) === $credentials['user'] &&
                 trim($data['kunji']) === $credentials['password']
             ) {
                 $this->request->getSession()->write('loggedIn', true);

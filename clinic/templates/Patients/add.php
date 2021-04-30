@@ -1,11 +1,11 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/patients/">Patients</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Register</li>
+    <li class="breadcrumb-item active" aria-current="page">Add New Patient</li>
   </ol>
 </nav>
 
-<h1 class="mb-4">Register Patient</h1>
+<h1 class="mb-4">Add New Patient</h1>
 
 <?php
     echo $this->Form->create($patient);
