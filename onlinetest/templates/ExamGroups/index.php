@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div class="table-responsive">
+<div class="">
     <table class="table table-sm mt-3">
         <thead>
         <tr>
