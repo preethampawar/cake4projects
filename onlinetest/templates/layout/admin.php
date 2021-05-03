@@ -99,7 +99,7 @@ switch($controller) {
         </nav>
 
         <main class="main">
-            <div id="mainDiv" class="container-fluid mb-5 bg-white pt-2 pb-4 rounded">
+            <div id="mainDiv" class="container-fluid mb-5 bg-white pt-2 pb-4 rounded  min-vh-100">
                 <?php
                 $message = $this->Flash->render();
 
