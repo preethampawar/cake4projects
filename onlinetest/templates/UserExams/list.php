@@ -30,11 +30,16 @@ foreach($categories as $category) {
     <?php
     if(!$this->request->getSession()->check('User.id')) {
         ?>
-        <img src="/img/learning.jpg" class="w-100 d-block mb-4" alt="..." style="max-height: 400px">
+        <img id="heroImage" class="w-100 d-block mb-4" alt="" style="max-height: 400px" loading="lazy">
+        <script>
+            $(document).ready(function () {
+                $('#heroImage').attr('src', '/img/learning.jpg');
+            })
+        </script>
         <?php
     }
     ?>
-    <h5 class="card-title">Free online tests to practice for competitive and entrance exams.</h5>
+    <h5>Free online tests to practice for competitive and entrance exams.</h5>
 </div>
 
 <div class="mt-3">
@@ -75,7 +80,7 @@ foreach($categories as $category) {
                     }
                     ?>
                     <div class="col">
-                        <div class="card h-100 <?=$bgClass?>" role="button">
+                        <div class="card h-100  shadow-sm <?=$bgClass?>" role="button">
                             <div class="card-body" onclick="window.location = '/UserExams/list/<?= $categoryId ?>/<?= $categoryName ?>'">
                                 <div class="text-center">
 
@@ -91,7 +96,7 @@ foreach($categories as $category) {
             ?>
         </div>
 
-        <div class="px-2 py-2 mb-1 rounded bg-purple">
+        <div class="px-2 py-2 mb-3 rounded bg-purple text-white">
             <!-- <div class="fs-5"><span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span> Tests </div> -->
             <div class="fs-5">
                 <span class="badge rounded rounded-circle bg-orange"><?php echo count($exams) ?></span>
@@ -109,59 +114,56 @@ foreach($categories as $category) {
                 'escape' => false,
                 'fullBase' => true,
             ]);
-            $fullUrl = urlencode($fullUrl);
-            $title = urlencode($exam->name);
+            // $fullUrl = urlencode($fullUrl);
+//            $title = urlencode($exam->name);
+            $title = $exam->name;
             $examNames[] = $exam->name;
             ?>
-            <div class="bg-light p-2 mb-3 rounded">
-                <div class="d-flex">
-
+            <div class="pb-2">
+                <div class="">
                     <div class="d-flex flex-grow-1">
-                        <span class="text-muted"><?= $k ?>.</span>
+                        <span class="fs-5 text-primary"><?= $k ?>.</span>
                         <div class="ms-1">
                             <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                               class="ms-0 text-primary">
-                                <b><?= $exam->name ?></b>
+                               class="fs-5 text-primary text-decoration-none">
+                                <?= $exam->name ?>
                             </a>
                             <br>
-                            <span class="text-muted small">
+                            <span class="small">
                                 <?= count($exam->exam_questions) ?> questions,
 
                                 <?= $exam->time ?> mins
                             </span>
 
+                            <div class="mt-2 text-left">
+                                <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
+                                   class="btn btn-primary btn-sm" title="Start Test">
+                                    <i class="fas fa-play-circle"></i><span class=""> Start Test</span>
+                                </a>
+
+                                <span
+                                    title="Share Test <?= $exam->name ?>"
+                                    class="btn btn-success btn-sm ms-3"
+                                    role="button"
+                                    onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
+                                    <i class="fas fa-share"></i><span class=""> Share</span>
+                                </span>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="ms-1 text-end">
-
-                            <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                               class="btn btn-primary btn-sm mb-2 " title="Start Test">
-                                <i class="fas fa-play-circle"></i><span class="d-none d-sm-inline"> Start Test</span>
-                            </a>
-                    </div>
-                    <div class="ms-1 text-end">
-
-                            <span
-                                title="Share Test <?= $exam->name ?>"
-                                class="btn btn-success btn-sm ms-1 mb-2"
-                                role="button"
-                                onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
-                                <i class="fas fa-share"></i><span class="d-none d-sm-inline"> Share</span>
-                            </span>
-
-                    </div>
-
                 </div>
 
-                <div class="mt-1 mb-0">
+
+                <div class="mt-3 mb-1">
                     <?php
                     if ($categoryList && $exam->exam_categories) {
                         foreach($exam->exam_categories as $examCategory) {
                             $categoryName = $categoryList[$examCategory->category_id];
-                            $btnClass = 'btn-orange';
+                            $btnClass = 'btn-orange-light';
 
                             if ($selectedCategoryId && $selectedCategoryId == $examCategory->category_id) {
-                                $btnClass = 'btn-primary';
+                                $btnClass = 'btn-primary-light';
                             }
                             ?>
                             <a
@@ -175,6 +177,8 @@ foreach($categories as $category) {
                     }
                     ?>
                 </div>
+
+
 
 
                 <!-- Modal -->
@@ -245,6 +249,7 @@ foreach($categories as $category) {
                 </div>
 
             </div>
+            <hr>
 
         <?php
         endforeach;

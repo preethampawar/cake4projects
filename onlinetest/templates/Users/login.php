@@ -9,7 +9,7 @@
             <div class="alert alert-danger mb-4">
                 <div>You need to login to attend this test - <b><?= $examDetails->name ?></b></div>
                 <div class=""><a href="/users/register">Register</a> yourself if you don't have an account. It's easy.</div>
-                <div class="text-end"><a href="/users/list" class="btn btn-sm btn-danger py-0">Cancel</a></div>
+                <div class="text-end"><a href="/UserExams/list" class="btn btn-sm btn-danger py-0">Cancel</a></div>
             </div>
             <?php
         }

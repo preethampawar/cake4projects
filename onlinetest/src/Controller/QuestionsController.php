@@ -7,6 +7,7 @@ use App\Model\Table\SubjectsTable;
 use App\Model\Table\EducationLevelsTable;
 use App\Model\Table\TagsTable;
 use Cake\Database\Expression\QueryExpression;
+use Cake\Event\EventInterface;
 use Cake\ORM\Query;
 
 class QuestionsController extends AppController
@@ -17,12 +18,16 @@ class QuestionsController extends AppController
 
         $this->loadComponent('Paginator');
         $this->loadComponent('Flash'); // Include the FlashComponent
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
 
         if ($this->request->getSession()->check('User.isAdmin')
             && $this->request->getSession()->read('User.isAdmin') == false) {
             $this->Flash->error('You are not authorized to access this page');
-            $this->redirect('/UserExams/list/');
-            return;
+            return $this->redirect('/UserExams/list/');
         }
     }
 
@@ -321,7 +326,7 @@ class QuestionsController extends AppController
                 trim($data['kunji']) === $credentials['password']
             ) {
                 $this->request->getSession()->write('loggedIn', true);
-                $this->redirect('/');
+                return $this->redirect('/');
             } else {
                 $this->Flash->error(__('Error! Invalid User or Password.'));
             }
@@ -333,6 +338,6 @@ class QuestionsController extends AppController
         $this->request->getSession()->write('loggedIn', false);
         $this->request->getSession()->destroy();
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 }

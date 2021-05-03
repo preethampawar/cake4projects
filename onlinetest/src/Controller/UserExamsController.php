@@ -59,9 +59,7 @@ class UserExamsController extends AppController
 
         if ($error) {
             $this->Flash->error(__($error));
-            $this->redirect('/UserExams/');
-
-            return;
+            return $this->redirect('/UserExams/');
         }
 
         $this->loadModel(ExamsTable::class);
@@ -70,7 +68,7 @@ class UserExamsController extends AppController
             ->contain(['ExamQuestions.Questions.QuestionOptions'])
             ->firstOrFail();
 
-        $userExamInfo = $this->getUserExamDetails($examId);
+        $userExamInfo = $this->getUserExamTimeDetails($examId);
 
         $this->set(compact('exam', 'userExamInfo'));
     }
@@ -90,7 +88,7 @@ class UserExamsController extends AppController
         return null;
     }
 
-    private function getUserExamDetails($examId)
+    private function getUserExamTimeDetails($examId)
     {
         $data = null;
 
@@ -123,35 +121,24 @@ class UserExamsController extends AppController
         $examId = (int)base64_decode($encodedExamId);
         $userId = $this->request->getSession()->read('User.id');
 
-        $this->loadModel(UserExamsTable::class);
-        $this->loadModel(UserExamQuestionAnswersTable::class);
+        $this->deleteAllUserExamsByExamId($userId, $examId);
 
-        $userExams = $this->UserExams->find('all')->where(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
-
-        $userExamCacheKeys = [];
-        foreach($userExams as $row) {
-            $userExamCacheKeys[] = $this->getUserExamCacheKey($row->id);
-            $userExamCacheKeys[] = $this->getUserExamSelectedQACacheKey($row->id);
+        if ($this->createUserExamSession($userId, $examId)) {
+            $this->Flash->success(__('Online test has started.'));
+            return $this->redirect('/UserExams/startTest/'.$encodedExamId);
         }
-        $result = Cache::deleteMany($userExamCacheKeys);
 
-        $this->UserExams->deleteAll(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
-        $this->UserExamQuestionAnswers->deleteAll(['UserExamQuestionAnswers.user_id' => $userId, 'UserExamQuestionAnswers.exam_id' => $examId]);
-
-        $this->redirect('/UserExams/startTest/'.$encodedExamId);
-        return;
+        $this->Flash->error(__('An error occurred while connecting to server. Please try again'));
+        return $this->redirect($this->referer());
     }
 
-    public function startTest($examId)
+    private function createUserExamSession($userId, $examId)
     {
-        $examId = (int)base64_decode($examId);
         $error = $this->checkExamValidity($examId);
 
         if ($error) {
             $this->Flash->error(__($error));
-            $this->redirect('/UserExams/');
-
-            return;
+            return $this->redirect('/UserExams/');
         }
 
         $this->loadModel(ExamsTable::class);
@@ -170,34 +157,78 @@ class UserExamsController extends AppController
 
         $examDuration = (int)$exam->time;
 
-        if (!$this->request->getSession()->check('writingUserExam.' . $exam->id)) {
-            $data['exam_id'] = $exam->id;
-            $data['user_id'] = $this->request->getSession()->read('User.id');
-            $data['duration'] = $examDuration;
+        $data['exam_id'] = $examId;
+        $data['user_id'] = $userId;
+        $data['duration'] = $examDuration;
 
-            $userExam = $this->UserExams->newEmptyEntity();
-            $userExam = $this->UserExams->patchEntity($userExam, $data);
+        $userExam = $this->UserExams->newEmptyEntity();
+        $userExam = $this->UserExams->patchEntity($userExam, $data);
 
-            if ($userExamInfo = $this->UserExams->save($userExam)) {
-                $this->request->getSession()->write('writingUserExam.' . $exam->id, $userExam->id);
-                $this->request->getSession()->write('userExamInfo.' . $exam->id, $userExamInfo);
-                $this->Flash->success(__('Online test has started.'));
-            }
+        if ($userExamInfo = $this->UserExams->save($userExam)) {
+            $this->request->getSession()->write('writingUserExam.' . $examId, $userExamInfo->id);
+            $this->request->getSession()->write('userExamInfo.' . $examId, $userExamInfo);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private function deleteAllUserExamsByExamId($userId, $examId)
+    {
+        $this->loadModel(UserExamsTable::class);
+        $this->loadModel(UserExamQuestionAnswersTable::class);
+
+        $userExams = $this->UserExams->find('all')->where(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
+        $userExamCacheKeys = [];
+
+        foreach($userExams as $row) {
+            $userExamCacheKeys[] = $this->getUserExamCacheKey($row->id);
+            $userExamCacheKeys[] = $this->getUserExamSelectedQACacheKey($row->id);
+        }
+
+        Cache::deleteMany($userExamCacheKeys);
+
+        $this->UserExams->deleteAll(['UserExams.user_id' => $userId, 'UserExams.exam_id' => $examId]);
+        $this->UserExamQuestionAnswers->deleteAll(['UserExamQuestionAnswers.user_id' => $userId, 'UserExamQuestionAnswers.exam_id' => $examId]);
+    }
+
+    public function startTest($examId)
+    {
+        $examId = (int)base64_decode($examId);
+
+        $error = $this->checkExamValidity($examId);
+        if ($error) {
+            $this->cleanUpUserExamSession($examId);
+            $this->Flash->error(__($error));
+            return $this->redirect('/UserExams/');
         }
 
         $error = $this->checkUserExamValidity($examId);
-
         if ($error) {
             $this->cleanUpUserExamSession($examId);
 
-            $this->Flash->error(__($error));
-            $this->redirect('/UserExams/myResult/' . base64_encode($examId));
-
-            return;
+            //$this->Flash->error(__($error));
+            // return $this->redirect('/UserExams/myResult/' . base64_encode($examId));
+            return $this->redirect('/UserExams/myTests/');
         }
 
-        $userExamId = $this->request->getSession()->read('writingUserExam.' . $exam->id);
-        $userExamQAs = $this->UserExamQuestionAnswers->findByUserExamId($userExamId)->all();
+        $this->loadModel(ExamsTable::class);
+        $this->loadModel(UserExamsTable::class);
+        $this->loadModel(UserExamQuestionAnswersTable::class);
+
+        $examCacheKey = $this->getExamCacheKey($examId);
+        $exam = Cache::read($examCacheKey);
+
+        if ($exam === null) {
+            $exam = $this->Exams->findById($examId)
+                // ->contain(['ExamQuestions.Questions.QuestionOptions'])
+                ->firstOrFail();
+            Cache::write($examCacheKey, $exam);
+        }
+
+        $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
+        $userExamQAs = $this->UserExamQuestionAnswers->findByUserExamId($userExamInfo->id)->all();
 
         $selectedQAs = [];
         foreach ($userExamQAs as $row) {
@@ -214,11 +245,14 @@ class UserExamsController extends AppController
             ]
         );
 
-        $this->set(compact('exam', 'examsQuestions', 'userExamId', 'selectedQAs'));
+        $this->set(compact('exam', 'examsQuestions', 'userExamInfo', 'selectedQAs'));
     }
 
     public function checkUserExamValidity($examId)
     {
+        if (!$this->request->getSession()->check('userExamInfo.' . $examId)) {
+            return 'You have already finished this exam.';
+        }
         $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
         $duration = (int)$userExamInfo->duration;
 
@@ -244,38 +278,94 @@ class UserExamsController extends AppController
 
     public function updateAnswer()
     {
-        $this->layout = false;
-        $data = $this->request->getData();
+        $this->setLayout('ajax');
+        $data = null;
 
-        $userExamQuestionAnswer['user_exam_id'] = base64_decode($data['userExamId']);
-        $userExamQuestionAnswer['question_id'] = base64_decode($data['examQuestionId']);
-        $userExamQuestionAnswer['answer'] = $data['selectedOption'];
-        $userExamQuestionAnswer['exam_id'] = base64_decode($data['examId']);
-        $userExamQuestionAnswer['user_id'] = $this->request->getSession()->read('User.id');
+        if ($this->isLoggedIn()) {
+            $data = $this->request->getData();
+            $userExamQuestionAnswer['user_exam_id'] = base64_decode($data['userExamId']);
+            $userExamQuestionAnswer['question_id'] = base64_decode($data['examQuestionId']);
+            $userExamQuestionAnswer['answer'] = $data['selectedOption'];
+            $userExamQuestionAnswer['exam_id'] = base64_decode($data['examId']);
+            $userExamQuestionAnswer['user_id'] = $this->request->getSession()->read('User.id');
 
-        $this->loadModel(UserExamQuestionAnswersTable::class);
-        $userExamQA = $this->UserExamQuestionAnswers->find('all')
-            ->where([
-                'UserExamQuestionAnswers.user_exam_id' => $userExamQuestionAnswer['user_exam_id'],
-                'UserExamQuestionAnswers.question_id' => $userExamQuestionAnswer['question_id'],
-            ])
-            ->first();
+            $this->loadModel(UserExamQuestionAnswersTable::class);
+            $userExamQA = $this->UserExamQuestionAnswers->find('all')
+                ->where([
+                    'UserExamQuestionAnswers.user_exam_id' => $userExamQuestionAnswer['user_exam_id'],
+                    'UserExamQuestionAnswers.question_id' => $userExamQuestionAnswer['question_id'],
+                ])
+                ->first();
 
-        if ($userExamQA) {
-            $userExamQA = $this->UserExamQuestionAnswers->patchEntity($userExamQA, $userExamQuestionAnswer);
-        } else {
-            $userExamQA = $this->UserExamQuestionAnswers->newEmptyEntity();
-            $userExamQA = $this->UserExamQuestionAnswers->patchEntity($userExamQA, $userExamQuestionAnswer);
+            if ($userExamQA) {
+                $userExamQA = $this->UserExamQuestionAnswers->patchEntity($userExamQA, $userExamQuestionAnswer);
+            } else {
+                $userExamQA = $this->UserExamQuestionAnswers->newEmptyEntity();
+                $userExamQA = $this->UserExamQuestionAnswers->patchEntity($userExamQA, $userExamQuestionAnswer);
+            }
+
+            $this->UserExamQuestionAnswers->save($userExamQA);
+
+            $data = $this->getUserExamTimeDetails($userExamQuestionAnswer['exam_id']);
         }
 
-        $this->UserExamQuestionAnswers->save($userExamQA);
+        $this->set('data', $data);
     }
 
-    public function getUserExamInfo($examId)
+    private function getUserExamQADetails($examId)
     {
-        $data = $this->getUserExamDetails($examId);
+        $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
+
+        $query = sprintf("SELECT
+                    q.id, q.name, ueqa.question_id AS attempted_question_id
+                FROM
+                    user_exams ue
+                        LEFT JOIN
+                    exam_questions eq ON eq.exam_id = ue.exam_id
+                        LEFT JOIN
+                    questions q ON q.id = eq.question_id AND q.deleted = 0
+                        LEFT JOIN
+                    user_exam_question_answers ueqa ON ueqa.user_exam_id = ue.id
+                        AND ueqa.question_id = q.id
+                WHERE
+                    ue.id = %s
+                ORDER BY eq.id ASC", $userExamInfo->id);
+
+        return $this->query($query);
+    }
+
+    public function getUserExamTimeInfo($examId)
+    {
+        $this->setLayout('ajax');
+        $data = null;
+
+        if ($this->isLoggedIn()) {
+            $data = $this->getUserExamTimeDetails($examId);
+        }
 
         $this->set('data', $data);
+    }
+
+    public function getUserExamQAInfo($examId, $selectedQuestionNo = null)
+    {
+        $this->setLayout('ajax');
+        $examTimeDetails = null;
+        $selectedQA = null;
+
+        if (!$selectedQuestionNo) {
+            $selectedQuestionNo = '1';
+        }
+
+
+        if ($this->isLoggedIn()) {
+            $examTimeDetails = $this->getUserExamTimeDetails($examId);
+            $selectedQA = $this->getUserExamQADetails($examId);
+        }
+
+        $this->set('examTimeDetails', $examTimeDetails);
+        $this->set('selectedQA', $selectedQA);
+        $this->set('selectedQuestionNo', $selectedQuestionNo);
+        $this->set('examId', $examId);
     }
 
     public function cancelTest($examId)
@@ -321,7 +411,7 @@ class UserExamsController extends AppController
     {
         $examId = (int)base64_decode($examId);
 
-        $userExamInfo = $this->getUserExamDetails($examId);
+        $userExamInfo = $this->getUserExamTimeDetails($examId);
         $userExamId = $userExamInfo['id'];
 
 
@@ -372,6 +462,12 @@ class UserExamsController extends AppController
             }
 
             Cache::write($userExamSelectedQACacheKey, $selectedQAs);
+        }
+
+        if (empty($userExamInfo)) {
+            $this->Flash->error('Page not found');
+
+            return $this->redirect('/UserExams/myTests');
         }
 
         $this->set(compact('userExamInfo', 'selectedQAs'));
@@ -732,7 +828,6 @@ class UserExamsController extends AppController
         $this->deleteByUserExamId($userExamId);
         $this->Flash->success("User exam deleted successfully.");
 
-        $this->redirect($this->referer());
-        return;
+        return $this->redirect($this->referer());
     }
 }

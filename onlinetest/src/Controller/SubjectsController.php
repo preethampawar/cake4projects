@@ -21,8 +21,7 @@ class SubjectsController extends AppController
         if ($this->request->getSession()->check('User.isAdmin')
             && $this->request->getSession()->read('User.isAdmin') == false) {
             $this->Flash->error('You are not authorized to access this page');
-            $this->redirect('/UserExams/list/');
-            return;
+            return $this->redirect('/UserExams/list/');
         }
 
 

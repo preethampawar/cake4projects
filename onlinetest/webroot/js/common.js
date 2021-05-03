@@ -118,30 +118,32 @@ var userExam = {
             success: function (data, obj) {
                 $('#examQuestion-'+decodedQuestionId+'-'+selectedOption).addClass('text-success fw-bold');
 
-                $('#examQuestion-'+decodedQuestionId+'-'+selectedOption).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100).fadeOut(100).fadeIn(100);
+                $('#examQuestion-'+decodedQuestionId+'-'+selectedOption).fadeOut(100)
+                    .fadeIn(100).fadeOut(100)
+                    .fadeIn(100);
             },
             dataType: dataType,
         });
     },
 
     checkExamDuration: function(examId) {
-        userExam.getUserExamInfo(examId)
+        userExam.getUserExamTimeInfo(examId)
 
         setInterval(function() {
-            userExam.getUserExamInfo(examId)
+            userExam.getUserExamTimeInfo(examId)
         }, (30000));
     },
 
-    getUserExamInfo: function(examId) {
+    getUserExamTimeInfo: function(examId) {
         $.ajax({
             type: "GET",
-            url: '/UserExams/getUserExamInfo/'+examId,
+            url: '/UserExams/getUserExamTimeInfo/'+examId,
             success: function (data, obj) {
                 if (data && data.userExamInfo) {
                     let duration = data.userExamInfo.duration
                     let examId = data.userExamInfo.exam_id
                     let time = data.userExamInfo.time
-                    let text = (duration - time);
+                    let text = (duration - time)
 
                     if (time >= duration) {
                         userExam.finishTest(examId);
@@ -156,8 +158,30 @@ var userExam = {
 
                     console.log(data.userExamInfo);
                 }
+
+                if (data && !data.userExamInfo) {
+                    popup.endSession()
+                }
             },
             dataType: 'json',
+        });
+    },
+
+
+    getUserExamQAInfo: function(examId, questionNo) {
+        if (!questionNo) {
+            questionNo = '1'
+        }
+
+        $.ajax({
+            type: "GET",
+            url: '/UserExams/getUserExamQAInfo/'+examId+'/'+questionNo,
+            success: function (data, obj) {
+                $('#testInProgressDetails').html(data)
+
+                console.log(data.userExamInfo);
+            },
+            dataType: 'html',
         });
     },
 
@@ -410,6 +434,13 @@ var popup = {
 
         alertPopup.show();
     },
+
+    endSession: function () {
+        popup.alert('/Users/logout', 'Session Timeout!', 'Your session has timed out.', '')
+        setInterval(function() {
+            window.location = '/Users/logout'
+        }, (5000));
+    }
 }
 
 

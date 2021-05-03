@@ -18,6 +18,16 @@
     <a class="btn btn-sm btn-danger" href="/exams/">Cancel</a>
 </div>
 
+
+<div class="mt-3 mb-3">
+    <div class="">
+        <label>Topic</label>
+        <div id="examGroupsDivAddQuestionForm">
+            <?= $this->element('examGroupsDropDown', ['categories' => $examGroups]) ?>
+        </div>
+    </div>
+</div>
+
 <?php
 echo $this->Form->control('name',
     [
@@ -44,6 +54,17 @@ echo $this->Form->control('time',
         'required' => true,
         'min' => 5,
         'max' => 300,
+        'class' => 'form-control form-control-sm mb-3'
+    ]);
+
+echo $this->Form->control('attempts',
+    [
+        'type' => 'number',
+        'label' => 'No of Attempts *',
+        'default' => 5,
+        'required' => true,
+        'min' => 1,
+        'max' => 100,
         'class' => 'form-control form-control-sm mb-3'
     ]);
 
@@ -85,13 +106,11 @@ echo $this->Form->hidden('end_date',
     echo $this->Form->end();
 ?>
 
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
 <script>
     $(document).ready(function () {
         $('#categories').select2({
+        });
+    $('#exam-group-id').select2({
         });
     })
 </script>

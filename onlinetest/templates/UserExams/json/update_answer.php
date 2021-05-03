@@ -1,5 +1,6 @@
 <?=
 json_encode([
-    'success' => true
+    'success' => true,
+    'userExamInfo' => $data,
 ])
 ?>

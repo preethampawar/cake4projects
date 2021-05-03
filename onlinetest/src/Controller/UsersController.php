@@ -204,8 +204,7 @@ class UsersController extends AppController
     public function login()
     {
         if ($this->isLoggedIn()) {
-            $this->redirect('/');
-            return;
+            return $this->redirect('/');
         }
 
         if ($this->request->is('post')) {
@@ -220,8 +219,7 @@ class UsersController extends AppController
                         return $this->redirect('/UserExams/view/' . $this->request->getSession()->read('selectedExamId'));
                     }
 
-                    $this->redirect('/UserExams/list');
-                    return;
+                    return $this->redirect('/UserExams/list');
                 }
 
                 return $this->redirect('/Questions/');
@@ -261,7 +259,7 @@ class UsersController extends AppController
         $this->request->getSession()->delete('userInfo');
         $this->request->getSession()->destroy();
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
     public function sendRegisterEmail($userInfo, $originalPassword)

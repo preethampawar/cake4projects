@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Model\Table\CategoriesTable;
 use App\Model\Table\EducationLevelsTable;
 use App\Model\Table\ExamCategoriesTable;
+use App\Model\Table\ExamGroupsTable;
 use App\Model\Table\QuestionOptionsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\SubjectsTable;
 use App\Model\Table\TagsTable;
 use Cake\Cache\Cache;
+use Cake\Event\EventInterface;
 
 class ExamsController extends AppController
 {
@@ -19,22 +21,33 @@ class ExamsController extends AppController
 
         $this->loadComponent('Paginator');
         $this->loadComponent('Flash'); // Include the FlashComponent
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
 
         if ($this->request->getSession()->check('User.isAdmin')
             && $this->request->getSession()->read('User.isAdmin') == false) {
             $this->Flash->error('You are not authorized to access this page');
-            $this->redirect('/UserExams/list/');
-            return;
+            return $this->redirect('/UserExams/list/');
         }
     }
 
-    public function index()
+    public function index($examGroupId = null)
     {
         $this->loadComponent('Paginator');
+
+        $conditions = ['Exams.deleted' => 0];
+
+        if ($examGroupId) {
+            $conditions[] = ['Exams.exam_group_id' => $examGroupId];
+        }
+
         $exams = $this->Paginator->paginate(
             $this->Exams->find('all')
-                ->contain(['ExamCategories', 'ExamQuestions'])
-                ->where(['Exams.deleted' => 0]),
+                ->contain(['ExamCategories', 'ExamQuestions', 'ExamGroups'])
+                ->where($conditions),
             [
                 'limit' => 50,
                 'order' => [
@@ -46,8 +59,38 @@ class ExamsController extends AppController
         $this->loadModel(CategoriesTable::class);
         $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
 
+        $this->loadModel('ExamGroups');
+        $examGroups = $this->ExamGroups->find('all')->select(['ExamGroups.id', 'ExamGroups.name'])->where(['ExamGroups.deleted' => 0])->order('name asc')->all();
+
         $this->set(compact('exams'));
         $this->set('categories', $categories);
+        $this->set('examGroups', $examGroups);
+        $this->set('examGroupId', $examGroupId);
+    }
+
+    public function groupView()
+    {
+        $this->loadComponent('Paginator');
+        $this->loadModel('ExamGroups');
+
+        $examGroupsQery = $this->ExamGroups->find();
+        $examGroupsQery->select(['exams_count' => $examGroupsQery->func()->count('Exams.id'), 'exams_deleted' => 'Exams.deleted'])
+            ->leftJoinWith('Exams')
+            ->where(['ExamGroups.deleted' => 0])
+            ->group(['ExamGroups.id', 'Exams.deleted'])
+            ->enableAutoFields(true);
+
+        $examGroups = $this->Paginator->paginate(
+            $examGroupsQery,
+            [
+                'limit' => 50,
+                'order' => [
+                    'ExamGroups.id' => 'desc'
+                ],
+            ]
+        );
+
+        $this->set(compact('examGroups'));
     }
 
     public function view($id)
@@ -102,8 +145,12 @@ class ExamsController extends AppController
         $this->loadModel(CategoriesTable::class);
         $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
 
+        $this->loadModel(ExamGroupsTable::class);
+        $examGroups = $this->ExamGroups->find('all')->select(['ExamGroups.id', 'ExamGroups.name'])->where(['ExamGroups.deleted' => 0])->order('name asc')->all();
+
         $this->set('exam', $exam);
         $this->set('categories', $categories);
+        $this->set('examGroups', $examGroups);
     }
 
     public function addQuestions($examId)
@@ -164,7 +211,7 @@ class ExamsController extends AppController
 
         );
 
-        $exam = $this->Exams->findById($examId)->firstOrFail();
+        $exam = $this->Exams->findById($examId)->contain(['ExamGroups'])->firstOrFail();
 
 
         $this->loadModel(SubjectsTable::class);
@@ -251,6 +298,9 @@ class ExamsController extends AppController
         if (empty($data['end_date'])) {
             return 'Please enter the end date.';
         }
+        if (empty($data['exam_group_id'])) {
+            return 'Please select ExamGroup.';
+        }
 
         return null;
     }
@@ -315,8 +365,12 @@ class ExamsController extends AppController
         $this->loadModel(CategoriesTable::class);
         $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
 
+        $this->loadModel(ExamGroupsTable::class);
+        $examGroups = $this->ExamGroups->find('all')->select(['ExamGroups.id', 'ExamGroups.name'])->where(['ExamGroups.deleted' => 0])->order('name asc')->all();
+
         $this->set('exam', $exam);
         $this->set('categories', $categories);
+        $this->set('examGroups', $examGroups);
     }
 
     public function delete($id)
@@ -332,7 +386,6 @@ class ExamsController extends AppController
         $examCacheKey = $this->getExamCacheKey($exam->id);
         Cache::delete($examCacheKey);
 
-        $this->redirect(['controller' => 'exams', 'action' => 'index']);
-        return;
+        return $this->redirect(['controller' => 'exams', 'action' => 'index']);
     }
 }

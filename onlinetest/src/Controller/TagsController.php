@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 class TagsController extends AppController
 {
     public function initialize(): void
@@ -10,12 +12,16 @@ class TagsController extends AppController
 
         $this->loadComponent('Paginator');
         $this->loadComponent('Flash'); // Include the FlashComponent
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
 
         if ($this->request->getSession()->check('User.isAdmin')
             && $this->request->getSession()->read('User.isAdmin') == false) {
             $this->Flash->error('You are not authorized to access this page');
-            $this->redirect('/UserExams/list/');
-            return;
+            return $this->redirect('/UserExams/list/');
         }
     }
 

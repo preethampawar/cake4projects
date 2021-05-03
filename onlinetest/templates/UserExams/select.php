@@ -17,7 +17,7 @@ $this->Html->meta(
 <h1 class="">Online Test</h1>
 <div class="text-center">
 
-    <b class=""><?= $exam->name ?></b>
+    <span class="fs-5 text-primary"><?= $exam->name ?></span>
 
     <div class="text-muted">
         <div>

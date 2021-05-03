@@ -63,11 +63,42 @@ class AppController extends Controller
             && ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') !== 'list')
             && ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') !== 'select')
             && $this->request->getSession()->check('User.id') !== true) {
-            $this->redirect('/users/login');
-            return;
+
+            if (! $this->request->is('ajax')) {
+                return $this->redirect('/users/login');
+            }
         }
 
         $this->setLayout();
+
+        $this->checkOngoingExam();
+    }
+
+    protected function checkOngoingExam()
+    {
+        $whiteListActions = [
+            'startTest',
+            'newTest',
+            'getUserExamTimeInfo',
+            'updateAnswer',
+            'getUserExamQAInfo',
+            'clearUserExamSession',
+            'finishTest',
+            'logout'
+        ];
+
+        if (!in_array($this->request->getParam('action'), $whiteListActions)) {
+            $userExamsInfo = $this->request->getSession()->read('userExamInfo');
+
+            if (!empty($userExamsInfo)) {
+                $examId = (string)array_key_first($userExamsInfo);
+
+                if ($examId) {
+                    $this->Flash->error('You have not yet finished this exam.');
+                    return $this->redirect('/UserExams/startTest/' . base64_encode($examId));
+                }
+            }
+        }
     }
 
     protected function getDbConnection()
@@ -82,9 +113,22 @@ class AppController extends Controller
             ->fetchAll('assoc');
     }
 
-    public function isLoggedIn()
+    /**
+     * @param null|string $userType can be [null|'candidate'|'admin']
+     * @return bool
+     */
+    public function isLoggedIn($userType = null)
     {
         if($this->request->getSession()->check('User') == true) {
+
+            if ($userType === 'candidate' && $this->request->getSession()->read('User.isAdmin') == false) {
+                return true;
+            } elseif ($userType === 'admin' && $this->request->getSession()->read('User.isAdmin') == true) {
+                return true;
+            } elseif (!empty($userType)) {
+                return false;
+            }
+
            return true;
         }
 
@@ -104,7 +148,7 @@ class AppController extends Controller
     {
         if (! $this->isAdmin()) {
             $this->Flash->error('You are not authorized to access this page');
-            $this->redirect('/');
+            return $this->redirect('/');
         }
     }
 

@@ -205,10 +205,21 @@
                         ?>
                     </div>
                 </td>
-                <td class="pt-2 text-end" style="width:100px;">
-                    <a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="btn btn-sm btn-primary py-0">Edit</a>
-                    <span class="btn btn-danger btn-sm py-0 ms-1" onclick="popup.confirm('/Questions/delete/<?= $question->id ?>', 'Delete Question', 'Are you sure you want to delete this question?', '')">X</span>
+                <td class="text-end">
 
+                    <div class="dropdown">
+                        <a class="fs-5" href="#" id="actionsDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="actionsDropdownMenuLink">
+                            <li><a href="/questions/edit/<?= $question->id ?>" title="Edit Question" class="dropdown-item"><i class="fa fa-edit"></i> Edit</a></li>
+                            <li>
+                                <a href="#" class="dropdown-item" onclick="popup.confirm('/Questions/delete/<?= $question->id ?>', 'Delete Question', 'Are you sure you want to delete this question?', '')">
+                                    <i class="fa fa-times-circle"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
 
@@ -230,10 +241,6 @@
     <?= $this->element('bottomPagination', ['paginator' => $this->Paginator]); ?>
 
 </div>
-
-
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     $(document).ready(function () {
