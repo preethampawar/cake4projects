@@ -64,12 +64,13 @@ switch($controller) {
 
                         <div class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle <?=$examsLinkActive?> px-2 me-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Exams
+                                Tests
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="/Exams">Show All Exams</a></li>
-                                <li><a class="dropdown-item" href="/Categories">Exam Categories</a></li>
-                                <li><a class="dropdown-item" href="/ExamGroups">Exam Topics</a></li>
+                                <li><a class="dropdown-item" href="/Exams/add">+ Add New Test</a></li>
+                                <li><a class="dropdown-item" href="/Exams">Show All Tests</a></li>
+                                <li><a class="dropdown-item" href="/Categories">Test Categories</a></li>
+                                <li><a class="dropdown-item" href="/ExamGroups">Test Topics</a></li>
                             </ul>
                         </div>
 
@@ -126,9 +127,9 @@ switch($controller) {
                         <div class="modal-body">
                             <div class="content">Are you sure?</div>
                         </div>
-                        <div class="modal-footer mt-2 p-1">
-                            <a href="#" class="actionLink btn btn-danger btn-sm me-2"><span class="ok">Ok</span></a>
-                            <button type="button" class="actionLinkButton btn btn-danger btn-sm me-2 px-3" data-bs-dismiss="modal"><span
+                        <div class="modal-footer">
+                            <a href="#" class="actionLink btn btn-danger btn-sm me-2 px-4"><span class="ok">Ok</span></a>
+                            <button type="button" class="actionLinkButton btn btn-danger btn-sm me-2 px-4" data-bs-dismiss="modal"><span
                                     class="ok">Ok</span></button>
                             <button type="button" class="btn btn-outline-secondary btn-sm cancelButton" data-bs-dismiss="modal">
                                 Cancel
@@ -148,9 +149,9 @@ switch($controller) {
                         <div class="modal-body">
                             <div class="content">...</div>
                         </div>
-                        <div class="modal-footer mt-2 p-1">
-                            <a href="#" class="actionLink btn btn-danger btn-sm me-2"><span class="ok">Ok</span></a>
-                            <button type="button" class="actionLinkButton btn btn-danger btn-sm px-3" data-bs-dismiss="modal"><span
+                        <div class="modal-footer">
+                            <a href="#" class="actionLink btn btn-danger btn-sm me-2 px-4"><span class="ok">Ok</span></a>
+                            <button type="button" class="actionLinkButton btn btn-danger btn-sm px-4" data-bs-dismiss="modal"><span
                                     class="ok">Ok</span></button>
                         </div>
                     </div>

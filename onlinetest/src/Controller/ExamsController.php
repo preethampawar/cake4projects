@@ -6,7 +6,6 @@ use App\Model\Table\CategoriesTable;
 use App\Model\Table\EducationLevelsTable;
 use App\Model\Table\ExamCategoriesTable;
 use App\Model\Table\ExamGroupsTable;
-use App\Model\Table\QuestionOptionsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\SubjectsTable;
 use App\Model\Table\TagsTable;
@@ -134,12 +133,12 @@ class ExamsController extends AppController
                     }
                 }
 
-                $this->Flash->success(__('Your exam has been saved.'));
+                $this->Flash->success(__('Test has been saved.'));
 
                 return $this->redirect(['controller' => 'exams', 'action' => 'addQuestions', $examInfo->id]);
             }
 
-            $this->Flash->error(__('Unable to create new exam.'));
+            $this->Flash->error(__('Unable to create new test.'));
         }
 
         $this->loadModel(CategoriesTable::class);
@@ -285,11 +284,11 @@ class ExamsController extends AppController
     private function validateExam($data)
     {
         if (empty(trim($data['name']))) {
-            return 'Please enter the exam name.';
+            return 'Please enter the test name.';
         }
 
         if (empty(trim($data['time']))) {
-            return 'Please enter the exam duration.';
+            return 'Please enter the test duration.';
         }
 
         if (empty($data['start_date'])) {
@@ -308,7 +307,7 @@ class ExamsController extends AppController
     private function checkDuplicateExamQuestion($data)
     {
         if (empty(trim($data['exam_id']))) {
-            return 'Please select an exam.';
+            return 'Please select a test.';
         }
 
         if (empty(trim($data['question_id']))) {
@@ -320,7 +319,7 @@ class ExamsController extends AppController
         $examQuestions = $examQuestionsQuery->all()->toArray();
 
         if (!empty($examQuestions)) {
-            return 'This question is already selected for the exam';
+            return 'This question is already selected for the test';
         }
 
         return null;
@@ -354,12 +353,12 @@ class ExamsController extends AppController
                     }
                 }
 
-                $this->Flash->success(__('Exam details have been updated successfully.'));
+                $this->Flash->success(__('Test details have been updated successfully.'));
 
                 return $this->redirect(['controller' => 'Exams', 'action' => 'addQuestions', $exam->id]);
             }
 
-            $this->Flash->error(__('Unable to update your exam.'));
+            $this->Flash->error(__('Unable to update your test.'));
         }
 
         $this->loadModel(CategoriesTable::class);
@@ -380,7 +379,7 @@ class ExamsController extends AppController
         $this->Exams->patchEntity($exam, ['deleted' => 1]);
 
         if ($this->Exams->save($exam)) {
-            $this->Flash->success(__('Exam E.ID = ' . $exam->id . ' has been deleted'));
+            $this->Flash->success(__('Test has been deleted'));
         }
 
         $examCacheKey = $this->getExamCacheKey($exam->id);

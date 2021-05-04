@@ -1,7 +1,7 @@
-<h1>Exams - Topics View</h1>
+<h1>Tests - Topics View</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/exams/add">+ New Exam</a>
+    <a class="btn btn-primary btn-sm" href="/exams/add">+ New Test</a>
     <a class="btn btn-maroon btn-sm ms-2" href="/exams/">List View</a>
     <a class="btn btn-maroon btn-sm" href="/exams/groupView">Topics View</a>
 </div>
@@ -37,8 +37,8 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Exam Group</th>
-            <th class="text-end">Total Exams</th>
+            <th>Test Group</th>
+            <th class="text-end">Total Tests</th>
         </tr>
         </thead>
 
@@ -74,7 +74,7 @@
 
         if (empty($examGroups->toArray())) {
             ?>
-            <tr><td colspan="3">No exams found.</td></tr>
+            <tr><td colspan="3">No tests found.</td></tr>
             <?php
         }
 

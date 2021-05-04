@@ -1,5 +1,3 @@
-
-
 <?php
 $categoryList = null;
 foreach($categories as $category) {
@@ -7,10 +5,10 @@ foreach($categories as $category) {
 }
 ?>
 
-<h1>Exams List</h1>
+<h1>Tests List</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/exams/add">+ New Exam</a>
+    <a class="btn btn-primary btn-sm" href="/exams/add">+ New Test</a>
     <a class="btn btn-maroon btn-sm ms-2" href="/exams/">List View</a>
     <a class="btn btn-maroon btn-sm" href="/exams/groupView">Topics View</a>
 </div>
@@ -56,7 +54,7 @@ foreach($categories as $category) {
         <thead>
         <tr>
             <th>#</th>
-            <th>Exam Name</th>
+            <th>Test Name</th>
             <th></th>
         </tr>
         </thead>
@@ -118,7 +116,7 @@ foreach($categories as $category) {
                                     '<i class="fa fa-times-circle"></i> Delete',
                                     ['controller' => 'Exams', 'action' => 'delete', $exam->id],
                                     [
-                                        'confirm' => 'Are you sure you want to delete this exam?',
+                                        'confirm' => 'Are you sure you want to delete this Test?',
                                         'class' => 'dropdown-item',
                                         'title' => $exam->name,
                                         'escape' => false
@@ -136,10 +134,9 @@ foreach($categories as $category) {
 
         if (empty($exams->toArray())) {
             ?>
-            <tr><td colspan="4">No exams found.</td></tr>
+            <tr><td colspan="4">No tests found.</td></tr>
             <?php
         }
-
         ?>
         </tbody>
     </table>

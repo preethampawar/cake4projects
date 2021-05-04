@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/UserExams/myTests">Results</a></li>
+        <li class="breadcrumb-item"><a href="/UserExams/myTests">Test Results</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?= $userExamInfo->exam->name ?></li>
     </ol>
 </nav>

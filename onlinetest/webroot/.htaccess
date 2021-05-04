@@ -13,7 +13,8 @@ ExpiresByType image/gif "access 1 year"
 ExpiresByType image/png "access 1 year"
 ExpiresByType text/css "access 1 month"
 
-ExpiresByType application/pdf "access 1 month"
+ExpiresByType application/font-woff "access 1 year"
+ExpiresByType application/pdf "access 1 year"
 ExpiresByType text/x-javascript "access 1 month"
 ExpiresByType text/javascript "access 1 month"
 ExpiresByType application/javascript "access 1 month"
@@ -49,6 +50,7 @@ ExpiresByType image/x-generic "access 1 year"
   AddOutputFilterByType DEFLATE text/javascript
   AddOutputFilterByType DEFLATE text/plain
   AddOutputFilterByType DEFLATE text/xml
+  AddOutputFilterByType DEFLATE application/font-woff
 
   # Remove browser bugs (only needed for really old browsers)
   BrowserMatch ^Mozilla/4 gzip-only-text/html

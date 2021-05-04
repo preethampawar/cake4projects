@@ -137,13 +137,13 @@ foreach($categories as $category) {
 
                             <div class="mt-2 text-left">
                                 <a href="/UserExams/select/<?= base64_encode($exam->id) ?>" title="<?= $exam->name ?>"
-                                   class="btn btn-primary btn-sm" title="Start Test">
+                                   class="btn btn-primary" title="Start Test">
                                     <i class="fas fa-play-circle"></i><span class=""> Start Test</span>
                                 </a>
 
                                 <span
                                     title="Share Test <?= $exam->name ?>"
-                                    class="btn btn-success btn-sm ms-3"
+                                    class="btn btn-success ms-3"
                                     role="button"
                                     onclick="social.shareDialog('modalExam<?= $exam->id ?>', '<?= $fullUrl ?>', '<?= $title ?>')">
                                     <i class="fas fa-share"></i><span class=""> Share</span>

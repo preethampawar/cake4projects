@@ -6,11 +6,16 @@
                 <span class="small text-muted d-none"><?php echo (int)$this->Paginator->counter('{{count}}'); ?> Questions, <?= $exam->time ?> mins</span>
             </div>
 
-            <div class="small bg-light pt-1 pb-2 px-1 shadow-sm rounded mt-3 border">
+            <div class="bg-light pt-1 pb-2 px-1 shadow-sm rounded mt-3 border">
                 <div class="d-flex justify-content-between">
                     <div class="text-center">
                         Remaining Time<br>
-                        <div class="badge rounded-pill bg-danger"> <span id="examTimeDisplay"></span> mins</div>
+                        <div class="badge rounded-pill bg-danger">
+                            <span id="examTimeDisplay">
+                                <span class="spinner-grow  spinner-grow-sm text-white" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </span>
+                            </span> mins</div>
                     </div>
                     <div class="text-center">
                         Test Duration<br>
@@ -69,7 +74,7 @@
             }
             ?>
         </div>
-        <div class="mt-4 px-2">
+        <div class="mt-5 px-2">
             <?php
             $showNextLink = false;
             $showPrevLink = false;
@@ -93,7 +98,7 @@
                     <?php
                     if($showPrevLink) {
                         ?>
-                        <ul class="list-unstyled btn btn-primary m-0 p-0 me-2 me-sm-4" title="Back">
+                        <ul class="list-unstyled btn btn-primary m-0 py-1 me-2 me-sm-4" title="Back">
                             <?= $this->Paginator->prev('<i class="fas fa-chevron-circle-left"></i><span class=""> Back</span>', ['escape' => false]) ?>
                         </ul>
                         <?php
@@ -105,7 +110,7 @@
                     <?php
                     if($showNextLink) {
                         ?>
-                        <ul class="list-unstyled btn btn-primary m-0 p-0" title="Next">
+                        <ul class="list-unstyled btn btn-primary m-0 py-1" title="Next">
                             <?= $this->Paginator->next('<span class="">Next </span><i class="fas fa-chevron-circle-right"></i>', ['escape' => false]) ?>
                         </ul>
                         <?php
@@ -119,7 +124,15 @@
 
     </div>
     <div class="col-sm-12 col-md-5 mt-3">
-        <div id="testInProgressDetails" class="small"></div>
+        <div id="testInProgressDetails" class="small">
+            <div class="text-center alert bg-light border">
+                <div class="spinner-grow text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <br>
+                Loading navigation block...
+            </div>
+        </div>
     </div>
 </div>
 
@@ -130,7 +143,7 @@
         <button
             type="button"
             class="btn btn-orange"
-            onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Are you sure you want to finish and exit this online exam?', '')"
+            onclick="popup.confirm('/UserExams/finishTest/<?= base64_encode($exam->id) ?>', 'Exit the test?', 'Do you want to Finish & Exit this test?', '')"
         >
             <i class="fas fa-external-link-alt"></i> Finish & Exit Test
         </button>
@@ -146,7 +159,7 @@
             'Cancel Test',
             ['controller' => 'UserExams', 'action' => 'cancelTest', base64_encode($exam->id)],
             [
-                'confirm' => 'Are you sure you want to cancel this online exam?',
+                'confirm' => 'Are you sure you want to cancel this online test?',
                 'class' => 'btn btn-sm btn-danger',
             ]
         );

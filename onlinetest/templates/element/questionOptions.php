@@ -16,7 +16,7 @@ if ($questionOptions) {
 
         <div
             id="examQuestion-<?= $questionId ?>-<?= ($i+1) ?>"
-            class="ms-3 examQuestion-<?= $questionId ?> examQuestion-<?= $questionId ?>-<?= ($i+1) ?> <?= $class ?>"
+            class="ms-3 mt-3 examQuestion-<?= $questionId ?> examQuestion-<?= $questionId ?>-<?= ($i+1) ?> <?= $class ?>"
         >
             <div class="form-check">
                 <input

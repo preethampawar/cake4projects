@@ -11,7 +11,7 @@
         <thead>
         <tr>
             <th style="width:25px;">#</th>
-            <th>Attempted Exams</th>
+            <th>Attempted Tests</th>
             <th>Score</th>
             <th>Date</th>
             <th></th>

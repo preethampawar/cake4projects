@@ -2,12 +2,12 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
-    <li class="breadcrumb-item active" aria-current="page">New Exam</li>
+    <li class="breadcrumb-item"><a href="/exams/">Tests</a></li>
+    <li class="breadcrumb-item active" aria-current="page">New Test</li>
   </ol>
 </nav>
 
-<h1>Add Exam</h1>
+<h1>New Test</h1>
 
 <?php
     $selectedCategory = null;
@@ -32,7 +32,7 @@
 echo $this->Form->control('name',
     [
         'type' => 'text',
-        'label' => 'Exam Name *',
+        'label' => 'Test Name *',
         'required' => true,
         'class' => 'form-control form-control-sm mb-3'
     ]);
@@ -49,7 +49,7 @@ echo $this->Form->control('active',
 echo $this->Form->control('time',
     [
         'type' => 'number',
-        'label' => 'Exam Duration (minutes) *',
+        'label' => 'Test Duration (minutes) *',
         'default' => 60,
         'required' => true,
         'min' => 5,
@@ -99,7 +99,7 @@ echo $this->Form->hidden('end_date',
 
 
 <div class="my-4">
-    <?= $this->Form->button(__('Create Exam'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
+    <?= $this->Form->button(__('Create Test'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
 </div>
 
 <?php
@@ -110,7 +110,7 @@ echo $this->Form->hidden('end_date',
     $(document).ready(function () {
         $('#categories').select2({
         });
-    $('#exam-group-id').select2({
+        $('#exam-group-id').select2({
         });
     })
 </script>

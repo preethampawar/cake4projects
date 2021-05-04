@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
+        <li class="breadcrumb-item"><a href="/exams/">Tests</a></li>
         <li class="breadcrumb-item"><a href="/exams/edit/<?= $exam->id ?>"><?= $exam->name ?></a></li>
         <li class="breadcrumb-item active" aria-current="page">Select Questions</li>
     </ol>

@@ -1,6 +1,6 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/exams/">Exams</a></li>
+        <li class="breadcrumb-item"><a href="/exams/">Tests</a></li>
         <li class="breadcrumb-item active" aria-current="page"><?= $exam->name ?></li>
     </ol>
 </nav>
@@ -8,7 +8,7 @@
     <a class="btn btn-sm btn-danger" href="/exams/">Cancel</a>
 </div>
 
-<h1>Edit Exam - <?= $exam->name ?></h1>
+<h1>Edit Test - <?= $exam->name ?></h1>
 
 <?php
 echo $this->Form->create($exam);
@@ -29,7 +29,7 @@ echo $this->Form->create($exam);
 echo $this->Form->control('name',
     [
         'type' => 'text',
-        'label' => 'Exam Name *',
+        'label' => 'Test Name *',
         'required' => true,
         'class' => 'form-control form-control-sm mb-3'
     ]);
@@ -46,7 +46,7 @@ echo $this->Form->control('active',
 echo $this->Form->control('time',
     [
         'type' => 'number',
-        'label' => 'Exam Duration (minutes) *',
+        'label' => 'Test Duration (minutes) *',
         'default' => 60,
         'required' => true,
         'min' => 5,

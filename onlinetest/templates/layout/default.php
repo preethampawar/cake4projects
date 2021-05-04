@@ -153,9 +153,9 @@ if ($this->request->getParam('controller') == 'UserExams'
                         <div class="modal-body">
                             <div class="content">Are you sure?</div>
                         </div>
-                        <div class="modal-footer mt-2 p-1">
-                            <a href="#" class="actionLink btn btn-danger btn-sm me-2"><span class="ok">Ok</span></a>
-                            <button type="button" class="actionLinkButton btn btn-danger btn-sm me-2" data-bs-dismiss="modal"><span
+                        <div class="modal-footer">
+                            <a href="#" class="actionLink btn btn-danger btn-sm me-2 px-4"><span class="ok">Ok</span></a>
+                            <button type="button" class="actionLinkButton btn btn-danger btn-sm me-2 px-4" data-bs-dismiss="modal"><span
                                     class="ok">Ok</span></button>
                             <button type="button" class="btn btn-outline-secondary btn-sm cancelButton" data-bs-dismiss="modal">
                                 Cancel
@@ -175,9 +175,9 @@ if ($this->request->getParam('controller') == 'UserExams'
                         <div class="modal-body">
                             <div class="content">...</div>
                         </div>
-                        <div class="modal-footer mt-2 p-1">
-                            <a href="#" class="actionLink btn btn-danger btn-sm me-2"><span class="ok">Ok</span></a>
-                            <button type="button" class="actionLinkButton btn btn-danger btn-sm" data-bs-dismiss="modal"><span
+                        <div class="modal-footer">
+                            <a href="#" class="actionLink btn btn-danger btn-sm me-2 px-4"><span class="ok">Ok</span></a>
+                            <button type="button" class="actionLinkButton btn btn-danger btn-sm px-4" data-bs-dismiss="modal"><span
                                     class="ok">Ok</span></button>
                         </div>
                     </div>
