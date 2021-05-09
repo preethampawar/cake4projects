@@ -1,4 +1,25 @@
+<?php
+$examId = $examId ?? null;
+$userId = $userId ?? null;
+?>
 <h1>Results</h1>
+
+<div class="mt-3">
+    <div class="alert bg-light">
+        <label class="small ">Filter</label>
+        <div id="examGroupsDivAddQuestionForm" class="row justify-content-start">
+            <div class="col-sm-12 col-md-3 mb-3">
+                <?= $this->element('examsDropDown', ['exams' => $exams, 'selected' => $examId, 'empty' => 'Select Exam']) ?>
+            </div>
+            <div class="col-sm-12 col-md-3 mb-3">
+                <?= $this->element('usersDropDown', ['users' => $users, 'selected' => $userId, 'empty' => 'Select User']) ?>
+            </div>
+            <div class="col-sm-12 col-md-3 mb-3">
+                <button type="button" class="btn btn-primary btn-sm" onclick="searchUserAttendedExams()">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="table-responsive">
     <table class="table mt-3">
@@ -6,7 +27,7 @@
         <tr>
             <th>#</th>
             <th>Username</th>
-            <th>Exam</th>
+            <?php if (!$examId) { ?><th>Exam</th><?php } ?>
             <th>Score</th>
             <th>Date</th>
             <th></th>
@@ -28,6 +49,7 @@
                 <td>
                     <?= $user['username'] ?>
                 </td>
+                <?php if (!$examId) { ?>
                 <td>
                     <?= $exam['name'] ?>
                     <div class="text-muted small">
@@ -36,6 +58,7 @@
 
                     </div>
                 </td>
+                <?php } ?>
                 <td>
                     <div class="d-flex">
                         <div class="pe-2">
@@ -66,7 +89,7 @@
 
         if (empty($stats)) {
             ?>
-            <tr><td colspan="4">No users found.</td></tr>
+            <tr><td colspan="6">No users found.</td></tr>
             <?php
         }
 
@@ -74,3 +97,19 @@
         </tbody>
     </table>
 </div>
+<script>
+    function searchUserAttendedExams()
+    {
+        let userId = null
+        if ($('#user-id').val() != '') {
+            userId = $('#user-id').val()
+        }
+
+        let examId = null
+        if ($('#exam-id').val() != '') {
+            examId = $('#exam-id').val()
+        }
+
+        window.location = '/UserExams/userAttendedExams/' + userId + '/'+ examId;
+    }
+</script>

@@ -14,17 +14,6 @@
 echo $this->Form->create($exam);
 ?>
 
-
-<div class="mt-3 mb-3">
-    <div class="">
-        <label>Topic</label>
-        <div id="examGroupsDivAddQuestionForm">
-            <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $exam->exam_group_id]) ?>
-        </div>
-    </div>
-</div>
-
-
 <?php
 echo $this->Form->control('name',
     [
@@ -36,11 +25,21 @@ echo $this->Form->control('name',
 
 echo $this->Form->control('active',
     [
-        'type' => 'checkbox',
+        'type' => 'hidden',
         'label' => ' Active (Publish)',
-        'value' => '1',
-        'default' => '1',
+        'value' => '0',
         'class' => 'form-check-input mb-3'
+    ]);
+
+echo $this->Form->control('total_questions',
+    [
+        'type' => 'number',
+        'label' => 'Total Questions *',
+        'default' => 1,
+        'required' => true,
+        'min' => 1,
+        'max' => 1000,
+        'class' => 'form-control form-control-sm mb-3'
     ]);
 
 echo $this->Form->control('time',
@@ -54,6 +53,39 @@ echo $this->Form->control('time',
         'class' => 'form-control form-control-sm mb-3'
     ]);
 
+?>
+<div class="row">
+    <div class="col">
+        <?php
+        echo $this->Form->control('pass_type',
+            [
+                'type' => 'select',
+                'label' => 'Exam Pass Type',
+                'required' => false,
+                'empty' => 'Select',
+                'options' => ['marks' => 'Marks', 'percentage' => 'Percentage (%)'],
+                'class' => 'form-control form-control-sm mb-3'
+            ]);
+        ?>
+    </div>
+    <div class="col">
+        <?php
+        echo $this->Form->control('pass_value',
+            [
+                'type' => 'number',
+                'label' => 'Passing Value',
+                'placeholder' => 'Total Marks (or) %',
+                'required' => false,
+                'min' => 1,
+                'max' => 1000,
+                'class' => 'form-control form-control-sm mb-3'
+            ]);
+        ?>
+    </div>
+
+</div>
+
+<?php
 //echo $this->Form->control('start_date',
 //    [
 //        'label' => 'Start Date *',
@@ -73,9 +105,20 @@ echo $this->Form->control('time',
 //    ]);
 
 ?>
-<div class="mt-3">
+
+
+<div class="mt-3 mb-3">
     <div class="">
-        <label>Categories</label>
+        <label>Exam Topic</label>
+        <div id="examGroupsDivAddQuestionForm">
+            <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $exam->exam_group_id]) ?>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <div class="">
+        <label>Exam Categories</label>
         <div id="categoriesDivAddQuestionForm">
             <?php
             $selectedCategories = null;

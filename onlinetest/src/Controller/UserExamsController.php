@@ -78,7 +78,7 @@ class UserExamsController extends AppController
         $this->loadModel(ExamsTable::class);
 
         $examExpired = $this->Exams->find('all')
-            ->where(['Exams.id' => $examId, 'Exams.deleted' => 0, 'Exams.end_date < ' => date('Y-m-d H:i:s')])
+            ->where(['Exams.id' => $examId, 'Exams.deleted' => 0, 'Exams.active' => 1, 'Exams.end_date < ' => date('Y-m-d H:i:s')])
             ->first();
 
         if ($examExpired) {
@@ -152,7 +152,7 @@ class UserExamsController extends AppController
             $exam = $this->Exams->findById($examId)
                 // ->contain(['ExamQuestions.Questions.QuestionOptions'])
                 ->firstOrFail();
-            Cache::write($examCacheKey, $exam);
+            Cache::write($examCacheKey, $exam, 'vshort');
         }
 
         $examDuration = (int)$exam->time;
@@ -218,13 +218,13 @@ class UserExamsController extends AppController
         $this->loadModel(UserExamQuestionAnswersTable::class);
 
         $examCacheKey = $this->getExamCacheKey($examId);
-        $exam = Cache::read($examCacheKey);
+        $exam = Cache::read($examCacheKey, 'vshort');
 
         if ($exam === null) {
             $exam = $this->Exams->findById($examId)
                 // ->contain(['ExamQuestions.Questions.QuestionOptions'])
                 ->firstOrFail();
-            Cache::write($examCacheKey, $exam);
+            Cache::write($examCacheKey, $exam, 'vshort');
         }
 
         $userExamInfo = $this->request->getSession()->read('userExamInfo.' . $examId);
@@ -433,7 +433,7 @@ class UserExamsController extends AppController
         $result = Cache::readMany([
             $userExamCacheKey,
             $userExamSelectedQACacheKey
-        ]);
+        ] );
         $userExamInfo = $result[$userExamCacheKey];
         $selectedQAs = $result[$userExamSelectedQACacheKey];
 
@@ -518,11 +518,11 @@ class UserExamsController extends AppController
         $this->loadComponent('Paginator');
         $examsCacheKey = $this->getExamsCacheKey($categoryId);
         $allCategoriesCacheKey = $this->getAllCategoriesCacheKey();
-        $exams = Cache::read($examsCacheKey, 'short');
-        $categories = Cache::read($allCategoriesCacheKey, 'short');
+        $exams = Cache::read($examsCacheKey, 'vshort');
+        $categories = Cache::read($allCategoriesCacheKey, 'vshort');
 
         if ($exams === null) {
-            $conditions = ['Exams.deleted' => 0, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
+            $conditions = ['Exams.deleted' => 0, 'Exams.active' => 1, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
             $query = $this->Exams->find('all')->contain(['ExamCategories', 'ExamQuestions']);
 
             if ($categoryId) {
@@ -533,13 +533,13 @@ class UserExamsController extends AppController
 
             $query = $query->where($conditions)->order('Exams.id desc');
             $exams = $query->all();
-            Cache::write($examsCacheKey, $exams, 'short');
+            Cache::write($examsCacheKey, $exams, 'vshort');
         }
 
         if ($categories === null) {
             $this->loadModel(CategoriesTable::class);
             $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
-            Cache::write($allCategoriesCacheKey, $categories, 'short');
+            Cache::write($allCategoriesCacheKey, $categories, 'vshort');
         }
 
         $this->set(compact('exams'));
@@ -606,12 +606,22 @@ class UserExamsController extends AppController
         $this->set(compact('users', 'stats'));
     }
 
-    public function userAttendedExams($userId, $examId = null)
+    public function userAttendedExams($userId=null, $examId = null)
     {
+        $userId = $userId === 'null' ? null : $userId;
+        $examId = $examId === 'null' ? null : $examId;
+
         $this->allowAdmin();
 
-        $stats = $this->allStats($userId);
-        $this->set(compact('stats'));
+        $this->loadModel(ExamsTable::class);
+        $this->loadModel(UsersTable::class);
+
+        $exams = $this->Exams->find()->where(['Exams.deleted' => 0])->order(['Exams.id desc'])->select(['Exams.id', 'Exams.name'])->all();
+        $users = $this->Users->find()->where(['Users.deleted' => 0])->order(['Users.id desc'])->select(['Users.id', 'Users.name', 'Users.username'])->all();
+
+
+        $stats = $this->allStats($userId, $examId);
+        $this->set(compact('stats', 'exams', 'users', 'userId', 'examId'));
     }
 
     public function details($userId, $examId = null)
@@ -622,13 +632,13 @@ class UserExamsController extends AppController
         $this->set(compact('stats'));
     }
 
-    public function allStats($userIds = null, $params = [])
+    public function allStats($userIds = null, $examId = null)
     {
         if ($userIds != null && !is_array($userIds)) {
             $userIds = [$userIds];
         }
 
-        $query = $this->getAllStatsQuery($userIds);
+        $query = $this->getAllStatsQuery($userIds, $examId);
 
 
         $results = $this->query($query);
@@ -755,11 +765,16 @@ class UserExamsController extends AppController
         return $formattedResults;
     }
 
-    public function getAllStatsQuery($userIds=[])
+    public function getAllStatsQuery($userIds=[], $examId = null)
     {
         $userIdsCondition = '';
         if ($userIds) {
             $userIdsCondition = sprintf(' and u.id IN (%s) ', implode(',', $userIds));
+        }
+
+        $examIdCondition = '';
+        if ($examId) {
+            $examIdCondition = sprintf(' and e.id IN (%s) ', $examId);
         }
 
         return "
@@ -779,7 +794,7 @@ class UserExamsController extends AppController
                 left join questions q on q.id = eq.question_id
                 left join question_options qo on qo.question_id = q.id
                 left join user_exam_question_answers ueqa on (ueqa.user_exam_id = ue.id and ueqa.question_id = q.id)
-            where u.is_admin = 0 and ue.cancelled = 0 " . $userIdsCondition . "
+            where u.is_admin = 0 and ue.cancelled = 0 " . $userIdsCondition . $examIdCondition . "
             group by u.id, e.id, ue.id, q.id
             order by ue.created desc, eq.id asc, qo.sort asc
         ";

@@ -147,6 +147,13 @@ return [
             'url' => env('CACHE_CAKEROUTES_URL', null),
         ],
 
+        'vshort' => [
+            'className' => FileEngine::class,
+            'duration' => '+5 mins',
+            'path' => CACHE . 'vshort' . DS,
+            'prefix' => 'cake_vshort_'
+        ],
+
         'short' => [
             'className' => FileEngine::class,
             'duration' => '+1 hours',

@@ -250,6 +250,10 @@ class ExamsController extends AppController
 
         $error = $this->checkDuplicateExamQuestion($data);
 
+        if (!$error)  {
+            $error = $this->checkAddQuestionsLimit($data['exam_id']);
+        }
+
         if (!$error) {
             $examQuestions = $this->Exams->newEmptyEntity();
             $examQuestions = $this->Exams->ExamQuestions->patchEntity($examQuestions, $data);
@@ -325,6 +329,38 @@ class ExamsController extends AppController
         return null;
     }
 
+    private function checkAddQuestionsLimit($examId)
+    {
+        $exam = $this->Exams->findById($examId)->first();
+        $totalExamQuestions = (int)$exam->total_questions;
+
+        $examQuestionsQuery = $this->Exams->ExamQuestions->find('all')
+            ->where(['ExamQuestions.exam_id' => $examId]);
+        $selectedQuestions = $examQuestionsQuery->count();
+
+        if ($selectedQuestions >= $totalExamQuestions) {
+            return 'You cannot add more that "' . $totalExamQuestions . '" questions';
+        }
+
+        return null;
+    }
+
+    private function checkIfAllQuestionsAreSelected($examId)
+    {
+        $exam = $this->Exams->findById($examId)->first();
+        $totalExamQuestions = (int)$exam->total_questions;
+
+        $examQuestionsQuery = $this->Exams->ExamQuestions->find('all')
+            ->where(['ExamQuestions.exam_id' => $examId]);
+        $selectedQuestions = $examQuestionsQuery->count();
+
+        if ($selectedQuestions != $totalExamQuestions) {
+            return 'To publish this test, you should select "' . $totalExamQuestions . '" questions';
+        }
+
+        return null;
+    }
+
     public function edit($id)
     {
         $exam = $this->Exams
@@ -334,6 +370,13 @@ class ExamsController extends AppController
 
         if ($this->request->is(['post', 'put'])) {
             $examData = $this->request->getData();
+
+
+            if (empty($examData['pass_type']) || empty($examData['pass_value'])) {
+                $examData['pass_type'] = '';
+                $examData['pass_value'] = '';
+            }
+
             $this->Exams->patchEntity($exam, $examData);
 
             if ($this->Exams->save($exam)) {
@@ -372,6 +415,34 @@ class ExamsController extends AppController
         $this->set('examGroups', $examGroups);
     }
 
+    public function publish($examId)
+    {
+        $error = $this->checkIfAllQuestionsAreSelected($examId);
+
+        if ($error) {
+            $this->Flash->error($error);
+
+            return $this->redirect($this->referer());
+        }
+
+        $exam = $this->Exams
+            ->findById($examId)
+            ->firstOrFail();
+
+        $examData['active'] = 1;
+        $this->Exams->patchEntity($exam, $examData);
+
+        if ($this->Exams->save($exam)) {
+            $this->Flash->success(__('Test "' . $exam->name . '" has been published successfully.'));
+
+            return $this->redirect('/Exams/');
+        }
+
+        $this->Flash->error(__('Unable to publish this test.'));
+
+        return $this->redirect($this->referer());
+    }
+
     public function delete($id)
     {
         $exam = $this->Exams->findById($id)->firstOrFail();
@@ -386,5 +457,40 @@ class ExamsController extends AppController
         Cache::delete($examCacheKey);
 
         return $this->redirect(['controller' => 'exams', 'action' => 'index']);
+    }
+
+    public function bustCache($type = null, $typeId=null)
+    {
+        $this->allowAdmin();
+
+        switch ($type) {
+            case 'list':
+                $examsCacheKey = $this->getExamsCacheKey($typeId);
+                $allCategoriesCacheKey = $this->getAllCategoriesCacheKey();
+
+                Cache::deleteMany([
+                    $examsCacheKey,
+                    $allCategoriesCacheKey
+                ], 'vshort');
+                break;
+            case 'exam':
+                $examCacheKey = $this->getExamCacheKey($typeId);
+                Cache::delete($examCacheKey, 'vshort');
+                break;
+            case 'userExam':
+                $userExamCacheKey = $this->getUserExamCacheKey($typeId);
+                Cache::delete($userExamCacheKey);
+                break;
+
+            case 'userExamSelectedQA':
+                $userExamSelectedQACacheKey = $this->getUserExamSelectedQACacheKey($typeId);
+                Cache::delete($userExamSelectedQACacheKey);
+                break;
+            default:
+                $this->Flash->set('List of commands: <br>/list/categoryId <br>/exam/examId <br>/userExam/userExamId <br>/userExamSelectedQA/userExamId', ['escape'=>false]);
+                break;
+        }
+
+        $this->redirect('/');
     }
 }

@@ -101,18 +101,7 @@ switch($controller) {
 
         <main class="main">
             <div id="mainDiv" class="container-fluid mb-5 bg-white pt-2 pb-4 rounded  min-vh-100">
-                <?php
-                $message = $this->Flash->render();
-
-                if ($message) {
-                    ?>
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <?= $message ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <?php
-                }
-                ?>
+                <?= $this->Flash->render(); ?>
 
                 <?= $this->fetch('content') ?>
             </div>

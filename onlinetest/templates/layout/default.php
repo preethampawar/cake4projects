@@ -123,21 +123,11 @@ if ($this->request->getParam('controller') == 'UserExams'
 
         <main class="main">
             <div id="mainDiv" class="container-xl mb-5 mt-xl-4 bg-white text-dark pt-2 pb-4 rounded">
-                <div class="d-flex justify-content-end bg-ivory-light rounded-top d-none">
-                    <div id="google_translate_element" class="d-flex"><b>Language Translator</b>&nbsp; </div>
-                </div>
-                <?php
-                $message = $this->Flash->render();
+<!--                <div class="d-flex justify-content-end bg-ivory-light rounded-top d-none">-->
+<!--                    <div id="google_translate_element" class="d-flex"><b>Language Translator</b>&nbsp; </div>-->
+<!--                </div>-->
 
-                if ($message) {
-                    ?>
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <?= $message ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <?php
-                }
-                ?>
+                <?= $this->Flash->render(); ?>
 
                 <?= $this->fetch('content') ?>
             </div>

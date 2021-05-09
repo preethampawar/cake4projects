@@ -15,10 +15,16 @@
 
 <p class="mt-2 small">
     <div class="fw-bold">
-        <?= $exam->exam_group->name ?><br>
-        &raquo;<?= $exam->name ?>
-    </div>
-    <span class="selectedQuestionsSpan">0</span> questions, <?= $exam->time ?> mins
+        Topic: <?= $exam->exam_group->name ?><br>
+    Test Name: <?= $exam->name ?> <span class="text-danger">(<?= $exam->active ? 'Published' : 'Unpublished' ?>)</span>
+        <br>
+        Total Questions: <?= $exam->total_questions ?><br>
+        Test Duration: <?= $exam->time ?> mins<br>
+        <div class="text-primary">
+        Questions Selected: <span class="selectedQuestionsSpan">0</span> / <?= $exam->total_questions ?>
+        </div>
+</div>
+
     <!--
     &nbsp;|&nbsp;
     Start Date: <?= $exam->start_date->format('d/m/Y h:i A') ?> &nbsp;|&nbsp;
@@ -185,9 +191,14 @@
 
 </div>
 
+<div class="text-center mb-4">
+    <a href="/Exams/view/<?= $exam->id ?>" class="btn btn-sm btn-purple me-3">Preview</a>
+    <a href="/Exams/publish/<?= $exam->id ?>" class="btn btn-sm btn-primary">Save & Publish</a>
+</div>
+<hr>
 <div class="text-center">
     <a href="/Exams" class="btn btn-sm btn-danger">Cancel</a>
-    <a href="/Exams/view/<?= $exam->id ?>" class="btn btn-sm btn-purple ms-3">Preview Test</a>
+
 </div>
 
 

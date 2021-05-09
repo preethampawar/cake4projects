@@ -76,6 +76,7 @@ foreach($categories as $category) {
                 <td>
                     <div class="">
                         <a href="/exams/edit/<?= $exam->id ?>" title="Edit Exam details" class=""><?= $exam->name ?></a>
+                        <span class="small fw-bold <?= $exam->active ? 'text-success' : 'text-danger' ?>">(<?= $exam->active ? 'Published' : 'Unpublished' ?>)</span>
 
                         <div class="">
                             <span class="text-muted small">
