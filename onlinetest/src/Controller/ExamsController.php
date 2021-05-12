@@ -6,6 +6,7 @@ use App\Model\Table\CategoriesTable;
 use App\Model\Table\EducationLevelsTable;
 use App\Model\Table\ExamCategoriesTable;
 use App\Model\Table\ExamGroupsTable;
+use App\Model\Table\ExamQuestionsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\SubjectsTable;
 use App\Model\Table\TagsTable;
@@ -110,6 +111,7 @@ class ExamsController extends AppController
         $exam = $this->Exams->findById($id)
             ->contain(['ExamQuestions.Questions.QuestionOptions'])
             ->firstOrFail();
+
         $this->set(compact('exam'));
     }
 
@@ -252,8 +254,14 @@ class ExamsController extends AppController
 
         $examQuestions = $this->getExamQuestions($examId);
 
+        $exams = $this->Exams->find('all')
+            ->select(['Exams.id', 'Exams.name'])
+            ->where(['Exams.deleted' => 0])
+            ->all();
+
         $this->set('examId', $examId);
         $this->set('examQuestions', $examQuestions);
+        $this->set('exams', $exams);
     }
 
     public function addSelectedQuestion()
@@ -506,5 +514,43 @@ class ExamsController extends AppController
         }
 
         $this->redirect('/');
+    }
+
+    public function moveQuestion($questionId, $oldExamId, $newExamId)
+    {
+        $this->allowAdmin();
+        $this->setLayout('ajax');
+        $error = null;
+        $success = null;
+
+        $this->loadModel(ExamQuestionsTable::class);
+        $examQuestionInfo = $this->ExamQuestions->find('all')
+            ->where(['ExamQuestions.question_id' => $questionId, 'ExamQuestions.exam_id' => $newExamId])
+            ->first();
+
+        if ($examQuestionInfo) {
+            $error = 'This question already exists in the selected Exam.';
+        }
+
+        if (!$error) {
+            $data = [
+                'question_id' => $questionId,
+                'exam_id' => $newExamId,
+                'sort' => time()
+            ];
+            $examQuestion = $this->ExamQuestions->newEmptyEntity();
+            $examQuestion = $this->ExamQuestions->patchEntity($examQuestion, $data);
+
+            if ($this->ExamQuestions->save($examQuestion)) {
+                $this->ExamQuestions->deleteAll(['ExamQuestions.question_id' => $questionId, 'ExamQuestions.exam_id' => $oldExamId]);
+                $success = 'Question has been moved successfully to the selected Test.';
+            } else {
+                $error = 'Question could not be moved to the selected Exam';
+            }
+        }
+
+        $this->set('error', $error);
+        $this->set('success', $success);
+
     }
 }

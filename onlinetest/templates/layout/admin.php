@@ -40,7 +40,7 @@ switch($controller) {
         <link href="/vendor/select2-4.1/select2.min.css" rel="stylesheet">
 
         <script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-        <script src="/js/common.js"></script>
+        <script src="/js/common.js?v=1.0"></script>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script src="/vendor/mathjax/tex-mml-chtml.js"></script>
         <script src="/vendor/select2-4.1/select2.min.js"></script>

@@ -1,24 +1,17 @@
 <div class="d-print-none">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/exams/">Tests</a></li>
-            <li class="breadcrumb-item"><a href="/exams/edit/<?= $exam->id ?>"><?= $exam->name ?></a></li>
-            <li class="breadcrumb-item"><a href="/exams/addQuestions/<?= $exam->id ?>">Select Questions</a></li>
+            <li class="breadcrumb-item"><a href="/Exams/">Tests</a></li>
+            <li class="breadcrumb-item"><a href="/Exams/edit/<?= $exam->id ?>"><?= $exam->name ?></a></li>
+            <li class="breadcrumb-item"><a href="/Exams/addQuestions/<?= $exam->id ?>">Select Questions</a></li>
             <li class="breadcrumb-item active" aria-current="page">Preview</li>
         </ol>
     </nav>
 
     <div class="text-end">
-        <a class="btn btn-sm btn-danger" href="/exams/">Exit Preview</a>
+        <a class="btn btn-sm btn-danger" href="/Exams/addQuestions/<?= $exam->id ?>">Exit Preview</a>
     </div>
 </div>
-
-
-
-<?php
-//debug($exam);
-?>
-
 
 <h1><?= $exam->name ?></h1>
 
@@ -26,11 +19,6 @@
     Total Questions: <?= $exam->exam_questions ? count($exam->exam_questions) : 0 ?>
     <br>
     Duration: <?= $exam->time ?> mins
-    <!--
-    &nbsp;|&nbsp;
-    Start Date: <?= $exam->start_date->format('d/m/Y h:i A') ?> &nbsp;|&nbsp;
-    End Date: <?= $exam->end_date->format('d/m/Y h:i A') ?>
-    -->
 </p>
 
 <hr>

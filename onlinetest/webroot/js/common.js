@@ -87,6 +87,38 @@ var exams = {
         }
     },
 
+
+    moveSelectedExamQuestion: function(questionId, oldExamId, newExamId, testName) {
+        let result = confirm('Are you sure you want to move this question to a different test "' + testName + '"')
+
+        if (result) {
+            let url = '/Exams/moveQuestion/' + questionId + '/' + oldExamId + '/' + newExamId
+
+            console.log(url)
+
+            let dataType = 'json'
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (data, obj) {
+                    console.log(data.error);
+                    if (data.error) {
+                        popup.alert('#', '', data.error)
+                    } else {
+                        popup.alert('#', '', data.success)
+                    }
+
+                    exams.loadSelectedExamQuestions(oldExamId)
+
+                    // exams.loadSelectedExamQuestions(examId)
+                    //location.reload();
+                },
+                dataType: dataType,
+            });
+        }
+    },
+
     disableAddButtonInQuestionBank: function(questionId) {
         console.log(questionId)
         $("#addQuestionButton"+questionId).hide()
