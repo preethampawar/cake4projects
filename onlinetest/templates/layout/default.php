@@ -11,6 +11,7 @@ $registerLinkActive = null;
 $homeLinkActive = null;
 $userExamsLinkActive = null;
 $resultsLinkActive = null;
+$userDetailsLinkActive = null;
 $showSocialShare = $this->fetch('showSocialShare');
 
 switch($controller) {
@@ -39,6 +40,9 @@ switch($controller) {
         }
         if ($action == 'register') {
             $registerLinkActive = 'active';
+        }
+        if (in_array($action, ['myProfile', 'updateProfile', 'updatePassword'])) {
+            $userDetailsLinkActive = 'active';
         }
         break;
     default:
@@ -69,7 +73,7 @@ if ($this->request->getParam('controller') == 'UserExams'
 
         <?php echo $this->fetch('meta') ?>
 
-        <link href="/vendor/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/site.css" rel="stylesheet">
         <link href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" rel="stylesheet">
 
@@ -101,8 +105,18 @@ if ($this->request->getParam('controller') == 'UserExams'
                             ?>
                             <a class="nav-link <?= $userExamsLinkActive?> px-2 me-1" href="/UserExams/">Tests</a>
                             <a class="nav-link <?= $resultsLinkActive?> px-2 me-1" href="/UserExams/myTests">Results</a>
-                            <a class="nav-link disabled px-2 me-1" href="#" tabindex="-1" aria-disabled="true"><?= ucwords($loggedInUser['username']) ?></a>
-                            <a class="nav-link px-2" href="/Users/logout">Logout</a>
+
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle <?=$userDetailsLinkActive?> px-2 me-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <?= ucwords($loggedInUser['name']) ?> <i class="fa fa-user"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/Users/myProfile">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="/Users/updateProfile">Update Profile</a></li>
+                                    <li><a class="dropdown-item" href="/Users/updatePassword">Change Password</a></li>
+                                    <li><a class="dropdown-item" href="/Users/logout">Logout</a></li>
+                                </ul>
+                            </div>
                             <?php
                         } else {
                             ?>
@@ -186,6 +200,6 @@ if ($this->request->getParam('controller') == 'UserExams'
         }
         ?>
 
-        <script src="/vendor/bootstrap-5.0.0-beta3-dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

@@ -1,7 +1,17 @@
 <?php
 $data = null;
 $selected = $selected ?? null;
-$empty = isset($empty) && $empty === true ? 'Show All' : false;
+
+if (isset($empty)) {
+    if ($empty === true) {
+        $empty = 'Show All';
+    } elseif (empty($empty)) {
+        $empty =false;
+    }
+} else {
+    $empty = false;
+}
+
 foreach($examGroups as $examGroup) {
     $data[$examGroup->id] = (string)$examGroup->name;
 }

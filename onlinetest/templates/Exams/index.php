@@ -15,10 +15,17 @@ foreach($categories as $category) {
 
 <div class="mt-3 mb-3">
     <div class="alert bg-light">
-        <label class="small ">Filter by Topic</label>
-        <div id="examGroupsDivAddQuestionForm" class="d-flex justify-content-start">
-            <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $examGroupId, 'empty' => true]) ?>
-            <button type="button" class="btn btn-primary btn-sm ms-2" onclick="window.location = '/Exams/index/'+$('#exam-group-id').val()">Search</button>
+        <label>Filter</label>
+        <div class="row">
+            <div class="col-sm-12 col-md-3">
+                <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $examGroupId, 'empty' => 'Select Topic']) ?>
+            </div>
+            <div class="col-sm-12 col-md-3">
+                <?= $this->element('categoriesDropDown', ['categories' => $categories, 'selected' => $categoryId, 'empty' => 'Select Category', 'multiple' => false]) ?>
+            </div>
+            <div class="col-sm-12 col-md-3">
+                <button type="button" class="btn btn-primary btn-sm ms-2" onclick="searchExams()">Search</button>
+            </div>
         </div>
     </div>
 </div>
@@ -54,6 +61,7 @@ foreach($categories as $category) {
         <thead>
         <tr>
             <th>#</th>
+            <th style="width:20px"></th>
             <th>Test Name</th>
             <th></th>
         </tr>
@@ -74,9 +82,13 @@ foreach($categories as $category) {
                     <?= $k ?>.
                 </td>
                 <td>
+                    <span class="small fw-bold <?= $exam->active ? 'text-success' : 'text-danger' ?>" title="<?= $exam->active ? 'Published' : 'Unpublished' ?>">
+                        <i class="fa fa-circle"></i>
+                    </span>
+                </td>
+                <td>
                     <div class="">
                         <a href="/exams/edit/<?= $exam->id ?>" title="Edit Exam details" class=""><?= $exam->name ?></a>
-                        <span class="small fw-bold <?= $exam->active ? 'text-success' : 'text-danger' ?>">(<?= $exam->active ? 'Published' : 'Unpublished' ?>)</span>
 
                         <div class="">
                             <span class="text-muted small">
@@ -142,3 +154,20 @@ foreach($categories as $category) {
         </tbody>
     </table>
 </div>
+
+<script>
+    function searchExams()
+    {
+        let examGroupId = null
+        if ($('#exam-group-id').val() != '') {
+            examGroupId = $('#exam-group-id').val()
+        }
+
+        let categoryId = null
+        if ($('#categories').val() != '') {
+            categoryId = $('#categories').val()
+        }
+
+        window.location = '/Exams/index/' + examGroupId + '/'+ categoryId;
+    }
+</script>

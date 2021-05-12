@@ -14,6 +14,15 @@
 echo $this->Form->create($exam);
 ?>
 
+<div class="mt-3 mb-3">
+    <div class="">
+        <label>Test Topic</label>
+        <div id="examGroupsDivAddQuestionForm">
+            <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $exam->exam_group_id]) ?>
+        </div>
+    </div>
+</div>
+
 <?php
 echo $this->Form->control('name',
     [
@@ -86,6 +95,17 @@ echo $this->Form->control('time',
 </div>
 
 <?php
+echo $this->Form->control('attempts',
+    [
+        'type' => 'number',
+        'label' => 'No of Attempts *',
+        'default' => 5,
+        'required' => true,
+        'min' => 1,
+        'max' => 100,
+        'class' => 'form-control form-control-sm mb-3'
+    ]);
+
 //echo $this->Form->control('start_date',
 //    [
 //        'label' => 'Start Date *',
@@ -106,19 +126,9 @@ echo $this->Form->control('time',
 
 ?>
 
-
-<div class="mt-3 mb-3">
-    <div class="">
-        <label>Exam Topic</label>
-        <div id="examGroupsDivAddQuestionForm">
-            <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $exam->exam_group_id]) ?>
-        </div>
-    </div>
-</div>
-
 <div class="">
     <div class="">
-        <label>Exam Categories</label>
+        <label>Test Categories</label>
         <div id="categoriesDivAddQuestionForm">
             <?php
             $selectedCategories = null;
@@ -131,6 +141,23 @@ echo $this->Form->control('time',
 
             <?= $this->element('categoriesDropDown', ['categories' => $categories, 'selected' => $selectedCategories]) ?>
         </div>
+    </div>
+</div>
+
+<div class="mt-4 mb-3">
+    <div class="form-check form-switch">
+        <?php
+        echo $this->Form->control('allow_guest',
+            [
+                'id' => 'flexSwitchCheckDefault',
+                'type' => 'checkbox',
+                'label' => false,
+                'div' => false,
+                'value' => 1,
+                'class' => 'form-check-input'
+            ]);
+        ?>
+        <label class="form-check-label" for="flexSwitchCheckDefault">Allow Guests <span class="small text-muted fst-italic">(Anyone can attempt this test without login)</span></label>
     </div>
 </div>
 

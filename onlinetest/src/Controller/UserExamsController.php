@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\Table\CategoriesTable;
+use App\Model\Table\ExamGroupsTable;
 use App\Model\Table\ExamsTable;
 use App\Model\Table\QuestionsTable;
 use App\Model\Table\UserExamQuestionAnswersTable;
@@ -508,7 +509,7 @@ class UserExamsController extends AppController
         $this->set(compact('userExams', 'userExamQuestionAnswersModel'));
     }
 
-    public function list($categoryId = null)
+    public function list($categoryId = null, $examGroupId = null)
     {
         if ($this->request->getSession()->check('selectedExamId')) {
             $this->request->getSession()->delete('selectedExamId');
@@ -516,36 +517,39 @@ class UserExamsController extends AppController
 
         $this->loadModel(ExamsTable::class);
         $this->loadComponent('Paginator');
-        $examsCacheKey = $this->getExamsCacheKey($categoryId);
-        $allCategoriesCacheKey = $this->getAllCategoriesCacheKey();
-        $exams = Cache::read($examsCacheKey, 'vshort');
-        $categories = Cache::read($allCategoriesCacheKey, 'vshort');
 
-        if ($exams === null) {
-            $conditions = ['Exams.deleted' => 0, 'Exams.active' => 1, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
-            $query = $this->Exams->find('all')->contain(['ExamCategories', 'ExamQuestions']);
+        // get exams list
+        $conditions = ['Exams.deleted' => 0, 'Exams.active' => 1, 'Exams.end_date > ' => date('Y-m-d H:i:s')];
 
-            if ($categoryId) {
-                $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId){
-                    return $q->where(['ExamCategories.category_id' => $categoryId]);
-                });
-            }
-
-            $query = $query->where($conditions)->order('Exams.id desc');
-            $exams = $query->all();
-            Cache::write($examsCacheKey, $exams, 'vshort');
+        if ($examGroupId) {
+            $conditions[] = ['Exams.exam_group_id' => $examGroupId];
         }
 
-        if ($categories === null) {
-            $this->loadModel(CategoriesTable::class);
-            $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
-            Cache::write($allCategoriesCacheKey, $categories, 'vshort');
+        $query = $this->Exams->find('all')->contain(['ExamCategories']);
+
+        if ($categoryId) {
+            $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId){
+                return $q->where(['ExamCategories.category_id' => $categoryId]);
+            });
         }
+
+        $query = $query->where($conditions)->order('Exams.id desc');
+        $exams = $query->all();
+
+        // get exam categories
+        $this->loadModel(CategoriesTable::class);
+        $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
+
+        // get exam topics
+        $this->loadModel(ExamGroupsTable::class);
+        $topics = $this->ExamGroups->find('all')->all();
 
         $this->set(compact('exams'));
         $this->set('categories', $categories);
         $this->set('selectedCategoryId', $categoryId);
         $this->set('isAdmin', $this->isAdmin());
+        $this->set('topics', $topics);
+        $this->set('selectedTopicId', $examGroupId);
     }
 
     public function select($examId)

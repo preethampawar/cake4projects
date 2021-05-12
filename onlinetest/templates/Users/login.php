@@ -9,7 +9,16 @@
             <div class="alert alert-danger mb-4">
                 <div>You need to login to attend this test - <b><?= $examDetails->name ?></b></div>
                 <div class=""><a href="/users/register">Register</a> yourself if you don't have an account. It's easy.</div>
-                <div class="text-end"><a href="/UserExams/list" class="btn btn-sm btn-danger py-0">Cancel</a></div>
+
+                <?php if($examDetails->allow_guest) { ?>
+                <div class="mt-3">
+                    (OR) <a href="/Users/continueAsGuest/<?= base64_encode($examDetails->id) ?>" class="">Continue As Guest</a>
+                </div>
+                <?php } ?>
+
+                <div class="text-end">
+                    <a href="/UserExams/list" class="btn btn-sm btn-danger py-0 ms-3">Cancel</a>
+                </div>
             </div>
             <?php
         }
@@ -51,7 +60,7 @@
                 </div>
 
                 <div class="mt-4 mb-3">
-                    <?= $this->Form->button(__('Submit'), ['class' => 'btn btn-md btn-primary']) ?>
+                    <?= $this->Form->button(__('Login'), ['class' => 'btn btn-md btn-primary']) ?>
                 </div>
 
                 <?php

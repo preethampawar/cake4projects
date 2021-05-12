@@ -11,6 +11,7 @@ use App\Model\Table\SubjectsTable;
 use App\Model\Table\TagsTable;
 use Cake\Cache\Cache;
 use Cake\Event\EventInterface;
+use Cake\ORM\Query;
 
 class ExamsController extends AppController
 {
@@ -33,8 +34,11 @@ class ExamsController extends AppController
         }
     }
 
-    public function index($examGroupId = null)
+    public function index($examGroupId = null, $categoryId = null)
     {
+        $examGroupId = $examGroupId === 'null' ? null : $examGroupId;
+        $categoryId = $categoryId === 'null' ? null : $categoryId;
+
         $this->loadComponent('Paginator');
 
         $conditions = ['Exams.deleted' => 0];
@@ -43,10 +47,18 @@ class ExamsController extends AppController
             $conditions[] = ['Exams.exam_group_id' => $examGroupId];
         }
 
+        $query = $this->Exams->find('all')->contain(['ExamCategories', 'ExamQuestions', 'ExamGroups']);
+
+        if ($categoryId) {
+            $query = $query->matching('ExamCategories', function (Query $q) use ($categoryId) {
+                return $q->where(['ExamCategories.category_id' => $categoryId]);
+            });
+        }
+
+        $query = $query->where($conditions);
+
         $exams = $this->Paginator->paginate(
-            $this->Exams->find('all')
-                ->contain(['ExamCategories', 'ExamQuestions', 'ExamGroups'])
-                ->where($conditions),
+            $query,
             [
                 'limit' => 50,
                 'order' => [
@@ -65,6 +77,7 @@ class ExamsController extends AppController
         $this->set('categories', $categories);
         $this->set('examGroups', $examGroups);
         $this->set('examGroupId', $examGroupId);
+        $this->set('categoryId', $categoryId);
     }
 
     public function groupView()
@@ -233,7 +246,8 @@ class ExamsController extends AppController
         $this->set(compact('exam'));
     }
 
-    public function loadSelectedExamQuestions($examId) {
+    public function loadSelectedExamQuestions($examId)
+    {
         $this->setLayout('ajax');
 
         $examQuestions = $this->getExamQuestions($examId);
@@ -250,7 +264,7 @@ class ExamsController extends AppController
 
         $error = $this->checkDuplicateExamQuestion($data);
 
-        if (!$error)  {
+        if (!$error) {
             $error = $this->checkAddQuestionsLimit($data['exam_id']);
         }
 
@@ -459,7 +473,7 @@ class ExamsController extends AppController
         return $this->redirect(['controller' => 'exams', 'action' => 'index']);
     }
 
-    public function bustCache($type = null, $typeId=null)
+    public function bustCache($type = null, $typeId = null)
     {
         $this->allowAdmin();
 
@@ -487,7 +501,7 @@ class ExamsController extends AppController
                 Cache::delete($userExamSelectedQACacheKey);
                 break;
             default:
-                $this->Flash->set('List of commands: <br>/list/categoryId <br>/exam/examId <br>/userExam/userExamId <br>/userExamSelectedQA/userExamId', ['escape'=>false]);
+                $this->Flash->set('List of commands: <br>/list/categoryId <br>/exam/examId <br>/userExam/userExamId <br>/userExamSelectedQA/userExamId', ['escape' => false]);
                 break;
         }
 

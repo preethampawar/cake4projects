@@ -62,21 +62,12 @@ class AppController extends Controller
             'register',
             'list',
             'select',
-            'logout'
+            'logout',
+            'initiate',
+            'continueAsGuest',
         ];
+
         if (!in_array($this->request->getParam('action'), $whiteListActions) && $this->request->getSession()->check('User.id') === false) {
-            if (! $this->request->is('ajax')) {
-                return $this->redirect('/users/login');
-            }
-        }
-
-        if (
-            $this->request->getParam('action') !== 'login'
-            && $this->request->getParam('action') !== 'register'
-            && ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') !== 'list')
-            && ($this->request->getParam('controller') == 'UserExams' && $this->request->getParam('action') !== 'select')
-            && $this->request->getSession()->check('User.id') !== true) {
-
             if (! $this->request->is('ajax')) {
                 return $this->redirect('/users/login');
             }

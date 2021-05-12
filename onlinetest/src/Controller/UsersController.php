@@ -68,12 +68,31 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
-    public function register()
+    public function continueAsGuest() {
+        $userInfo = $this->Users->find('all')->order(['Users.id desc'])->first();
+        $lastUserId = $userInfo->id ?? rand(0, 9999);
+
+        $data['name'] = 'Guest '.$lastUserId;
+        $data['username'] = 'guest'.$lastUserId;
+        $data['password'] = strtolower(date('l')) . $lastUserId;
+        $data['phone'] = null;
+        $data['email'] = null;
+        $data['is_guest'] = true;
+        $guest = true;
+
+        $this->register($guest, $data);
+
+        return $this->redirect(['controller' => 'users', 'action' => 'login']);
+    }
+
+    public function register($guest=null, $data=null)
     {
         $user = $this->Users->newEmptyEntity();
 
-        if ($this->request->is('post')) {
-            $error = $this->validateUser($this->request->getData());
+        if ($this->request->is('post') || $guest) {
+
+            $data = $guest === true ? $data : $this->request->getData();
+            $error = $guest === true ? null : $this->validateUser($data);
 
             if ($error) {
                 $this->Flash->error(__($error));
@@ -81,21 +100,35 @@ class UsersController extends AppController
                 return;
             }
 
-            $data = $this->request->getData();
             $originalPassword = $data['password'];
             $data['password'] = sha1($data['password']);
 
             $user = $this->Users->patchEntity($user, $data);
 
             if ($userInfo = $this->Users->save($user)) {
-                $this->sendRegisterEmail($userInfo, $originalPassword);
+
+                if ($data['email']) {
+                    $this->sendRegisterEmail($userInfo, $originalPassword);
+                }
+
                 $this->saveUserToSession($userInfo);
 
-                $this->Flash->success(__('Registration successful.'));
+                $guest === true
+                    ? $this->Flash->success(__('You are now logged in as a guest. You can login anytime using the following login details.<br><br><b>Username: <i>' . $data['username'] . '</i><br>Password: <i>' . $originalPassword .'</i></b><br><br>Please note down these details, it will not be shown again.'), ['escape' => false])
+                    : $this->Flash->success(__('Registration successful.'));
+
+                if ($this->request->getSession()->check('selectedExamId')) {
+                    return $this->redirect('/UserExams/view/' . $this->request->getSession()->read('selectedExamId'));
+                }
+
                 return $this->redirect(['controller' => 'users', 'action' => 'login']);
             }
 
             $this->Flash->error(__('Unable to add new user.'));
+        }
+
+        if ($guest === true) {
+            return $this->redirect(['controller' => 'users', 'action' => 'login']);
         }
 
         $this->set('user', $user);
@@ -129,63 +162,93 @@ class UsersController extends AppController
 //            return 'Password and Confirm Password fields do not match.';
 //        }
 
-        $userInfo = $this->Users->findByUsername($data['username'])->first();
+        if (isset($data['id']) and !empty($data['id'])) {
+            $userInfo = $this->Users->findByUsername($data['username'])->where(['NOT' => ['Users.id' => $data['id']]])->first();
+        } else {
+            $userInfo = $this->Users->findByUsername($data['username'])->first();
+        }
 
         if (!empty($userInfo)) {
-            return 'Username already exits.';
+            return 'Username already exists.';
         }
 
         return null;
     }
 
-    public function edit($id)
+    public function myProfile()
     {
-        $question = $this->Questions
-            ->findById($id)
-            ->contain(['QuestionOptions'])
-            ->firstOrFail();
+        $userId = $this->request->getSession()->read('User.id');
+        $userInfo = $this->Users->findById($userId)->first();
 
-        $options = [];
-        if ($question) {
-            $i = 1;
-            foreach($question['question_options'] as $row) {
-                $options[$i] = $row->toArray();
-                $i++;
-            }
-        }
+        $this->set('userInfo', $userInfo);
+    }
 
-        //debug($options);
+    public function updateProfile()
+    {
+        $userId = $this->request->getSession()->read('User.id');
+        $userInfo = $this->Users->findById($userId)->first();
 
-        if ($this->request->is(['post', 'put'])) {
-            $this->Questions->patchEntity($question, $this->request->getData());
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $data = $this->request->getData();
 
-            if ($this->Questions->save($question)) {
-                // $this->loadModel(QuestionOptionsTable::class);
-                $options = $question['options'];
+            $data['id'] = $userInfo->id;
+            $data['password'] = '...';
+            $error = $this->validateUser($data);
+            unset($data['password']);
 
-                $this->Questions->QuestionOptions->deleteAll(['question_id' =>$id]);
+            if (!$error) {
+                $user = $this->Users->patchEntity($userInfo, $data);
 
-                foreach ($options as $row) {
-                    $questionOption = $this->Questions->QuestionOptions->newEmptyEntity();
-                    $data = [];
-                    $data['question_id'] = $id;
-                    $data['name'] = $row['name'];
-                    $data['sort'] = (int) $row['order'];
+                if ($userInfo = $this->Users->save($user)) {
+                    $this->saveUserToSession($userInfo);
+                    $this->Flash->success(__('Profile updated successfully.'));
 
-                    $questionOption = $this->Questions->QuestionOptions->patchEntity($questionOption, $data);
-
-                    $this->Questions->QuestionOptions->save($questionOption);
+                    return $this->redirect('/Users/myProfile');
                 }
-
-                $this->Flash->success(__('Your question has been saved.'));
-
-                return $this->redirect(['controller' => 'questions', 'action' => 'index']);
+            } else {
+                $this->Flash->error(__($error));
             }
-            $this->Flash->error(__('Unable to update your question.'));
         }
 
-        $this->set('question', $question);
-        $this->set('options', $options);
+        $this->set('userInfo', $userInfo);
+    }
+
+    public function updatePassword()
+    {
+        $userId = $this->request->getSession()->read('User.id');
+        $userInfo = $this->Users->findById($userId)->first();
+
+        if ($this->request->is('post') || $this->request->is('put')) {
+            $data = $this->request->getData();
+            $userData['password'] = trim($data['password']);
+            $error = null;
+
+            if (empty(trim($userData['password']))) {
+                $error = 'New Password field cannot be empty.';
+            }
+
+            if (empty(trim($data['confirm']))) {
+                $error = 'Confirm New Password field cannot be empty.';
+            }
+
+            if (trim($userData['password']) != trim($data['confirm'])) {
+                $error = 'New Password and Confirm New Password fields do not match.';
+            }
+
+            if (!$error) {
+                $userData['password'] = sha1($userData['password']);
+                $user = $this->Users->patchEntity($userInfo, $userData);
+
+                if ($userInfo = $this->Users->save($user)) {
+                    $this->saveUserToSession($userInfo);
+                    $this->Flash->success(__('Password updated successfully.'));
+
+                    return $this->redirect('/Users/myProfile');
+                }
+            } else {
+                $this->Flash->error(__($error));
+            }
+        }
     }
 
     public function delete($id)
@@ -248,6 +311,7 @@ class UsersController extends AppController
         $user['phone'] = $userInfo->phone;
         $user['address'] = $userInfo->address;
         $user['isAdmin'] = $userInfo->is_admin ?? false;
+        $user['isGuest'] = $userInfo->is_guest;
 
         $this->request->getSession()->write('User', $user);
 
