@@ -1,11 +1,11 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/ExamGroups/">Topics</a></li>
+        <li class="breadcrumb-item"><a href="/ExamGroups/">Test Series</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Details</li>
     </ol>
 </nav>
 
-<h1>Edit Topic</h1>
+<h1>Edit Test Series</h1>
 
 <?php
 echo $this->Form->create($examGroup);
@@ -19,7 +19,7 @@ echo $this->Form->create($examGroup);
 echo $this->Form->control('name',
     [
         'type' => 'text',
-        'label' => 'Topic Name *',
+        'label' => 'Test Series Name *',
         'required' => true,
         'class' => 'form-control form-control-sm mb-3'
     ]);
@@ -36,7 +36,7 @@ echo $this->Form->control('active',
 ?>
 
 <div class="my-4">
-    <?= $this->Form->button(__('Update Topic Details'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
+    <?= $this->Form->button(__('Update Test Series Details'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
 </div>
 
 <?php

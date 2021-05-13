@@ -78,7 +78,7 @@ if ($this->request->getParam('controller') == 'UserExams'
         <link href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" rel="stylesheet">
 
         <script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
-        <script src="/js/common.js?v=1.0"></script>
+        <script src="/js/common.js?v=1.0.1"></script>
 
         <?php if ($showMathJaxScript): ?>
             <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>

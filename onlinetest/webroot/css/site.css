@@ -26,6 +26,10 @@ h1,h2,h3,h4 {
     margin-bottom: 1rem;
 }
 
+h3, h4 {
+    font-size: 1.2em;
+}
+
 .navbar-dark .navbar-nav .nav-link {
     color: rgba(255,255,255,0.85);
 }
@@ -247,4 +251,7 @@ h1,h2,h3,h4 {
 .nav-link:hover {
     border-radius: 5px;
     background-color: var(--cus-purple-dark);
+}
+.hoverHighlight:hover {
+    background-color: var(--cus-ivory);
 }

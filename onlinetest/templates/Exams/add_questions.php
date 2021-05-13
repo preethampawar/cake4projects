@@ -15,7 +15,7 @@
 
 <p class="mt-2 small">
     <div class="fw-bold">
-        Topic: <?= $exam->exam_group->name ?><br>
+    Test Series: <?= $exam->exam_group->name ?><br>
     Test Name: <?= $exam->name ?> <span class="text-danger">(<?= $exam->active ? 'Published' : 'Unpublished' ?>)</span>
         <br>
         Total Questions: <?= $exam->total_questions ?><br>

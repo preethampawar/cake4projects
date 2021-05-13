@@ -1,15 +1,15 @@
-<h1>Tests - Topics View</h1>
+<h1>Test Series View</h1>
 
 <div class="text-end">
     <a class="btn btn-primary btn-sm" href="/exams/add">+ New Test</a>
     <a class="btn btn-maroon btn-sm ms-2" href="/exams/">List View</a>
-    <a class="btn btn-maroon btn-sm" href="/exams/groupView">Topics View</a>
+    <a class="btn btn-maroon btn-sm" href="/exams/groupView">Test Series View</a>
 </div>
 
 <div>
     <div>
         <b><?php echo $this->Paginator->counter(
-                'Total Exam Topics: {{count}}'
+                'Total Test Series: {{count}}'
             ); ?></b>
     </div>
 

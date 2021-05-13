@@ -10,21 +10,21 @@ foreach($categories as $category) {
 <div class="text-end">
     <a class="btn btn-primary btn-sm" href="/exams/add">+ New Test</a>
     <a class="btn btn-maroon btn-sm ms-2" href="/exams/">List View</a>
-    <a class="btn btn-maroon btn-sm" href="/exams/groupView">Topics View</a>
+    <a class="btn btn-maroon btn-sm" href="/exams/groupView">Test Series View</a>
 </div>
 
 <div class="mt-3 mb-3">
-    <div class="alert bg-light">
+    <div class="alert alert-secondary">
         <label>Filter</label>
-        <div class="row">
-            <div class="col-sm-12 col-md-3">
-                <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $examGroupId, 'empty' => 'Select Topic']) ?>
-            </div>
-            <div class="col-sm-12 col-md-3">
+        <div class="row mt-2">
+            <div class="col-12 col-sm-5 col-md-3 mb-2 pe-3">
                 <?= $this->element('categoriesDropDown', ['categories' => $categories, 'selected' => $categoryId, 'empty' => 'Select Category', 'multiple' => false]) ?>
             </div>
-            <div class="col-sm-12 col-md-3">
-                <button type="button" class="btn btn-primary btn-sm ms-2" onclick="searchExams()">Search</button>
+            <div class="col-12 col-sm-5 col-md-3 mb-2 pe-3">
+                <?= $this->element('examGroupsDropDown', ['examGroups' => $examGroups, 'selected' => $examGroupId, 'empty' => 'Select Test Series']) ?>
+            </div>
+            <div class="col-12 col-sm-2 col-md-3">
+                <button type="button" class="btn btn-primary btn-sm" onclick="searchExams()">Search</button>
             </div>
         </div>
     </div>
@@ -97,7 +97,7 @@ foreach($categories as $category) {
                             </span>
                         </div>
                         <div>
-                            <span class="text-muted">Topic: <a href="/Exams/index/<?= $exam->exam_group->id ?>"><?= $exam->exam_group->name ?></a></span>
+                            <span class="text-muted">Test Series: <a href="/Exams/index/<?= $exam->exam_group->id ?>"><?= $exam->exam_group->name ?></a></span>
                         </div>
 
                     </div>

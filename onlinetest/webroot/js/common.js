@@ -103,13 +103,13 @@ var exams = {
                 url: url,
                 success: function (data, obj) {
                     console.log(data.error);
+                    exams.loadSelectedExamQuestions(oldExamId)
+
                     if (data.error) {
                         popup.alert('#', '', data.error)
                     } else {
-                        popup.alert('#', '', data.success)
+                        // popup.alert('#', '', data.success)
                     }
-
-                    exams.loadSelectedExamQuestions(oldExamId)
 
                     // exams.loadSelectedExamQuestions(examId)
                     //location.reload();

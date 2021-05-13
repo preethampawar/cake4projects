@@ -21,7 +21,7 @@
 
 <div class="mt-3 mb-3">
     <div class="">
-        <label>Test Topic</label>
+        <label>Test Series</label>
         <div id="examGroupsDivAddQuestionForm">
             <?= $this->element('examGroupsDropDown', ['categories' => $examGroups]) ?>
         </div>

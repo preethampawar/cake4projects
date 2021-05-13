@@ -2,32 +2,27 @@
 
 
 <div class="text-end mt-3">
-    <a class="btn btn-purple btn-sm" href="#" onclick="$('#FilterQuestionBank').toggleClass('d-none')">Filter</a>
     <a class="btn btn-primary btn-sm ms-3" href="/questions/add">+ Add Question</a>
 </div>
 
-<div id="FilterQuestionBank" class="alert alert-secondary bg-light mt-3 d-none">
-    <?= $this->Form->create(null, ['method' => 'get']) ?>
-
-    <div class="row">
-        <div class="col-sm-4 col-md-4 mb-3">
-            <div id="subjectDivAddQuestionForm">
-                <div class="">
-                    <label>Subjects</label>
-                    <div id="subjectDivAddQuestionForm">
-                        <?= $this->element('subjectsDropDown', [
-                            'subjects' => $subjects,
-                            'selectedSubject' => $selectedSubject,
-                            'empty' => true,
-                            'multiple' => true,
-                        ])
-                        ?>
-                    </div>
+<?= $this->Form->create(null, ['method' => 'get']) ?>
+<div class="mt-3 mb-3">
+    <div class="alert alert-secondary">
+        <label class="fw-bold">Filter</label>
+        <div class="row mt-2">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 mb-2">
+                <label>Subjects</label>
+                <div id="subjectDivAddQuestionForm">
+                    <?= $this->element('subjectsDropDown', [
+                        'subjects' => $subjects,
+                        'selectedSubject' => $selectedSubject,
+                        'empty' => true,
+                        'multiple' => true,
+                    ])
+                    ?>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4 col-md-4 mb-3">
-            <div class="">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 mb-2">
                 <label>Education</label>
                 <div id="educationLevelDivAddQuestionForm">
                     <?= $this->element('educationLevelsDropDown', [
@@ -38,9 +33,7 @@
                     ]) ?>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-4 col-md-4 mb-3">
-            <div class="">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 mb-2">
                 <label>Difficulty</label>
                 <?php
                 echo $this->Form->control('difficulty_level', [
@@ -58,26 +51,21 @@
                 ]);
                 ?>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="">
+            <div class="col-12 col-sm-4 col-md-4 col-lg-3 mb-2">
                 <label>Tags</label>
                 <div id="tagsDivAddQuestionForm">
                     <?= $this->element('tagsDropDown', ['tags' => $tags, 'selected' => $selectedTags]) ?>
                 </div>
             </div>
         </div>
+        <div class="mt-2">
+            <button type="submit" class="btn btn-sm btn-primary">Filter Question Bank</button>
+        </div>
     </div>
-    <div class="mt-3 text-start">
-        <button type="submit" class="btn btn-sm btn-primary">Filter Question Bank</button>
-    </div>
-    <?= $this->Form->end() ?>
 </div>
+<?= $this->Form->end() ?>
 
-
-<div class="mt-3">
+<div class="mt-4">
     <div>
         <b><?php echo $this->Paginator->counter(
                 'Total Questions: {{count}}'

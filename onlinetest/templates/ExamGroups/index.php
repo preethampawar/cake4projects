@@ -1,7 +1,7 @@
-<h1>Topics List</h1>
+<h1>Test Series</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/ExamGroups/add">+ New Topic</a>
+    <a class="btn btn-primary btn-sm" href="/ExamGroups/add">+ New Test Series</a>
 </div>
 
 <div>
@@ -35,7 +35,7 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Topic</th>
+            <th>Test Series</th>
             <th></th>
         </tr>
         </thead>
@@ -59,14 +59,14 @@
                             <i class="fa fa-ellipsis-h"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="actionsDropdownMenuLink">
-                            <li><a href="/ExamGroups/edit/<?= $examGroup->id ?>" title="Edit Topic details" class="dropdown-item"><i class="fa fa-edit"></i> Edit</a></li>
+                            <li><a href="/ExamGroups/edit/<?= $examGroup->id ?>" title="Edit Test Series details" class="dropdown-item"><i class="fa fa-edit"></i> Edit</a></li>
                             <li>
                                 <?php
                                 echo $this->Html->link(
                                     '<i class="fa fa-times-circle"></i> Delete',
                                     ['controller' => 'ExamGroups', 'action' => 'delete', $examGroup->id],
                                     [
-                                        'confirm' => 'Are you sure you want to delete this Topic?',
+                                        'confirm' => 'Are you sure you want to delete this Test Series?',
                                         'class' => 'dropdown-item',
                                         'title' => $examGroup->name,
                                         'escape' => false
@@ -84,7 +84,7 @@
 
         if (empty($examGroups->toArray())) {
             ?>
-            <tr><td colspan="4">No Topics found.</td></tr>
+            <tr><td colspan="4">No Test Series found.</td></tr>
             <?php
         }
 

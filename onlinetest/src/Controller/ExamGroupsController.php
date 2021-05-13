@@ -58,12 +58,12 @@ class ExamGroupsController extends AppController
 
             if ($examGroupInfo = $this->ExamGroups->save($examGroup)) {
 
-                $this->Flash->success(__('Topic has been saved.'));
+                $this->Flash->success(__('Test Series has been saved.'));
 
                 return $this->redirect(['controller' => 'examGroups', 'action' => 'index']);
             }
 
-            $this->Flash->error(__('Unable to create new Topic.'));
+            $this->Flash->error(__('Unable to create new Test Series.'));
         }
 
         $this->set('examGroup', $examGroup);
@@ -72,7 +72,7 @@ class ExamGroupsController extends AppController
     private function validateExamGroup($data)
     {
         if (empty(trim($data['name']))) {
-            return 'Please enter the Topic name.';
+            return 'Please enter the Test Series name.';
         }
 
         return null;
@@ -88,12 +88,12 @@ class ExamGroupsController extends AppController
             $this->ExamGroups->patchEntity($examGroup, $this->request->getData());
 
             if ($this->ExamGroups->save($examGroup)) {
-                $this->Flash->success(__('Topic details have been updated successfully.'));
+                $this->Flash->success(__('Test Series details have been updated successfully.'));
 
                 return $this->redirect(['controller' => 'examGroups', 'action' => 'index']);
             }
 
-            $this->Flash->error(__('Unable to update Topic details.'));
+            $this->Flash->error(__('Unable to update Test Series details.'));
         }
 
         $this->set('examGroup', $examGroup);

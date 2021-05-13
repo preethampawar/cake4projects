@@ -540,7 +540,7 @@ class UserExamsController extends AppController
         $this->loadModel(CategoriesTable::class);
         $categories = $this->Categories->find('all')->select(['Categories.id', 'Categories.name'])->where(['Categories.deleted' => 0])->order('name asc')->all();
 
-        // get exam topics
+        // get exam Test Series
         $this->loadModel(ExamGroupsTable::class);
         $topics = $this->ExamGroups->find('all')->all();
 
