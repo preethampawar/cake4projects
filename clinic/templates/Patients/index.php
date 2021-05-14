@@ -41,7 +41,6 @@
         <th>Age</th>
         <th>Sex</th>
         <th>Phone</th>
-        <th></th>
     </tr>
     </thead>
 
@@ -64,21 +63,10 @@
                 <?= $patient->join_date->format('d/m/Y') ?>
             </td>
             <td>
-                <?= $patient->name ?>
-            </td>
-            <td>
-                <?= $patient->age ?>
-            </td>
-            <td>
-                <?= $patient->sex ?>
-            </td>
-            <td>
-                <?= $patient->phone ?>
-            </td>
-            <td>
-                <div class="dropdown text-end text-primary">
-                    <span class="px-3 hoverHighlight" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-ellipsis-v"></i>
+
+                <div class="dropdown text-primary">
+                    <span class="dropdown-toggle hoverHighlight" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <?= $patient->name ?>
                     </span>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li>
@@ -97,7 +85,15 @@
                     </ul>
                 </div>
             </td>
-
+            <td>
+                <?= $patient->age ?>
+            </td>
+            <td>
+                <?= $patient->sex ?>
+            </td>
+            <td>
+                <?= $patient->phone ?>
+            </td>
         </tr>
 
     <?php
