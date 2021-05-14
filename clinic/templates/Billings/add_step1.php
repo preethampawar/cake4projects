@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb alert bg-light border">
     <li class="breadcrumb-item"><a href="/billings/">Billings</a></li>
     <li class="breadcrumb-item active" aria-current="page">Step1 - Select Patient</li>
   </ol>
@@ -15,30 +15,33 @@
 <?php
 echo $this->Form->create();
 ?>
-<div class="card">
 
-
-    <div class="d-flex card-body">
-        <div>
-            <?php
-            echo $this->Form->control('keyword', ['label' => 'Search Keyword', 'class' => 'form-control mb-3', 'placeholder' => 'Enter OPD no. (or) Phone (or ) Name']);
-            ?>
+<div class="alert bg-light border">
+    <div class="row">
+        <div class="col-12 col-sm-4 col-lg-3">
+            <?php echo $this->Form->control('keyword', ['label' => 'Keyword', 'class' => 'form-control mb-3', 'placeholder' => "Enter Name (or) OPD No. (or) Phone No."]); ?>
         </div>
-        <div class="mx-4">
+
+        <div class="col-12 col-sm-4 col-lg-3">
             <?php
             echo $this->Form->control('type', [
                 'type' => 'select',
                 'label' => 'Search By',
                 'class' => 'form-control mb-3',
-                'empty' => false,
-                'options' => ['opd_no' => 'OPD No.', 'phone' => 'Phone No.', 'name' => 'Name', 'id' => 'Id'],
-                'default' => 'opd_no'
+                'empty' => 'All',
+                'options' => ['phone' => 'Phone No.', 'opd_no' => 'OPD No.', 'name' => 'Name'],
+                'default' => '',
+
             ]);
             ?>
+
         </div>
-        <div class="mt-4">
-            <?= $this->Form->button(__('Search'), ['class' => 'btn btn-md btn-primary']) ?>
+
+        <div class="col-12 col-sm-4 col-lg-3">
+            <br>
+            <button type="submit" class="btn btn-primary w-100">Find</button>
         </div>
+
     </div>
 </div>
 
@@ -51,12 +54,11 @@ echo $this->Form->end();
 if ($result) {
     ?>
     <h4 class="mt-4"><?= count($result) ?> record(s) found:</h4>
-    <table class="table table-sm small mt-3">
+    <table class="table table-sm small mt-3 table-hover">
         <thead>
         <tr>
-            <th style="width:30px;">Id</th>
-            <th style="width:75px;">OPD No.</th>
-            <th>Registered On</th>
+            <th style="width:75px;" class="text-center">OPD No.</th>
+            <th style="width:110px;">Registered On</th>
             <th>Name</th>
             <th>Age</th>
             <th>Sex</th>
@@ -65,15 +67,12 @@ if ($result) {
         </tr>
         </thead>
 
-        <tbody>
+        <tbody id="tableBody">
         <?php
         foreach ($result as $patient):
             ?>
 
             <tr>
-                <td class="text-center">
-                    <?= $patient->id ?>
-                </td>
                 <td class="text-center">
                     <?= $patient->opd_no ?>
                 </td>
@@ -81,7 +80,7 @@ if ($result) {
                     <?= $patient->join_date->format('d/m/Y') ?>
                 </td>
                 <td>
-                    <?= $patient->name ?>
+                    <a href="/billings/add/<?= $patient->id ?>" title="Select Patient: OPD No. <?= $patient->opd_no ?> - <?= $patient->name ?>" class=""><?= $patient->name ?></a>
                 </td>
                 <td>
                     <?= $patient->age ?>
@@ -92,8 +91,8 @@ if ($result) {
                 <td>
                     <?= $patient->phone ?>
                 </td>
-                <td>
-                    <a href="/billings/add/<?= $patient->id ?>" title="Select Patient: OPD No. <?= $patient->opd_no ?> - <?= $patient->name ?>" class="">Select</a>
+                <td class="text-end">
+                    <a href="/billings/add/<?= $patient->id ?>" title="OPD No. <?= $patient->opd_no ?> - <?= $patient->name ?>" class="btn btn-sm py-0 btn-primary">Select</a>
                 </td>
 
             </tr>
@@ -103,6 +102,16 @@ if ($result) {
         ?>
         </tbody>
     </table>
+
+    <script type="text/javascript">
+        var term = "<?= $this->getRequest()->getData('keyword') ?>";
+
+        if (term.length > 0) {
+            $('#tableBody').html(function () {
+                return $(this).html().replace(new RegExp(term + "(?=[^>]*<)","ig"), "<span class='bg-ivory'>$&</span>");
+            });
+        }
+    </script>
     <?php
 } else {
     ?>

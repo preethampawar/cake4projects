@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb alert bg-light border">
     <li class="breadcrumb-item"><a href="/billings/">Billings</a></li>
     <li class="breadcrumb-item"><a href="/billings/add-step1">Step1</a></li>
     <li class="breadcrumb-item active" aria-current="page">Step2 - Add bill for <?= $patient->name ?></li>

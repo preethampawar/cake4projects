@@ -35,30 +35,41 @@ class BillingsController extends AppController
         $data = $this->request->getData();
         $result = null;
 
-        if (!empty($data['keyword']) && !empty($data['type'])) {
+        if (!empty($data['keyword'])) {
             $keyword = sprintf('%s', $data['keyword']);
             $type = sprintf('%s', $data['type']);
-            $this->loadModel('Patients');
-            $query = $this->Patients->find()
-                ->where(function (QueryExpression $exp, Query $q) use ($keyword, $type) {
-                    switch ($type) {
-                        case 'name':
-                            return $exp->like('name', "%$keyword%");
-                            break;
-                        case 'phone':
-                            return $exp->like('phone', "%$keyword%");
-                            break;
-                        case 'age':
-                            return $exp->like('age', "%$keyword%");
-                            break;
-                        case 'id':
-                            return $exp->like('id', "%$keyword%");
-                            break;
-                        default:
-                            return $exp->like('opd_no', "%$keyword%");
-                            break;
-                    }
-                });
+
+            $this->loadModel(PatientsTable::class);
+
+            if (!empty($type)) {
+                $conditions = [];
+                switch ($type) {
+                    case 'name':
+                        $conditions[] = ['name like' => "%$keyword%"];
+                        break;
+                    case 'opd_no':
+                        $conditions[] = ['opd_no like' => "%$keyword%"];
+                        break;
+                    case 'age':
+                        $conditions[] = ['age like' => "%$keyword%"];
+                        break;
+                    case 'phone':
+                        $conditions[] = ['phone like' => "%$keyword%"];
+                        break;
+                }
+                $query = $this->Patients->find()
+                    ->where($conditions);
+            } else {
+                $query = $this->Patients->find()
+                    ->where([
+                        'OR' => [
+                            'name like' => "%$keyword%",
+                            'opd_no like' => "%$keyword%",
+                            'age like' => "%$keyword%",
+                            'phone like' => "%$keyword%",
+                        ],
+                    ]);
+            }
 
             $result = $query->all()->toArray();
         }
@@ -131,14 +142,23 @@ class BillingsController extends AppController
         $fromDate = date('Y-m-', strtotime('-1 month')) . '01';
         $toDate = date('Y-m-d');
         $billings = null;
+        $treatmentType = null;
 
         if ($this->request->is(['post'])) {
             $data = $this->request->getData();
             $fromDate = isset($data['from']) && !empty($data['from']) ? $data['from'] : $fromDate;
             $toDate = isset($data['to']) && !empty($data['to']) ? $data['to'] : $toDate;
+            $treatmentType = $data['treatment_type'];
+
+            $conditions = ['Billings.bill_date >= ' => $fromDate, 'Billings.bill_date <= ' => $toDate];
+
+            if (!empty($treatmentType)) {
+                $conditions[] = ['Billings.treatment_type' => $treatmentType];
+            }
+
             $billings = $this->Billings->find('all')
-                ->select(['Billings.id', 'Billings.patient_id', 'Billings.opd_no', 'Billings.bill_date', 'Billings.patient_name', 'Billings.amount'])
-                ->where(['Billings.bill_date >= ' => $fromDate, 'Billings.bill_date <= ' => $toDate])
+                ->select(['Billings.id', 'Billings.patient_id', 'Billings.opd_no', 'Billings.bill_date', 'Billings.patient_name', 'Billings.amount', 'Billings.treatment_type'])
+                ->where($conditions)
                 ->order('Billings.bill_date asc')
                 ->all();
         }
@@ -146,6 +166,7 @@ class BillingsController extends AppController
         $this->set('billings', $billings);
         $this->set('fromDate', $fromDate);
         $this->set('toDate', $toDate);
+        $this->set('treatmentType', $toDate);
     }
 
     public function download()

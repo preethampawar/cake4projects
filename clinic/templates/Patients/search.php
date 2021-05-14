@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb alert bg-light border">
     <li class="breadcrumb-item"><a href="/patients/">Patients</a></li>
     <li class="breadcrumb-item active" aria-current="page">Search</li>
   </ol>
@@ -15,20 +15,32 @@
     echo $this->Form->create();
 ?>
 
-<?php
-	echo $this->Form->control('keyword', ['label' => 'Keyword', 'class' => 'form-control mb-3']);
-	echo $this->Form->control('type', [
-	    'type' => 'select',
-        'label' => 'Search By',
-        'class' => 'form-control mb-3',
-        'empty' => false,
-        'options' => ['phone' => 'Phone No.', 'opd_no' => 'OPD No.', 'name' => 'Name'],
-        'default' => 'phone'
-    ]);
-?>
+<div class="alert bg-light border">
+    <div class="row">
+        <div class="col-12 col-sm-4 col-lg-3">
+            <?php echo $this->Form->control('keyword', ['label' => 'Keyword', 'class' => 'form-control mb-3']); ?>
+        </div>
 
-<div class="mt-4">
-    <?= $this->Form->button(__('Search'), ['class' => 'btn btn-sm btn-primary']) ?>
+        <div class="col-12 col-sm-4 col-lg-3">
+            <?php
+            echo $this->Form->control('type', [
+                'type' => 'select',
+                'label' => 'Search By',
+                'class' => 'form-control mb-3',
+                'empty' => 'All',
+                'options' => ['phone' => 'Phone No.', 'opd_no' => 'OPD No.', 'name' => 'Name'],
+                'default' => '',
+            ]);
+            ?>
+
+        </div>
+
+        <div class="col-12 col-sm-4 col-lg-3">
+            <br>
+            <button type="submit" class="btn btn-primary w-100">Find</button>
+        </div>
+
+    </div>
 </div>
 
 <?php
@@ -54,9 +66,9 @@ if ($result) {
         </tr>
         </thead>
 
-        <tbody>
+        <tbody id="tableBody">
         <?php
-        foreach ($result as $patient):
+        foreach ($result as $patient) :
             ?>
 
             <tr>
@@ -89,10 +101,20 @@ if ($result) {
 
             </tr>
 
-        <?php
+            <?php
         endforeach;
         ?>
         </tbody>
     </table>
+
+    <script type="text/javascript">
+        var term = "<?= $this->getRequest()->getData('keyword') ?>";
+
+        if (term.length > 0) {
+            $('#tableBody').html(function () {
+                return $(this).html().replace(new RegExp(term + "(?=[^>]*<)","ig"), "<span class='bg-ivory'>$&</span>");
+            });
+        }
+    </script>
     <?php
 }

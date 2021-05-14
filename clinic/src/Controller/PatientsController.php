@@ -3,9 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Cake\Database\Expression\QueryExpression;
-use Cake\ORM\Query;
-
 class PatientsController extends AppController
 {
     public function initialize(): void
@@ -93,26 +90,39 @@ class PatientsController extends AppController
         $data = $this->request->getData();
         $result = null;
 
-        if (!empty($data['keyword']) && !empty($data['type'])) {
+        if (!empty($data['keyword'])) {
             $keyword = sprintf('%s', $data['keyword']);
             $type = sprintf('%s', $data['type']);
-            $query = $this->Patients->find()
-                ->where(function (QueryExpression $exp, Query $q) use ($keyword, $type) {
-                    switch ($type) {
-                        case 'name':
-                            return $exp->like('name', "%$keyword%");
-                            break;
-                        case 'opd_no':
-                            return $exp->like('opd_no', "%$keyword%");
-                            break;
-                        case 'age':
-                            return $exp->like('age', "%$keyword%");
-                            break;
-                        default:
-                            return $exp->like('phone', "%$keyword%");
-                            break;
-                    }
-                });
+
+            if (!empty($type)) {
+                $conditions = [];
+                switch ($type) {
+                    case 'name':
+                        $conditions[] = ['name like' => "%$keyword%"];
+                        break;
+                    case 'opd_no':
+                        $conditions[] = ['opd_no like' => "%$keyword%"];
+                        break;
+                    case 'age':
+                        $conditions[] = ['age like' => "%$keyword%"];
+                        break;
+                    case 'phone':
+                        $conditions[] = ['phone like' => "%$keyword%"];
+                        break;
+                }
+                $query = $this->Patients->find()
+                    ->where($conditions);
+            } else {
+                $query = $this->Patients->find()
+                    ->where([
+                        'OR' => [
+                            'name like' => "%$keyword%",
+                            'opd_no like' => "%$keyword%",
+                            'age like' => "%$keyword%",
+                            'phone like' => "%$keyword%",
+                        ],
+                    ]);
+            }
 
             $result = $query->all()->toArray();
         }

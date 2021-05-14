@@ -1,19 +1,33 @@
 <h1>Billing Report</h1>
 
-<div class="alert bg-light">
+<div class="alert bg-light border">
     <?= $this->Form->create() ?>
     <div class="row">
-        <div class="col-sm-12 col-md-4 col-lg-3 mb-3">
+        <div class="col-sm-6 col-md-3 col-lg-3 mb-3">
             From Date:
             <input type="date" name="from" id="FromDate" value="<?= $fromDate ?>" class="form-control">
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-3">
+        <div class="col-sm-6 col-md-3 col-lg-3 mb-3">
             To Date:
             <input type="date" name="to" id="ToDate" value="<?= $toDate ?>" class="form-control">
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-6 text-end">
+        <div class="col-sm-6 col-md-3 col-lg-3">
+            Treatment Type:
+            <?php
+            echo $this->Form->control('treatment_type', [
+                'type' => 'select',
+                'label' => false,
+                'div' => false,
+                'class' => 'form-control mb-3',
+                'options' => ['clinic' => 'Clinic', 'home_visit' => 'Home Visit'],
+                'empty' => 'All',
+                'default' => $treatmentType ?? '',
+            ]);
+            ?>
+        </div>
+        <div class="col-sm-6 col-md-3 col-lg-3 text-start mb-3">
             &nbsp;<br>
-            <button type="submit" class="btn btn-primary">Generate Report</button>
+            <button type="submit" class="btn btn-primary w-100">Generate Report</button>
         </div>
     </div>
     <?= $this->Form->end() ?>
@@ -97,7 +111,7 @@ endforeach;
         <tr>
             <th>#</th>
             <th>Patient Name</th>
-
+            <th>Treatment Type</th>
             <th>Date</th>
             <th class="text-end">Amount</th>
         </tr>
@@ -121,7 +135,9 @@ endforeach;
                 <td>
                     <?= $billing->patient_name ?>
                 </td>
-
+                <td>
+                    <?= $billing->treatment_type == 'clinic' ? 'Clinic' : 'Home Visit' ?>
+                </td>
                 <td>
                     <?= $billing->bill_date->format('d/m/Y') ?>
                 </td>
@@ -134,7 +150,7 @@ endforeach;
         endforeach;
         ?>
         <tr>
-            <td colspan="4" class="text-end">Total Amount: <b><?= $totalAmount ?></b></td>
+            <td colspan="5" class="text-end">Total Amount: <b><?= $totalAmount ?></b></td>
         </tr>
         </tbody>
 

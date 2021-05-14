@@ -31,7 +31,7 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table table-sm small mt-3">
+    <table class="table table-sm table-hover small mt-3">
     <thead>
     <tr>
         <th style="width:30px;">Id</th>
@@ -76,12 +76,26 @@
                 <?= $patient->phone ?>
             </td>
             <td>
-                <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
-                   class="">Details</a>
-
-                <a href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>" class="mx-2">Edit</a>
-
-                <a href="/billings/add/<?= $patient->id ?>" title="Create new bill for - <?= $patient->name ?>" class="">Create Bill</a>
+                <div class="dropdown text-end text-primary">
+                    <span class="px-3 hoverHighlight" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-ellipsis-v"></i>
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="dropdown-item" href="/billings/add/<?= $patient->id ?>" title="Create new bill for - <?= $patient->name ?>">+Create Bill</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/CaseSheets/add/<?= $patient->id ?>" title="Add Case Sheet - <?= $patient->name ?>">+Add Case Sheet</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/patients/edit/<?= $patient->id ?>" title="Edit - <?= $patient->name ?>">Edit</a>
+                        </li>
+                        <li>
+                            <a href="/patients/view/<?= $patient->id ?>" title="Details - <?= $patient->name ?>"
+                               class="dropdown-item">Details</a>
+                        </li>
+                    </ul>
+                </div>
             </td>
 
         </tr>

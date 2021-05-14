@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb alert bg-light border">
     <li class="breadcrumb-item"><a href="/patients/">Patients</a></li>
     <li class="breadcrumb-item active" aria-current="page">Add New Patient</li>
   </ol>

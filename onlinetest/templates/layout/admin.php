@@ -34,7 +34,7 @@ switch($controller) {
         <link rel="shortcut icon" type="image/png" href="/img/edu2.png" />
         <?php echo $this->fetch('meta') ?>
 
-        <link href="/vendor/bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/site.css" rel="stylesheet">
         <link href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" rel="stylesheet">
         <link href="/vendor/select2-4.1/select2.min.css" rel="stylesheet">
@@ -150,6 +150,6 @@ switch($controller) {
             <footer class="d-print-none"></footer>
         </main>
 
-        <script src="/vendor/bootstrap-5.0.0-beta3-dist/js/bootstrap.bundle.min.js"></script>
+        <script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

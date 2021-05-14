@@ -31,7 +31,7 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table table-sm small mt-3">
+    <table class="table table-sm small mt-3 table-hover">
 	<thead>
     <tr>
         <th>#</th>
@@ -80,10 +80,11 @@
         <td>
             <?= $billing->treatment ?>
         </td>
-        <td>
-            <a href="/billings/view/<?= $billing->id ?>" title="Details - <?= $billing->patient_name ?>" class="">Bill Details</a>
-            &nbsp;|&nbsp;
-            <a href="/billings/edit/<?= $billing->id ?>" title="Edit - <?= $billing->patient_name ?>" class="">Edit Bill</a>
+        <td class="text-end">
+            <a href="/billings/add/<?= $billing->patient_id ?>" title="Create New Bill - <?= $billing->patient_name ?>" class="btn btn-sm py-0 btn-primary">+New Bill</a>
+            <a href="/billings/view/<?= $billing->id ?>" title="Details - <?= $billing->patient_name ?>" class="btn btn-sm py-0 btn-secondary ms-1">Details</a>
+
+            <a href="/billings/edit/<?= $billing->id ?>" title="Edit - <?= $billing->patient_name ?>" class="btn btn-sm py-0 btn-secondary ms-1">Edit Bill</a>
         </td>
 
     </tr>
