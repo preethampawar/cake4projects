@@ -53,12 +53,12 @@ switch($controller) {
 
         <link href="/vendor/bootstrap-5.0.0-dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/vendor/fontawesome-free-5.15.3-web/css/all.min.css" rel="stylesheet">
-        <link href="/vendor/select2-4.1/select2.min.css" rel="stylesheet">
+<!--        <link href="/vendor/select2-4.1/select2.min.css" rel="stylesheet">-->
         <link href="/css/site.css" rel="stylesheet">
 
         <script src="/vendor/jquery/jquery-3.6.0.min.js"></script>
         <script src="/js/common.js?v=1.0.1"></script>
-        <script src="/vendor/select2-4.1/select2.min.js"></script>
+<!--        <script src="/vendor/select2-4.1/select2.min.js"></script>-->
 
     </head>
     <body>
