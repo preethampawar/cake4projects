@@ -17,6 +17,10 @@ class BatchesController extends AppController
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+
+        if (!$this->isLoggedIn()) {
+            return $this->redirect('/Users/login');
+        }
     }
 
     public function index()
@@ -123,7 +127,7 @@ class BatchesController extends AppController
         $batches = $this->Batches
             ->find('all')
             ->contain(['Activities'])
-            ->where(['Batches.status' => 1])
+            ->where(['Batches.status' => 1, 'Batches.user_id' => $this->request->getSession()->read('User.id')])
             ->all();
 
         $this->set('batches', $batches);

@@ -67,9 +67,10 @@ class AppController extends Controller
             'continueAsGuest',
         ];
 
+
         if (!in_array($this->request->getParam('action'), $whiteListActions) && $this->request->getSession()->check('User.id') === false) {
             if (! $this->request->is('ajax')) {
-                return $this->redirect('/users/login');
+                return $this->redirect('/Users/login');
             }
         }
     }

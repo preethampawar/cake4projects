@@ -1,7 +1,14 @@
-
 <?php
 
 use App\Model\Table\BatchesTable;
+
+if (! $batches->toArray()) {
+    ?>
+    <p>Oops! there are no batches created yet.</p>
+    <p>Please create a <a href="/Batches/add">new batch</a> to see the updates here.</p>
+
+    <?php
+}
 
 foreach($batches as $batch) {
 ?>
@@ -106,7 +113,6 @@ foreach($batches as $batch) {
 
     </div>
     <?php
-
 }
 ?>
 
