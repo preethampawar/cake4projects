@@ -65,7 +65,7 @@ switch($controller) {
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark d-print-none bg-gradient p-0">
             <div class="container-fluid">
                 <a class="navbar-brand p-0" href="/">
-                    <span class="rounded bg-white px-2 pb-2 pt-1"><img src="/img/silkworm.png" height="64" width="64" alt=""></span> Sericulture Tracker
+                    <span class="rounded bg-white px-2 pb-2 pt-1"><img src="/img/silkworm.png" height="64" width="64" alt=""></span> Seri Tracker
                 </a>
 
                 <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"

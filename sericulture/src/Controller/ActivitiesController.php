@@ -19,6 +19,10 @@ class ActivitiesController extends AppController
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+
+        if (!$this->isLoggedIn()) {
+            return $this->redirect('/Users/login');
+        }
     }
 
     public function index()
