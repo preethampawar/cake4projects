@@ -1,7 +1,7 @@
 <h1>Activities List</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/Activities/selectBatch">+ New Activity</a>
+    <a class="btn btn-orange btn-sm rounded-pill" href="/Activities/selectBatch"><i class="fa fa-plus-circle"></i> NEW ACTIVITY</a>
 </div>
 
 <div>
@@ -31,7 +31,7 @@
 </div>
 
 <div class="">
-    <table class="table table-sm mt-3 small">
+    <table class="table table-sm mt-3 small table-striped">
         <thead>
         <tr>
             <th>#</th>
@@ -71,8 +71,8 @@
                 <td><?= $activity->batch->name ?></td>
                 <td class="text-end">
                     <div class="dropdown">
-                        <a class="fs-5" href="#" id="actionsDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
+                        <a class="fs-5 p-1" href="#" id="actionsDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="actionsDropdownMenuLink">
                             <li><a href="/Activities/edit/<?= $activity->id ?>" title="Edit Activity details" class="dropdown-item"><i class="fa fa-edit"></i> Edit</a></li>

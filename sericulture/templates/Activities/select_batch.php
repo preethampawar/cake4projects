@@ -1,11 +1,14 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Activities/">Activities</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Select Batch</li>
+    </ol>
+</nav>
+
 <h1>Select Batch</h1>
 
-<div class="text-end">
-    <a class="btn btn-danger btn-sm" href="/Activities/">Cancel</a>
-</div>
-
 <div class="">
-    <table class="table table-sm mt-3 small">
+    <table class="table table-sm mt-3 small table-striped">
         <thead>
         <tr>
             <th>#</th>
@@ -28,10 +31,30 @@
                     <?= $k ?>.
                 </td>
                 <td>
-                    <?= $batch->name ?>
+                    <?php
+                    if($batch->status == 1) {
+                        ?>
+                        <span class="text-success small"><i class="fa fa-circle"></i> </span>
+                        <a href="/Batches/details/<?= $batch->id ?>">
+                            <?= $batch->name ?>
+                        </a>
+                        <?php
+                    } else {
+                        ?>
+                        <span class="text-danger small"><i class="fa fa-circle"></i> </span>
+                        <span class="text-danger"><?= $batch->name ?></span>
+                        <?php
+                    }
+                    ?>
                 </td>
                 <td class="text-end">
-                    <a href="/activities/add/<?= $batch->id ?>" title="Select <?= $batch->name ?>">Select</a>
+                    <?php
+                    if($batch->status == 1) {
+                        ?>
+                        <a href="/activities/add/<?= $batch->id ?>" title="Select <?= $batch->name ?>" class="btn btn-sm btn-primary py-0">Select</a>
+                        <?php
+                    }
+                    ?>
                 </td>
             </tr>
 

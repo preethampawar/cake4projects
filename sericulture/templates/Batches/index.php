@@ -1,7 +1,7 @@
 <h1>Batches List</h1>
 
 <div class="text-end">
-    <a class="btn btn-primary btn-sm" href="/Batches/add">+ New Batch</a>
+    <a class="btn btn-orange btn-sm rounded-pill" href="/Batches/add"><i class="fa fa-plus-circle"></i> NEW BATCH</a>
 </div>
 
 <div>
@@ -35,8 +35,7 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Status</th>
-            <th>Batch Name</th>
+            <th>Batch</th>
             <th></th>
         </tr>
         </thead>
@@ -56,11 +55,9 @@
                 </td>
                 <td>
                     <?= $batch->status == 1 ?
-                        '<span class="text-success"><i class="fa fa-circle"></i> Active</span>' :
-                        '<span class="text-danger"><i class="fa fa-circle"></i> Closed</span>'
+                        '<span class="text-success small"><i class="fa fa-circle"></i> </span>' :
+                        '<span class="text-danger small"><i class="fa fa-circle"></i> </span>'
                     ?>
-                </td>
-                <td>
                     <a href="/Batches/details/<?= $batch->id ?>">
                         <?= $batch->name ?>
                     </a>

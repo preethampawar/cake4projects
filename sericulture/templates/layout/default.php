@@ -62,10 +62,10 @@ switch($controller) {
 
     </head>
     <body>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark d-print-none bg-gradient">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark d-print-none bg-gradient p-0">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-                    <span class="rounded bg-white px-2 pb-2 pt-1"><img src="/img/silkworm.png" height="64" width="64" alt=""></span> Sericulture
+                <a class="navbar-brand p-0" href="/">
+                    <span class="rounded bg-white px-2 pb-2 pt-1"><img src="/img/silkworm.png" height="64" width="64" alt=""></span> Sericulture Tracker
                 </a>
 
                 <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -170,9 +170,9 @@ switch($controller) {
 
 
 <script>
-    $(document).ready(function () {
-        $('.select2dropdown').select2({
-            placeholder: '-',
-        });
-    });
+    // $(document).ready(function () {
+    //     $('.select2dropdown').select2({
+    //         placeholder: '-',
+    //     });
+    // });
 </script>

@@ -277,10 +277,10 @@ class UsersController extends AppController
                 $user = $this->saveUserToSession($userInfo);
 
                 if ($user['isAdmin'] == false) {
-                    return $this->redirect('/Batches');
+                    return $this->redirect('/Batches/dashboard');
                 }
 
-                return $this->redirect('/Batches');
+                return $this->redirect('/Batches/dashboard');
             }
 
             $this->Flash->error(__('User not found.'));

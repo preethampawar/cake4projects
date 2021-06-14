@@ -14,10 +14,6 @@ use App\Model\Table\BatchesTable;
 echo $this->Form->create(null);
 ?>
 
-<div class="text-end">
-    <a class="btn btn-sm btn-danger" href="/Batches/">Cancel</a>
-</div>
-
 <?php
 echo $this->Form->control('name',
     [
@@ -99,7 +95,8 @@ echo $this->Form->control('status',
 ?>
 
 <div class="my-4">
-    <?= $this->Form->button(__('Create Batch'), ['class' => 'btn btn-primary btn-sm mt-2']) ?>
+    <?= $this->Form->button(__('Create Batch'), ['class' => 'btn btn-primary']) ?>
+    <a class="btn btn-danger ms-3" href="/Batches/">Cancel</a>
 </div>
 
 <?php

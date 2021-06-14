@@ -246,11 +246,11 @@ h3, h4 {
 
 .nav-link.active {
     border-radius: 5px;
-    background-color: var(--cus-purple-dark);
+    background-color: var(--cus-orange-light);
 }
 .nav-link:hover {
     border-radius: 5px;
-    background-color: var(--cus-purple-dark);
+    background-color: var(--cus-orange-light);
 }
 .hoverHighlight:hover {
     background-color: var(--cus-ivory);
