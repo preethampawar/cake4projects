@@ -68,21 +68,21 @@ switch($controller) {
                     <span class="rounded bg-white px-2 pb-2 pt-1"><img src="/img/silkworm.png" height="64" width="64" alt=""></span> Seri Tracker
                 </a>
 
-                <div class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                <div class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                         aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="fa fa-bars fs-5"></span>
+                    <span class="fa fa-bars fs-4"></span>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <?php
                         if ($loggedIn) {
                             ?>
-                            <a class="nav-link <?= $batchesDashboardLinkActive?> px-2 me-1" href="/Batches/dashboard">Dashboard</a>
-                            <a class="nav-link <?= $batchesLinkActive?> px-2 me-1" href="/Batches">Batches</a>
-                            <a class="nav-link <?= $activitiesLinkActive?> px-2 me-1" href="/Activities">Activities</a>
+                            <a class="nav-link <?= $batchesDashboardLinkActive?> px-2 me-1 my-1" href="/Batches/dashboard">Dashboard</a>
+                            <a class="nav-link <?= $batchesLinkActive?> px-2 me-1 my-1" href="/Batches">Batches</a>
+                            <a class="nav-link <?= $activitiesLinkActive?> px-2 me-1 my-1" href="/Activities">Activities</a>
 
                             <div class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle <?=$userDetailsLinkActive?> px-2 me-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle <?=$userDetailsLinkActive?> px-2 me-1 my-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <?= ucwords($loggedInUser['name']) ?> <i class="fa fa-user"></i>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -95,8 +95,8 @@ switch($controller) {
                             <?php
                         } else {
                             ?>
-                            <a class="nav-link <?= $loginLinkActive ?> px-2 me-1" href="/Users/login">Login</a>
-                            <a class="nav-link <?= $registerLinkActive ?> px-2" href="/Users/register">Register</a>
+                            <a class="nav-link <?= $loginLinkActive ?> px-2 me-1 my-1" href="/Users/login">Login</a>
+                            <a class="nav-link <?= $registerLinkActive ?> px-2 my-1" href="/Users/register">Register</a>
                             <?php
                         }
                         ?>

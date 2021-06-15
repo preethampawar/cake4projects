@@ -37,7 +37,6 @@
             <th>#</th>
             <th>Date</th>
             <th>Activity</th>
-            <th>Batch</th>
             <th></th>
         </tr>
         </thead>
@@ -57,8 +56,8 @@
                 </td>
                 <td>
                     <div>
-                        <?= $activity->activity_date->format('d M') ?>,
-                        <?= $activity->activity_time->format('h:i A') ?>
+                        <span class="d-inline-block text-uppercase me-1"><?= $activity->activity_date->format('d M') ?></span>
+                        <span class="badge bg-orange-light px-1"><?= $activity->activity_time->format('h:i a') ?></span>
                     </div>
                 </td>
 
@@ -67,11 +66,11 @@
                     <div class="text-muted small">
                         <?= !empty(trim($activity->notes)) ? $activity->notes : '' ?>
                     </div>
-                </td>
-                <td>
-                    <a href="/Batches/details/<?= $activity->batch_id ?>">
-                        <?= $activity->batch->name ?>
-                    </a>
+                    <div>
+                        <a href="/Batches/details/<?= $activity->batch_id ?>">
+                            <?= $activity->batch->name ?>
+                        </a>
+                    </div>
                 </td>
                 <td class="text-end">
                     <div class="dropdown">
