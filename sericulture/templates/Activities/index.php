@@ -58,7 +58,7 @@
                 <td>
                     <div>
                         <?= $activity->activity_date->format('d M') ?>,
-                        <?= $activity->activity_date->format('h:i A') ?>
+                        <?= $activity->activity_time->format('h:i A') ?>
                     </div>
                 </td>
 
@@ -68,7 +68,11 @@
                         <?= !empty(trim($activity->notes)) ? $activity->notes : '' ?>
                     </div>
                 </td>
-                <td><?= $activity->batch->name ?></td>
+                <td>
+                    <a href="/Batches/details/<?= $activity->batch_id ?>">
+                        <?= $activity->batch->name ?>
+                    </a>
+                </td>
                 <td class="text-end">
                     <div class="dropdown">
                         <a class="fs-5 p-1" href="#" id="actionsDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">

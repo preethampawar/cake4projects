@@ -21,18 +21,39 @@ use App\Model\Table\ActivitiesTable;
 <h5><?= $batchInfo->name ?></h5>
 <div class="mt-3">
     <?php
-
-
     $defaultDate = $recentActivity ? $recentActivity->activity_date->format('Y-m-d') : date('Y-m-d');
-    echo $this->Form->control('activity_date',
-        [
-            'label' => 'Date & Time *',
-            'type' => 'datetime',
-            'required' => true,
-            'class' => 'form-control mb-3',
-            'default' => $defaultDate
-        ]);
+    // $defaultDate = date('Y-m-d');
+    $defaultTime = date('h:00 A');
+    ?>
+    <div class="d-flex">
+        <div>
+            <?php
+            echo $this->Form->control('activity_date',
+                [
+                    'label' => 'Date',
+                    'type' => 'date',
+                    'required' => true,
+                    'class' => 'form-control mb-3',
+                    'default' => $defaultDate
+                ]);
+            ?>
+        </div>
+        <div class="ms-3">
+            <?php
+            echo $this->Form->control('activity_time',
+                [
+                    'label' => 'Time *',
+                    'type' => 'time',
+                    'required' => true,
+                    'class' => 'form-control mb-3',
+                    'format' => 'h:i',
+                    'default' => $defaultTime
+                ]);
+            ?>
+        </div>
+    </div>
 
+    <?php
     $defaultActivityType = $recentActivity ? $recentActivity->activity_type : null;
     echo $this->Form->control('activity_type',
         [
@@ -42,9 +63,8 @@ use App\Model\Table\ActivitiesTable;
             'options' => ActivitiesTable::ACTIVITY_OPTIONS,
             'class' => 'form-select form-select-sm mb-3 select2dropdown',
             'default' => $defaultActivityType,
-            'size' => 10
         ]);
-
+    echo '<br>';
     echo $this->Form->control('notes',
         [
             'type' => 'textarea',

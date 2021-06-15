@@ -18,16 +18,33 @@ echo $this->Form->create($activity);
 
 <h5><?= $activity->name ?></h5>
 <div class="mt-3">
-    <?php
-    echo $this->Form->control('activity_date',
-        [
-            'label' => 'Date & time *',
-            'type' => 'datetime',
-            'required' => true,
-            'class' => 'form-control mb-3',
-            'default' => date('Y-m-d H:i:s')
-        ]);
+    <div class="d-flex">
+        <div>
+            <?php
+            echo $this->Form->control('activity_date',
+                [
+                    'label' => 'Date',
+                    'type' => 'date',
+                    'required' => true,
+                    'class' => 'form-control mb-3',
+                ]);
+            ?>
+        </div>
+        <div class="ms-3">
+            <?php
+            echo $this->Form->control('activity_time',
+                [
+                    'label' => 'Time *',
+                    'type' => 'time',
+                    'required' => true,
+                    'class' => 'form-control mb-3',
+                    'format' => 'h:i',
+                ]);
+            ?>
+        </div>
+    </div>
 
+    <?php
     echo $this->Form->control('activity_type',
         [
             'type' => 'select',
@@ -35,9 +52,10 @@ echo $this->Form->create($activity);
             'required' => true,
             'options' => ActivitiesTable::ACTIVITY_OPTIONS,
             'class' => 'form-select form-select-sm mb-3 select2dropdown',
-            'size' => 10,
 
         ]);
+
+    echo '<br>';
 
     echo $this->Form->control('notes',
         [

@@ -14,12 +14,12 @@ class BatchesTable extends Table
     {
         $this->hasMany('Activities', [
             'className' => 'Activities',
-            'sort' => 'Activities.activity_date desc'
+            'sort' => ['Activities.activity_date desc', 'Activities.activity_time desc']
         ]);
 
         $this->hasMany('ActivitiesAsc', [
             'className' => 'Activities',
-            'sort' => 'ActivitiesAsc.activity_date asc'
+            'sort' => ['ActivitiesAsc.activity_date asc', 'ActivitiesAsc.activity_time asc']
         ]);
 
         $this->addBehavior('Timestamp');

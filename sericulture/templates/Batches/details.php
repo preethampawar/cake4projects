@@ -84,7 +84,7 @@ use App\Model\Table\BatchesTable;
         <tr class="border-0 border-bottom">
             <td style="width: 75px">
                 <div class="text-primary text-center text-uppercase">
-                    <span class="fs-4"><i class="fa fa-calendar-alt"></i></span><br>
+                    <span class="fs-3"><i class="fa fa-calendar-alt"></i></span><br>
                     <span class="small text-dark"><?= $date ?></span>
                 </div>
             </td>
@@ -96,7 +96,7 @@ use App\Model\Table\BatchesTable;
                     <div class="d-flex justify-content-start mb-3 small">
                         <div class="py-1">
                             <span class="badge bg-orange-light rounded-pill">
-                                <?= $row->activity_date->format('h:i A') ?>
+                                <?= $row->activity_time->format('h:i A') ?>
                             </span>
                         </div>
                         <div class="ms-2 p-1 flex-fill">

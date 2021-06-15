@@ -46,7 +46,10 @@ class ActivitiesController extends AppController
     public function selectBatch()
     {
         $this->loadModel('Batches');
-        $batchInfo = $this->Batches->find('all')->all();
+        $batchInfo = $this->Batches
+            ->find('all')
+            ->order(['Batches.status desc', 'Batches.created desc'])
+            ->all();
         $this->set('batchInfo', $batchInfo);
     }
 
@@ -57,7 +60,7 @@ class ActivitiesController extends AppController
         $activity = $this->Activities->newEmptyEntity();
         $recentActivity = $this->Activities
             ->findByBatchId($batchId)
-            ->order(['Activities.activity_date desc'])
+            ->order(['Activities.activity_date desc', 'Activities.activity_time desc'])
             ->first();
 
         if ($this->request->is('post')) {

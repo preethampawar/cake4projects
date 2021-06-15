@@ -53,6 +53,10 @@
                         ?>
                         <a href="/activities/add/<?= $batch->id ?>" title="Select <?= $batch->name ?>" class="btn btn-sm btn-primary py-0">Select</a>
                         <?php
+                    } else {
+                        ?>
+                        <span class="text-muted">Closed</span>
+                        <?php
                     }
                     ?>
                 </td>

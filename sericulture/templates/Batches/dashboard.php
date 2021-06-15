@@ -50,7 +50,7 @@ foreach($batches as $batch) {
                         <div class="d-flex justify-content-start mb-3 small">
                             <div class="py-1">
                                 <span class="badge bg-orange-light rounded-pill">
-                                    <?= $row->activity_date->format('h:i A') ?>
+                                    <?= $row->activity_time->format('h:i A') ?>
                                 </span>
                             </div>
                             <div class="ms-2 p-1 flex-fill">
