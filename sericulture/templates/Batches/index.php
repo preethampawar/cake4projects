@@ -72,11 +72,39 @@
                             if ($batch->status == 1) {
                             ?>
                             <li><a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="dropdown-item"><i class="fa fa-plus"></i> Add New Activity</a></li>
+
                             <?php
                             }
                             ?>
                             <li><a href="/Batches/details/<?= $batch->id ?>" title="Details" class="dropdown-item"><i class="fa fa-info-circle"></i> Show Details</a></li>
                             <li><a href="/Batches/edit/<?= $batch->id ?>" title="Edit Batch details" class="dropdown-item"><i class="fa fa-edit"></i> Edit</a></li>
+                            <li>
+                                <?php
+                                if ($batch->status == 1) {
+                                    echo $this->Html->link(
+                                        '<i class="fa fa-times-circle"></i> Mark As Closed',
+                                        ['controller' => 'Batches', 'action' => 'changeStatus', $batch->id, 'inactive'],
+                                        [
+                                            'confirm' => 'Are you sure you want to Close this Batch?',
+                                            'class' => 'dropdown-item',
+                                            'title' => $batch->name,
+                                            'escape' => false
+                                        ]
+                                    );
+                                } else {
+                                    echo $this->Html->link(
+                                        '<i class="fa fa-check-circle"></i> Mark As Active',
+                                        ['controller' => 'Batches', 'action' => 'changeStatus', $batch->id, 'active'],
+                                        [
+                                            'confirm' => 'Are you sure you want to Activate this Batch?',
+                                            'class' => 'dropdown-item',
+                                            'title' => $batch->name,
+                                            'escape' => false
+                                        ]
+                                    );
+                                }
+                                ?>
+                            </li>
                             <li>
                                 <?php
                                 echo $this->Html->link(
@@ -89,6 +117,7 @@
                                         'escape' => false
                                     ]
                                 );
+
                                 ?>
                             </li>
                         </ul>

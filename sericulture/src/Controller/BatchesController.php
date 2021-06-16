@@ -131,5 +131,27 @@ class BatchesController extends AppController
             ->all();
 
         $this->set('batches', $batches);
+        $this->set('batches', $batches);
+    }
+
+    public function changeStatus($batchId, $status)
+    {
+        $batch = $this->Batches->findById($batchId)->firstOrFail();
+
+        if ($status === 'active') {
+            $this->Batches->patchEntity($batch, ['status' => 1]);
+
+            if ($this->Batches->save($batch)) {
+                $this->Flash->success(__($batch->name . ' has been activated'));
+            }
+        } else if ($status === 'inactive') {
+            $this->Batches->patchEntity($batch, ['status' => 0]);
+
+            if ($this->Batches->save($batch)) {
+                $this->Flash->success(__($batch->name . ' has been closed'));
+            }
+        }
+
+        return $this->redirect(['controller' => 'Batches', 'action' => 'index']);
     }
 }

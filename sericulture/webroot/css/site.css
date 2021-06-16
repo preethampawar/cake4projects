@@ -89,6 +89,10 @@ h3, h4 {
     background-color: var(--cus-maroon);
     color: var(--bs-white);
 }
+.bg-grey {
+    background-color: var(--cus-grey);
+    color: var(--bs-white);
+}
 .bg-ivory {
     background-color: var(--cus-ivory);
     color: var(--bs-dark);

@@ -100,7 +100,10 @@ use App\Model\Table\BatchesTable;
                             </span>
                         </div>
                         <div class="ms-2 p-1 flex-fill">
-                            <div class="text-dark"><?= $row->name ?></div>
+                            <div class="text-dark">
+                                <?= $row->name ?>
+                                <a href="/Activities/edit/<?= $row->id ?> " class="text-primary ms-1"><i class="fa fa-pencil-alt"></i></a>
+                            </div>
                             <div class="text-muted">
                                 <?= $row->notes ?>
                             </div>
