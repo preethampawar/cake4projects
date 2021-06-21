@@ -70,11 +70,16 @@ foreach($batches as $batch) {
                 break;
             }
         }
+
+        $progressBg = 'bg-primary';
+        if ($progressPercentage == 100) {
+            $progressBg = 'bg-success';
+        }
         ?>
 
         <div class="text-muted fst-italic small mt-0">Progress</div>
         <div class="progress">
-            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
+            <div class="progress-bar progress-bar-striped <?= $progressBg ?>" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
         </div>
 
         <?php
