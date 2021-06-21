@@ -136,7 +136,42 @@ class BatchesController extends AppController
             ->where(['Batches.status' => 1, 'Batches.user_id' => $this->request->getSession()->read('User.id')])
             ->all();
 
+        $fromDate = date('Y-m-', strtotime('-5 month')) . '01';
+        $toDate = date('Y-m-d');
+        $conditions = [
+            'Transactions.transaction_date >= ' => $fromDate,
+            'Transactions.transaction_date <= ' => $toDate,
+            'Transactions.user_id' => $this->request->getSession()->read('User.id')
+        ];
+
+        $this->loadModel('Transactions');
+        $transactions = $this->Transactions->find('all')
+            ->select(['Transactions.id', 'Transactions.transaction_type', 'Transactions.transaction_date', 'Transactions.name', 'Transactions.transaction_amount'])
+            ->where($conditions)
+            ->order('Transactions.transaction_date asc')
+            ->all();
+
+        $transactionsInfo = [];
+        foreach($transactions as $row) {
+            $date = $row->transaction_date->format('M Y');
+
+            if ($row->transaction_type == 'income') {
+                if (isset($transactionsInfo[$date]['income'])) {
+                    $transactionsInfo[$date]['income'] += (float)$row->transaction_amount;
+                } else {
+                    $transactionsInfo[$date]['income'] = (float)$row->transaction_amount;
+                }
+            } else {
+                if (isset($transactionsInfo[$date]['expense'])) {
+                    $transactionsInfo[$date]['expense'] += (float)$row->transaction_amount;
+                } else {
+                    $transactionsInfo[$date]['expense'] = (float)$row->transaction_amount;
+                }
+            }
+        }
+
         $this->set('batches', $batches);
+        $this->set('transactionsInfo', $transactionsInfo);
     }
 
     public function communityDashboard()

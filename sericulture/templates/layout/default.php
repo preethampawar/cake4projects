@@ -13,6 +13,7 @@ $homeLinkActive = null;
 $userDetailsLinkActive = null;
 $batchesDashboardLinkActive = null;
 $communityDashboardLinkActive = null;
+$transactionsLinkActive = null;
 
 
 switch($controller) {
@@ -28,6 +29,9 @@ switch($controller) {
         break;
     case 'Activities':
         $activitiesLinkActive = 'active';
+        break;
+    case 'Transactions':
+        $transactionsLinkActive = 'active';
         break;
     case 'Users':
         if ($action == 'login') {
@@ -83,6 +87,7 @@ switch($controller) {
                             <a class="nav-link <?= $communityDashboardLinkActive?> px-2 me-1 my-1" href="/Batches/communityDashboard">Community Updates</a>
                             <a class="nav-link <?= $batchesLinkActive?> px-2 me-1 my-1" href="/Batches">Batches</a>
                             <a class="nav-link <?= $activitiesLinkActive?> px-2 me-1 my-1" href="/Activities">Activities</a>
+                            <a class="nav-link <?= $transactionsLinkActive?> px-2 me-1 my-1" href="/Transactions">Finance</a>
 
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle <?=$userDetailsLinkActive?> px-2 me-1 my-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

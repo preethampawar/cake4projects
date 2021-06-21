@@ -1,6 +1,62 @@
-<div class="alert bg-purple bg-gradient text-center mb-4">
-    <span>My Updates</span>
+
+<div class="text-center text-primary mb-3 fs-5">
+    MY UPDATES
 </div>
+
+<?php
+if ($transactionsInfo) {
+    ?>
+    <div class="p-3 rounded shadow">
+        <div class="text-center">
+            <h6>Finance</h6>
+        </div>
+
+        <table class="table table-sm text-center mt-3 small">
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th class="text-success">Income</th>
+                <th class="text-danger">Expense</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        foreach ($transactionsInfo as $date => $row) {
+            ?>
+            <tr>
+                <td class="text-uppercase text-nowrap"><?= $date ?></td>
+                <td class="text-success"><?= $row['income'] ?? 0 ?></td>
+                <td class="text-danger"><?= $row['expense'] ?? 0 ?></td>
+                <td>
+                    <?php
+                    $amount = (float)($row['income'] ?? 0) - (float)($row['expense'] ?? 0);
+
+                    echo $amount > 0 ?
+                        '<span class="text-success">'.$amount.'</span>' :
+                        '<span class="text-danger">'.$amount.'</span>';
+
+                    ?>
+                </td>
+            </tr>
+            <?php
+        }
+        ?>
+        </tbody>
+    </table>
+
+        <div class="text-center mt-1 mb-3">
+            <a href="/Transactions/select/" title="Add New Transaction" class="btn btn-sm btn-orange rounded-pill">
+                <i class="fa fa-plus-circle"></i>
+                <span class="">NEW TRANSACTION</span>
+            </a>
+        </div>
+    </div>
+
+    <?php
+}
+?>
+
 <?php
 
 use App\Model\Table\BatchesTable;
@@ -16,18 +72,13 @@ if (! $batches->toArray()) {
 
 foreach($batches as $batch) {
 ?>
-    <div class="bg-white shadow rounded p-3 mb-5">
+    <div class="bg-white shadow rounded p-3 my-4">
 
         <div class="rounded bg-light px-2 py-3">
-            <b><?= $batch->name ?></b>
+            <b>Batch: <?= $batch->name ?></b>
         </div>
 
-        <div class="text-end mt-4">
-            <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">
-                <i class="fa fa-plus-circle"></i>
-                <span class="">NEW ACTIVITY</span>
-            </a>
-        </div>
+
 
         <?php
         $progressPercentage = 0;
@@ -77,7 +128,7 @@ foreach($batches as $batch) {
         }
         ?>
 
-        <div class="text-muted fst-italic small mt-0">Progress</div>
+        <div class="text-muted fst-italic small mt-1">Progress</div>
         <div class="progress">
             <div class="progress-bar progress-bar-striped <?= $progressBg ?>" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
         </div>
@@ -141,6 +192,14 @@ foreach($batches as $batch) {
         ?>
             </tbody>
         </table>
+
+        <div class="text-center mt-3 mb-3">
+            <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">
+                <i class="fa fa-plus-circle"></i>
+                <span class="">NEW ACTIVITY</span>
+            </a>
+        </div>
+
         <div class="p-2 border rounded small text-muted bg-light mb-3 d-none">
             <table class="table table-sm table-borderless mb-0">
                 <tbody>

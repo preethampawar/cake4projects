@@ -22,24 +22,34 @@ class TransactionsController extends AppController
     public function index()
     {
         $this->loadComponent('Paginator');
-        $batches = $this->Paginator->paginate(
-            $this->Transactions->find('all'),
+        $transactions = $this->Paginator->paginate(
+            $this->Transactions->find('all')->where(['Transactions.user_id' => $this->request->getSession()->read('User.id')]),
             [
-                'limit' => 50,
+                'limit' => 100,
                 'order' => [
-                    'Transactions.id' => 'desc'
+                    'Transactions.transaction_date' => 'desc',
+                    'Transactions.created' => 'desc',
                 ]
             ]
         );
-        $this->set(compact('batches'));
+        $this->set(compact('transactions'));
     }
 
-    public function add()
+    public function select()
     {
+
+    }
+
+    public function add($type)
+    {
+        $isExpense = $type != 'income';
+
         $transaction = $this->Transactions->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            $error = $this->validateTransaction($this->request->getData());
+            $data = $this->request->getData();
+
+            $error = $this->validateTransaction($data);
 
             if ($error) {
                 $this->Flash->error(__($error));
@@ -47,9 +57,11 @@ class TransactionsController extends AppController
                 return;
             }
 
-            $transaction = $this->Transactions->patchEntity($transaction, $this->request->getData());
+            $data['user_id'] = $this->request->getSession()->read('User.id');
 
-            if ($batchInfo = $this->Transactions->save($transaction)) {
+            $transaction = $this->Transactions->patchEntity($transaction, $data);
+
+            if ($transactionInfo = $this->Transactions->save($transaction)) {
 
                 $this->Flash->success(__('Transaction has been saved.'));
 
@@ -60,6 +72,7 @@ class TransactionsController extends AppController
         }
 
         $this->set('transaction', $transaction);
+        $this->set('isExpense', $isExpense);
     }
 
     private function validateTransaction($data)
@@ -81,9 +94,9 @@ class TransactionsController extends AppController
             $this->Transactions->patchEntity($transaction, $this->request->getData());
 
             if ($this->Transactions->save($transaction)) {
-                $this->Flash->success(__('Transaction details have been updated successfully.'));
+                $this->Flash->success(__('Transaction has been updated.'));
 
-                return $this->redirect(['controller' => 'Transactions', 'action' => 'index']);
+                return $this->redirect('/Transactions/');
             }
 
             $this->Flash->error(__('Unable to update transaction details.'));
@@ -96,10 +109,10 @@ class TransactionsController extends AppController
     {
         $transaction = $this->Transactions->findById($id)->firstOrFail();
 
-        if ($this->Transactions->delete()) {
+        if ($this->Transactions->delete($transaction)) {
             $this->Flash->success(__($transaction->name . ' has been deleted'));
         }
 
-        return $this->redirect(['controller' => 'Transactions', 'action' => 'index']);
+        return $this->redirect('/Transactions/');
     }
 }
