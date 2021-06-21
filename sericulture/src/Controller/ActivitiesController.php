@@ -51,9 +51,11 @@ class ActivitiesController extends AppController
 
     public function selectBatch()
     {
+        $userId = $this->request->getSession()->read('User.id');
         $this->loadModel('Batches');
         $batchInfo = $this->Batches
             ->find('all')
+            ->where(['Batches.user_id' => $userId])
             ->order(['Batches.status desc', 'Batches.created desc'])
             ->all();
         $this->set('batchInfo', $batchInfo);

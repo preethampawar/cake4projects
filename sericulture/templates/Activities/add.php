@@ -10,15 +10,16 @@ use App\Model\Table\ActivitiesTable;
   </ol>
 </nav>
 
-<h1>Add Activity</h1>
+<h1>Add New Activity</h1>
 
 <?php
     echo $this->Form->create(null);
 ?>
 
+<label>Batch Name</label>
+<input type="text" value="<?= $batchInfo->name ?>" class="form-control mb-3" disabled>
 
 
-<h5><?= $batchInfo->name ?></h5>
 <div class="mt-3">
     <?php
     $defaultDate = $recentActivity ? $recentActivity->activity_date->format('Y-m-d') : date('Y-m-d');

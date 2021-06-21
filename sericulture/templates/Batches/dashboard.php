@@ -1,5 +1,5 @@
-<div class="text-center mb-3">
-    <h6>Recent Updates</h6>
+<div class="alert alert-warning text-center mb-4">
+    <span>My Updates</span>
 </div>
 <?php
 
@@ -95,7 +95,7 @@ foreach($batches as $batch) {
                     <div class="row">
                         <div class="col-sm-12 col-md-2">
                             <div class="text-uppercase mb-3">
-                                <div class="small text-primary text-nowrap fs-4"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
+                                <div class="small text-primary text-nowrap fs-5"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-10">

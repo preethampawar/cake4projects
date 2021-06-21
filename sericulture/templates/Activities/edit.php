@@ -16,7 +16,9 @@ use App\Model\Table\ActivitiesTable;
 echo $this->Form->create($activity);
 ?>
 
-<h5><?= $activity->name ?></h5>
+<label>Batch Name</label>
+<input type="text" value="<?= $batchInfo->name ?>" class="form-control mb-3" disabled>
+
 <div class="mt-3">
     <div class="d-flex">
         <div>

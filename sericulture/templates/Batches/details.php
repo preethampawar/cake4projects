@@ -24,6 +24,9 @@ use App\Model\Table\BatchesTable;
 
 <h1 class="mt-3">Batch Details</h1>
 <div class="p-2 border rounded small text-muted bg-light mt-3">
+    <div class="text-end">
+        <a href="/Batches/edit/<?= $batch->id ?>" class=""><i class="fa fa-pencil-alt"></i> Edit</a>
+    </div>
     <table class="table table-sm table-borderless mb-0">
         <tbody>
         <tr>

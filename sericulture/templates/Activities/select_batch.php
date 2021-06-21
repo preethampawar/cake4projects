@@ -8,7 +8,7 @@
 <h1>Select Batch</h1>
 
 <div class="">
-    <table class="table table-sm mt-3 small table-striped">
+    <table class="table mt-3 small ">
         <thead>
         <tr>
             <th>#</th>
@@ -35,9 +35,8 @@
                     if($batch->status == 1) {
                         ?>
                         <span class="text-success small"><i class="fa fa-circle"></i> </span>
-                        <a href="/Batches/details/<?= $batch->id ?>">
-                            <?= $batch->name ?>
-                        </a>
+
+                        <a href="/activities/add/<?= $batch->id ?>" title="Select <?= $batch->name ?>" class=""><?= $batch->name ?></a>
                         <?php
                     } else {
                         ?>

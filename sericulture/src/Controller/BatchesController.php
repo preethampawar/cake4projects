@@ -137,7 +137,27 @@ class BatchesController extends AppController
             ->all();
 
         $this->set('batches', $batches);
+    }
+
+    public function communityDashboard()
+    {
+        $batches = $this->Batches
+            ->find('all')
+            ->contain(['Activities'])
+            ->where(['Batches.status' => 1])
+            ->order(['Batches.hatching_date desc'])
+            ->all();
+
+        $this->loadModel('Users');
+        $users = $this->Users->find('all')->select(['Users.id', 'Users.name', 'Users.phone'])->all();
+
+        $usersList = [];
+        foreach($users as $user) {
+            $usersList[$user->id] = $user->name;
+        }
+
         $this->set('batches', $batches);
+        $this->set('usersList', $usersList);
     }
 
     public function changeStatus($batchId, $status)

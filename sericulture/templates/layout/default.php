@@ -12,12 +12,15 @@ $registerLinkActive = null;
 $homeLinkActive = null;
 $userDetailsLinkActive = null;
 $batchesDashboardLinkActive = null;
+$communityDashboardLinkActive = null;
 
 
 switch($controller) {
     case 'Batches':
         if ($action == 'dashboard') {
             $batchesDashboardLinkActive = 'active';
+        } elseif ($action == 'communityDashboard') {
+            $communityDashboardLinkActive = 'active';
         } else {
             $batchesLinkActive = 'active';
         }
@@ -77,7 +80,7 @@ switch($controller) {
                         <?php
                         if ($loggedIn) {
                             ?>
-                            <a class="nav-link <?= $batchesDashboardLinkActive?> px-2 me-1 my-1" href="/Batches/dashboard">Dashboard</a>
+                            <a class="nav-link <?= $communityDashboardLinkActive?> px-2 me-1 my-1" href="/Batches/communityDashboard">Community Updates</a>
                             <a class="nav-link <?= $batchesLinkActive?> px-2 me-1 my-1" href="/Batches">Batches</a>
                             <a class="nav-link <?= $activitiesLinkActive?> px-2 me-1 my-1" href="/Activities">Activities</a>
 
