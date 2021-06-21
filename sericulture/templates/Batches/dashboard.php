@@ -1,4 +1,4 @@
-<div class="alert alert-warning text-center mb-4">
+<div class="alert bg-purple bg-gradient text-center mb-4">
     <span>My Updates</span>
 </div>
 <?php

@@ -1,4 +1,4 @@
-<div class="alert alert-warning text-center mb-4">
+<div class="alert bg-purple bg-gradient text-center mb-4">
     <span>Community Updates</span>
 </div>
 
@@ -69,15 +69,20 @@ foreach($batches as $batch) {
                         break;
                     }
                 }
+
+                $progressBg = 'bg-primary';
+                if ($progressPercentage == 100) {
+                    $progressBg = 'bg-success';
+                }
                 ?>
 
 
-                <div class="progress mt-2">
-                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
+                <div class="progress my-1">
+                    <div class="progress-bar progress-bar-striped <?= $progressBg ?>" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
                 </div>
             </div>
 
-            <div class="mt-2" style="max-height: 400px; overflow-y: scroll; overflow-x: hidden">
+            <div class="mt-2 p-1" style="max-height: 350px; overflow: auto">
                 <?php
                 $dateWiseActivities = [];
                 foreach($batch->activities as $activity) {
@@ -137,7 +142,8 @@ foreach($batches as $batch) {
                 ?>
                     </tbody>
                 </table>
-                <div class="p-2 border rounded small text-muted bg-light mb-3 d-none">
+            </div>
+            <div class="p-2 border rounded small text-muted bg-light mb-3 d-none">
                     <table class="table table-sm table-borderless mb-0">
                         <tbody>
                         <tr>
@@ -177,8 +183,7 @@ foreach($batches as $batch) {
                     </table>
                 </div>
 
-            </div >
-        </div >
+        </div>
     </div>
     <?php
 }
