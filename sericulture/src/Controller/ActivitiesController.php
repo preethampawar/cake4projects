@@ -28,10 +28,16 @@ class ActivitiesController extends AppController
     public function index()
     {
         $this->loadComponent('Paginator');
+
+        $conditions = [];
+        if ($this->request->getSession()->read('User.isAdmin') === false) {
+            $conditions['Activities.user_id'] = $this->request->getSession()->read('User.id');
+        }
+
         $activities = $this->Paginator->paginate(
             $this->Activities->find('all')
                 ->contain(['Batches'])
-                ->where(['Activities.user_id' => $this->request->getSession()->read('User.id')]),
+                ->where($conditions),
             [
                 'limit' => 100,
                 'order' => [

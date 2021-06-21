@@ -26,9 +26,15 @@ class BatchesController extends AppController
     public function index()
     {
         $this->loadComponent('Paginator');
+
+        $conditions = ['Batches.deleted' => 0];
+        if ($this->request->getSession()->read('User.isAdmin') === false) {
+            $conditions['Batches.user_id'] = $this->request->getSession()->read('User.id');
+        }
+
         $batches = $this->Paginator->paginate(
             $this->Batches->find('all')
-                ->where(['Batches.deleted' => 0]),
+                ->where($conditions),
             [
                 'limit' => 50,
                 'order' => [

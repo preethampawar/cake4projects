@@ -58,7 +58,7 @@ foreach($batches as $batch) {
                     case 6:
                         $progressPercentage = 85;
 
-                        if ($activityType == ActivitiesTable::ACTIVITY_TYPES['STAGE_6_MARKETING_OF_COCOONS']) {
+                        if ($activityType == 'STAGE_6_MARKETING_OF_COCOONS') {
                             $progressPercentage = 100;
                         }
                         break;
