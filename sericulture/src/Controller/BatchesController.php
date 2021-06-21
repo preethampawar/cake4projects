@@ -122,7 +122,7 @@ class BatchesController extends AppController
     {
         $batch = $this->Batches
             ->findById($batchId)
-            ->contain(['ActivitiesAsc'])
+            ->contain(['Activities'])
             ->first();
 
         $this->set('batch', $batch);

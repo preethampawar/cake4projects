@@ -71,7 +71,7 @@ use App\Model\Table\BatchesTable;
     <h5>Activities:</h5>
     <?php
     $dateWiseActivities = [];
-    foreach($batch->activities_asc as $activity) {
+    foreach($batch->activities as $activity) {
         $activityDate = $activity->activity_date->format('d M');
         $dateWiseActivities[$activityDate][] = $activity;
     }
@@ -84,7 +84,7 @@ use App\Model\Table\BatchesTable;
         <tr class="border-0 border-bottom">
             <td style="width: 75px">
                 <div class="text-primary text-center text-uppercase">
-                    <span class="fs-3"><i class="fa fa-calendar-alt"></i></span><br>
+                    <span class="fs-4"><i class="fa fa-calendar-alt"></i></span><br>
                     <span class="small text-dark"><?= $date ?></span>
                 </div>
             </td>
@@ -95,11 +95,11 @@ use App\Model\Table\BatchesTable;
 
                     <div class="d-flex justify-content-start mb-3 small">
                         <div class="py-1">
-                            <span class="badge bg-orange-light rounded-pill">
+                            <span class="px-2 py-1 bg-orange-light rounded-pill small">
                                 <?= $row->activity_time->format('h:i A') ?>
                             </span>
                         </div>
-                        <div class="ms-2 p-1 flex-fill">
+                        <div class="ms-1 p-1 flex-fill">
                             <div class="text-dark">
                                 <?= $row->name ?>
                                 <a href="/Activities/edit/<?= $row->id ?> " class="text-primary ms-1"><i class="fa fa-pencil-alt"></i></a>

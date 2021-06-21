@@ -31,7 +31,7 @@
 </div>
 
 <div class="">
-    <table class="table table-sm mt-3 table-striped">
+    <table class="table mt-3">
         <thead>
         <tr>
             <th>#</th>

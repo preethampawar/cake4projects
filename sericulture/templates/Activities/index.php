@@ -31,7 +31,7 @@
 </div>
 
 <div class="">
-    <table class="table table-sm mt-3 small table-striped">
+    <table class="table mt-3 small">
         <thead>
         <tr>
             <th>#</th>
@@ -57,7 +57,7 @@
                 <td>
                     <div>
                         <span class="d-inline-block text-uppercase me-1"><?= $activity->activity_date->format('d M') ?></span>
-                        <span class="badge bg-orange-light px-1"><?= $activity->activity_time->format('h:i a') ?></span>
+                        <span class="badge bg-orange-light px-1 rounded-pill"><?= $activity->activity_time->format('h:i a') ?></span>
                     </div>
                 </td>
 

@@ -90,10 +90,10 @@ foreach($batches as $batch) {
         foreach($dateWiseActivities as $date => $dayActivities) {
             ?>
             <tr class="border-0 border-bottom">
-                <td style="width: 75px">
-                    <div class="text-primary text-center text-uppercase">
-                        <span class="fs-4"><i class="fa fa-calendar-alt"></i></span><br>
-                        <span class="small text-dark"><?= $date ?></span>
+                <td class="px-1">
+                    <div class="text-center text-uppercase">
+                        <div class="text-primary fs-4"><i class="fa fa-calendar-alt"></i></div>
+                        <div class="small text-dark text-nowrap"><?= $date ?></div>
                     </div>
                 </td>
                 <td>
@@ -103,11 +103,11 @@ foreach($batches as $batch) {
 
                         <div class="d-flex justify-content-start mb-3 small">
                             <div class="py-1">
-                                <span class="badge bg-orange-light rounded-pill">
+                                <span class="px-2 py-1 bg-orange-light rounded-pill small">
                                     <?= $row->activity_time->format('h:i A') ?>
                                 </span>
                             </div>
-                            <div class="ms-2 p-1 flex-fill">
+                            <div class="ms-1 p-1 flex-fill">
                                 <div class="text-dark"><?= $row->name ?></div>
                                 <div class="text-muted">
                                     <?= $row->notes ?>
