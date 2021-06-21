@@ -95,7 +95,7 @@ use App\Model\Table\BatchesTable;
 
                     <div class="d-flex justify-content-start mb-3 small">
                         <div class="py-1">
-                            <span class="px-2 py-1 bg-orange-light rounded-pill small">
+                            <span class="text-nowrap px-2 py-1 bg-orange-light rounded-pill small">
                                 <?= $row->activity_time->format('h:i A') ?>
                             </span>
                         </div>
@@ -104,9 +104,15 @@ use App\Model\Table\BatchesTable;
                                 <?= $row->name ?>
                                 <a href="/Activities/edit/<?= $row->id ?> " class="text-primary ms-1"><i class="fa fa-pencil-alt"></i></a>
                             </div>
-                            <div class="text-muted">
-                                <?= $row->notes ?>
-                            </div>
+                            <?php
+                            if (!empty(trim($row->notes))) {
+                            ?>
+                                <div class="mt-1">
+                                    <code class="mb-1" style="white-space: pre-wrap;"><?= trim($row->notes) ?></code>
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
 

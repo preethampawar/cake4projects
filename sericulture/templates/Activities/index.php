@@ -63,9 +63,17 @@
 
                 <td>
                     <div><?= $activity->name ?></div>
-                    <div class="text-muted small">
-                        <?= !empty(trim($activity->notes)) ? $activity->notes : '' ?>
-                    </div>
+
+                    <?php
+                    if (!empty(trim($activity->notes))) {
+                        ?>
+                        <div class="mt-1">
+                            <code class="mb-1" style="white-space: pre-wrap;"><?= trim($activity->notes) ?></code>
+                        </div>
+                        <?php
+                    }
+                    ?>
+
                     <div>
                         <a href="/Batches/details/<?= $activity->batch_id ?>">
                             <?= $activity->batch->name ?>

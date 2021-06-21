@@ -90,6 +90,37 @@ class ActivitiesTable extends Table
         ],
     ];
 
+    const ACTIVITY_PROGRESS = [
+            'STAGE_1_LARVE_HATCHED' => 3,
+            'STAGE_1_LARVE_BRUSHING' => 6,
+            'STAGE_1_LARVE_FEEDING' => 9,
+            'STAGE_1_MOULT_1_STARTED' => 12,
+            'STAGE_1_MOULT_1_COMPLETED' => 15,
+            'STAGE_2_DUSTING_VIJETHA' => 18,
+            'STAGE_2_DUSTING_LIME_POWDER' => 21,
+            'STAGE_2_FEEDING' => 24,
+            'STAGE_2_MOULT_2_STARTED' => 27,
+            'STAGE_2_MOULT_2_COMPLETED' => 30,
+            'STAGE_3_DUSTING_VIJETHA' => 33,
+            'STAGE_3_DUSTING_LIME_POWDER' => 36,
+            'STAGE_3_FEEDING' => 39,
+            'STAGE_3_MOULT_3_STARTED' => 42,
+            'STAGE_3_MOULT_3_COMPLETED' => 45,
+            'STAGE_4_DUSTING_VIJETHA' => 48,
+            'STAGE_4_DUSTING_LIME_POWDER' => 51,
+            'STAGE_4_FEEDING' => 54,
+            'STAGE_4_MOULT_4_STARTED' => 57,
+            'STAGE_4_MOULT_4_COMPLETED' => 60,
+            'STAGE_5_DUSTING_VIJETHA_1' => 62,
+            'STAGE_5_DUSTING_LIME_POWDER' => 65,
+            'STAGE_5_FEEDING' => 70,
+            'STAGE_5_DUSTING_VIJETHA_2' => 72,
+            'STAGE_5_SIGNS_OF_SPINNING' => 75,
+            'STAGE_5_SPINNING_AND_MOUNTING' => 80,
+            'STAGE_6_HARVESTING_COCOONS' => 85,
+            'STAGE_6_MARKETING_OF_COCOONS' => 100,
+    ];
+
     public function initialize(array $config): void
     {
         $this->addBehavior('Timestamp');

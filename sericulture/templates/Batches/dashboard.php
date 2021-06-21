@@ -90,34 +90,45 @@ foreach($batches as $batch) {
         foreach($dateWiseActivities as $date => $dayActivities) {
             ?>
             <tr class="border-0 border-bottom">
-                <td class="px-1">
-                    <div class="text-center text-uppercase">
-                        <div class="text-primary fs-4"><i class="fa fa-calendar-alt"></i></div>
-                        <div class="small text-dark text-nowrap"><?= $date ?></div>
-                    </div>
-                </td>
-                <td>
-                    <?php
-                    foreach($dayActivities as $row) {
-                        ?>
 
-                        <div class="d-flex justify-content-start mb-3 small">
-                            <div class="py-1">
-                                <span class="px-2 py-1 bg-orange-light rounded-pill small">
-                                    <?= $row->activity_time->format('h:i A') ?>
-                                </span>
-                            </div>
-                            <div class="ms-1 p-1 flex-fill">
-                                <div class="text-dark"><?= $row->name ?></div>
-                                <div class="text-muted">
-                                    <?= $row->notes ?>
-                                </div>
+                <td>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-2">
+                            <div class="text-uppercase mb-3">
+                                <div class="small text-primary text-nowrap fs-4"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-10">
+                            <?php
+                            foreach($dayActivities as $row) {
+                                ?>
 
-                        <?php
-                    }
-                    ?>
+                                <div class="d-flex justify-content-start mb-3 small">
+                                    <div class="py-1">
+                                <span class="badge bg-orange-light rounded-pill">
+                                    <?= $row->activity_time->format('h:i A') ?>
+                                </span>
+                                    </div>
+                                    <div class="ms-1 p-1 flex-fill">
+                                        <div class="text-dark"><?= $row->name ?></div>
+                                        <?php
+                                        if (!empty(trim($row->notes))) {
+                                            ?>
+                                            <div class="mt-1">
+                                                <code class="mb-1" style="white-space: pre-wrap;"><?= trim($row->notes) ?></code>
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+
+                                <?php
+                            }
+                            ?>
+                        </div>
+                    </div>
+
                 </td>
             </tr>
             <?php
@@ -125,7 +136,7 @@ foreach($batches as $batch) {
         ?>
             </tbody>
         </table>
-        <div class="p-2 border rounded small text-muted bg-light mb-3 d-none d-lg-block">
+        <div class="p-2 border rounded small text-muted bg-light mb-3 d-none">
             <table class="table table-sm table-borderless mb-0">
                 <tbody>
                 <tr>
