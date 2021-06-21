@@ -1,8 +1,8 @@
-<div class="alert bg-purple bg-gradient text-center mb-4">
-    <span>Community Updates</span>
+<div class="text-center text-primary mb-3 fs-5">
+    COMMUNITY UPDATES
 </div>
 
-<div class="row">
+<div class="row mt-4">
 <?php
 
 use App\Model\Table\BatchesTable;
