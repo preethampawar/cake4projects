@@ -40,10 +40,22 @@ class ActivitiesTable extends Table
         'STAGE_6_HARVESTING_COCOONS' => 'HARVESTING COCOONS',
         'MARKETING_OF_COCOONS' => 'MARKETING OF COCOONS',
         'STAGE_6_MARKETING_OF_COCOONS' => 'MARKETING OF COCOONS',
+        'GARDEN_MAINTENANCE' => 'MULBERRY GARDEN MAINTENANCE',
+        'GENERAL_SHED_CLEANING' => 'SHED & REARING BEDS CLEANING',
+        'GENERAL_SHED_DISINFECTION' => 'SHED & REARING BEDS DISINFECTION',
+        'GENERAL_EQUIPMENTS_DISINFECTION' => 'REARING EQUIPMENTS DISINFECTION',
+        'OTHERS' => 'OTHERS'
     ];
 
     const ACTIVITY_OPTIONS = [
-        'Stage 1' => [
+        'GENERAL' => [
+            'GARDEN_MAINTENANCE' => 'MULBERRY GARDEN MAINTENANCE',
+            'GENERAL_SHED_CLEANING' => 'SHED & REARING BEDS CLEANING',
+            'GENERAL_SHED_DISINFECTION' => 'SHED & REARING BEDS DISINFECTION',
+            'GENERAL_EQUIPMENTS_DISINFECTION' => 'REARING EQUIPMENTS DISINFECTION',
+            'OTHERS' => 'OTHERS'
+        ],
+        'Stage 1 (1st Instar)' => [
             'STAGE_1_LARVE_HATCHED' => 'LARVE HATCHED FROM EGGS',
             'STAGE_1_LARVE_BRUSHING' => 'BRUSHING LARVE',
             'STAGE_1_LARVE_FEEDING' => 'FEEDING LARVE',
@@ -51,7 +63,7 @@ class ActivitiesTable extends Table
             'STAGE_1_MOULT_1_COMPLETED' => '1st MOULT COMPLETED',
         ],
 
-        'Stage 2' => [
+        'Stage 2 (2nd Instar)' => [
             'STAGE_2_DUSTING_VIJETHA' => 'DUSTING DISINFECTANT - VIJETHA 50g/100dfls (30mins BEFORE 1ST FEEDING)',
             'STAGE_2_DUSTING_LIME_POWDER' => 'DUSTING LIME POWDER (30mins BEFORE FEEDING)',
             'STAGE_2_FEEDING' => 'FEEDING SILKWORMS',
@@ -59,7 +71,7 @@ class ActivitiesTable extends Table
             'STAGE_2_MOULT_2_COMPLETED' => '2nd MOULT COMPLETED',
         ],
 
-        'Stage 3' => [
+        'Stage 3 (3rd Instar)' => [
             'STAGE_3_DUSTING_VIJETHA' => 'DUSTING DISINFECTANT - VIJETHA 100g/100dfls (30mins BEFORE 1ST FEEDING)',
             'STAGE_3_DUSTING_LIME_POWDER' => 'DUSTING LIME POWDER (30mins BEFORE FEEDING)',
             'STAGE_3_FEEDING' => 'FEEDING SILKWORMS',
@@ -67,7 +79,7 @@ class ActivitiesTable extends Table
             'STAGE_3_MOULT_3_COMPLETED' => '3rd MOULT COMPLETED',
         ],
 
-        'Stage 4' => [
+        'Stage 4 (4th Instar)' => [
             'STAGE_4_DUSTING_VIJETHA' => 'DUSTING DISINFECTANT - VIJETHA 550g/100dfls (30mins BEFORE 1ST FEEDING)',
             'STAGE_4_DUSTING_LIME_POWDER' => 'DUSTING LIME POWDER (30mins BEFORE FEEDING)',
             'STAGE_4_FEEDING' => 'FEEDING SILKWORMS',
@@ -75,7 +87,7 @@ class ActivitiesTable extends Table
             'STAGE_4_MOULT_4_COMPLETED' => '4th MOULT COMPLETED',
         ],
 
-        'Stage 5' => [
+        'Stage 5 (5th Instar)' => [
             'STAGE_5_DUSTING_VIJETHA_1' => 'DUSTING DISINFECTANT - VIJETHA 800g/100dfls (30mins BEFORE 1ST FEEDING)',
             'STAGE_5_DUSTING_LIME_POWDER' => 'DUSTING LIME POWDER (30mins BEFORE FEEDING)',
             'STAGE_5_FEEDING' => 'FEEDING SILKWORMS',

@@ -89,7 +89,7 @@ foreach($batches as $batch) {
             $activityType = $activity->activity_type;
             $tmp = explode('_', $activityType);
 
-            if (isset($tmp[1])) {
+            if (isset($tmp[1]) && $tmp[0] == 'STAGE') {
                 $stageNo = (int)$tmp[1];
 
                 switch ($stageNo) {
