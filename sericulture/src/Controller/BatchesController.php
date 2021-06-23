@@ -136,7 +136,7 @@ class BatchesController extends AppController
             ->where(['Batches.status' => 1, 'Batches.user_id' => $this->request->getSession()->read('User.id')])
             ->all();
 
-        $fromDate = date('Y-m-', strtotime('-5 month')) . '01';
+        $fromDate = date('Y-m-', strtotime('-11 month')) . '01';
         $toDate = date('Y-m-d');
         $conditions = [
             'Transactions.transaction_date >= ' => $fromDate,

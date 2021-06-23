@@ -1,4 +1,4 @@
-<h1>Activities List</h1>
+<h1><i class="fa fa-tasks"></i> Activities</h1>
 
 <div class="text-end">
     <a class="btn btn-orange btn-sm rounded-pill" href="/Activities/selectBatch"><i class="fa fa-plus-circle"></i> NEW ACTIVITY</a>

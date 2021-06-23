@@ -1,7 +1,7 @@
 <?php
 use App\Model\Table\TransactionsTable;
 ?>
-<h1>Manage Finance</h1>
+<h1><i class="fa fa-rupee-sign"></i>  Finance</h1>
 
 <div class="text-end">
     <a class="btn btn-orange btn-sm rounded-pill" href="/Transactions/select"><i class="fa fa-plus-circle"></i> NEW TRANSACTION</a>

@@ -1,49 +1,51 @@
 
 <div class="text-center text-primary mb-3 fs-5">
-    MY UPDATES
+    <i class="fa fa-asterisk"></i> MY UPDATES
 </div>
 
 <?php
 if ($transactionsInfo) {
     ?>
-    <div class="p-3 rounded shadow">
-        <div class="text-center">
-            <h6>Finance</h6>
+    <div class="p-1 rounded shadow border">
+        <div class="text-center bg-light p-2">
+            <span class="fs-5 text-purple-dark"><i class="fa fa-rupee-sign"></i> Finance</span>
         </div>
 
-        <table class="table table-sm text-center mt-3 small">
-        <thead>
-            <tr>
-                <th>Month</th>
-                <th class="text-success">Income</th>
-                <th class="text-danger">Expense</th>
-                <th>Balance</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
-        foreach ($transactionsInfo as $date => $row) {
-            ?>
-            <tr>
-                <td class="text-uppercase text-nowrap"><?= $date ?></td>
-                <td class="text-success"><?= $row['income'] ?? 0 ?></td>
-                <td class="text-danger"><?= $row['expense'] ?? 0 ?></td>
-                <td>
-                    <?php
-                    $amount = (float)($row['income'] ?? 0) - (float)($row['expense'] ?? 0);
-
-                    echo $amount > 0 ?
-                        '<span class="text-success">'.$amount.'</span>' :
-                        '<span class="text-danger">'.$amount.'</span>';
-
+        <div class="p-1"  style="max-height: 350px; overflow: auto">
+            <table class="table table-sm text-center mt-3 small">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th class="text-success">Income</th>
+                        <th class="text-danger">Expense</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                foreach ($transactionsInfo as $date => $row) {
                     ?>
-                </td>
-            </tr>
-            <?php
-        }
-        ?>
-        </tbody>
-    </table>
+                    <tr>
+                        <td class="text-uppercase text-nowrap small"><?= $date ?></td>
+                        <td class="text-success small"><?= $row['income'] ?? 0 ?></td>
+                        <td class="text-danger small"><?= $row['expense'] ?? 0 ?></td>
+                        <td class="small">
+                            <?php
+                            $amount = (float)($row['income'] ?? 0) - (float)($row['expense'] ?? 0);
+
+                            echo $amount > 0 ?
+                                '<span class="text-success">'.$amount.'</span>' :
+                                '<span class="text-danger">'.$amount.'</span>';
+
+                            ?>
+                        </td>
+                    </tr>
+                    <?php
+                }
+                ?>
+                </tbody>
+            </table>
+        </div>
 
         <div class="text-center mt-1 mb-3">
             <a href="/Transactions/select/" title="Add New Transaction" class="btn btn-sm btn-orange rounded-pill">
@@ -72,10 +74,10 @@ if (! $batches->toArray()) {
 
 foreach($batches as $batch) {
 ?>
-    <div class="bg-white shadow rounded p-3 my-4">
+    <div class="bg-white shadow rounded p-1 my-4 border">
 
-        <div class="rounded bg-light px-2 py-3">
-            <b>Batch: <?= $batch->name ?></b>
+        <div class="rounded bg-light px-2 py-3 text-center">
+            <span class="fs-5 text-purple-dark"><i class="fa fa-life-ring"></i> <?= $batch->name ?></span>
         </div>
 
 
@@ -128,7 +130,7 @@ foreach($batches as $batch) {
         }
         ?>
 
-        <div class="text-muted fst-italic small mt-1">Progress</div>
+        <div class="text-muted fst-italic small mt-2">Progress</div>
         <div class="progress">
             <div class="progress-bar progress-bar-striped <?= $progressBg ?>" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
         </div>
@@ -140,58 +142,60 @@ foreach($batches as $batch) {
             $dateWiseActivities[$activityDate][] = $activity;
         }
         ?>
-        <table class="table table-borderless mt-3">
-            <tbody>
-        <?php
-        foreach($dateWiseActivities as $date => $dayActivities) {
-            ?>
-            <tr class="border-0 border-bottom">
+        <div class="p-1"  style="max-height: 450px; overflow: auto">
+            <table class="table table-borderless mt-3">
+                <tbody>
+            <?php
+            foreach($dateWiseActivities as $date => $dayActivities) {
+                ?>
+                <tr class="border-0 border-bottom">
 
-                <td>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-2">
-                            <div class="text-uppercase mb-3">
-                                <div class="small text-primary text-nowrap fs-5"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-2">
+                                <div class="text-uppercase mb-3">
+                                    <div class="small text-primary text-nowrap fs-5"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-10">
+                                <?php
+                                foreach($dayActivities as $row) {
+                                    ?>
+
+                                    <div class="d-flex justify-content-start mb-3 small">
+                                        <div class="py-1">
+                                    <span class="badge bg-orange-light rounded-pill">
+                                        <?= $row->activity_time->format('h:i A') ?>
+                                    </span>
+                                        </div>
+                                        <div class="ms-1 p-1 flex-fill">
+                                            <div class="text-dark"><?= $row->name ?></div>
+                                            <?php
+                                            if (!empty(trim($row->notes))) {
+                                                ?>
+                                                <div class="mt-1">
+                                                    <code class="mb-1" style="white-space: pre-wrap;"><?= trim($row->notes) ?></code>
+                                                </div>
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
+
+                                    <?php
+                                }
+                                ?>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-10">
-                            <?php
-                            foreach($dayActivities as $row) {
-                                ?>
 
-                                <div class="d-flex justify-content-start mb-3 small">
-                                    <div class="py-1">
-                                <span class="badge bg-orange-light rounded-pill">
-                                    <?= $row->activity_time->format('h:i A') ?>
-                                </span>
-                                    </div>
-                                    <div class="ms-1 p-1 flex-fill">
-                                        <div class="text-dark"><?= $row->name ?></div>
-                                        <?php
-                                        if (!empty(trim($row->notes))) {
-                                            ?>
-                                            <div class="mt-1">
-                                                <code class="mb-1" style="white-space: pre-wrap;"><?= trim($row->notes) ?></code>
-                                            </div>
-                                            <?php
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-
-                                <?php
-                            }
-                            ?>
-                        </div>
-                    </div>
-
-                </td>
-            </tr>
-            <?php
-        }
-        ?>
-            </tbody>
-        </table>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+                </tbody>
+            </table>
+        </div>
 
         <div class="text-center mt-3 mb-3">
             <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">

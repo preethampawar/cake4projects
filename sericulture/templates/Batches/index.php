@@ -1,4 +1,4 @@
-<h1>Batches List</h1>
+<h1><i class="fa fa-life-ring"></i> Batches</h1>
 
 <div class="text-end">
     <a class="btn btn-orange btn-sm rounded-pill" href="/Batches/add"><i class="fa fa-plus-circle"></i> NEW BATCH</a>

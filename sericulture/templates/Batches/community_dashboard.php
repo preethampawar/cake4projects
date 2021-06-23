@@ -1,8 +1,8 @@
 <div class="text-center text-primary mb-3 fs-5">
-    COMMUNITY UPDATES
+    <i class="fa fa-users"></i> COMMUNITY UPDATES
 </div>
 
-<div class="row mt-4">
+<div class="row mt-3">
 <?php
 
 use App\Model\Table\BatchesTable;
@@ -19,12 +19,12 @@ if (! $batches->toArray()) {
 foreach($batches as $batch) {
 ?>
     <div class="col-sm-6">
-        <div class="bg-white shadow rounded p-3 mb-5">
+        <div class="bg-white shadow rounded p-2 mb-4 border">
             <div class="text-start">
-                <h4><?= $usersList[$batch->user_id] ?></h4>
+                <h4><i class="fa fa-user"></i> <?= $usersList[$batch->user_id] ?></h4>
             </div>
-            <div class="rounded bg-light px-2 py-2 mb-2 mt-3">
-                <span class="fs-6">Batch: <?= $batch->name ?></span>
+            <div class="rounded bg-light px-2 py-2 mb-2 mt-3 border">
+                <div class="fs-6 text-center"><i class="fa fa-life-ring"></i> <?= $batch->name ?> <span class="small fst-italic text-muted">(batch)</span></div>
 
 
 
