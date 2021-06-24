@@ -1,0 +1,284 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<h1><i class="fa fa-chart-pie"></i> Finance Report</h1>
+
+<?php
+echo $this->Form->create(null);
+?>
+<div class="mt-3 p-2 bg-light rounded border">
+    <div class="row">
+        <div class="col-sm-4 col-md-3">
+            <?php
+
+            use App\Model\Table\TransactionsTable;
+
+            echo $this->Form->control('fromDate',
+                [
+                    'label' => 'From Date',
+                    'type' => 'date',
+                    'required' => true,
+                    'class' => 'form-control form-control-sm mb-3',
+                    'default' => $defaultFromDate
+                ]);
+            ?>
+        </div>
+        <div class="col-sm-4 col-md-3">
+            <?php
+            echo $this->Form->control('toDate',
+                [
+                    'label' => 'To Date',
+                    'type' => 'date',
+                    'required' => true,
+                    'class' => 'form-control form-control-sm mb-3',
+                    'default' => $defaultToDate
+                ]);
+            ?>
+        </div>
+        <div class="col-sm-4 col-md-3">
+            <?php
+            echo $this->Form->control('transactionType',
+                [
+                    'type' => 'select',
+                    'label' => 'Transaction Type',
+                    'required' => false,
+                    'class' => 'form-select form-select-sm',
+                    'empty' => 'All',
+                    'options' => TransactionsTable::TRANSACTION_TYPES,
+                    'default' => $selectedTransactionType,
+                ]);
+            ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 mt-3">
+            <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+        </div>
+    </div>
+</div>
+
+<?php
+echo $this->Form->end();
+?>
+
+<div class="fw-bold small mt-3">
+    Results from "<?= date('d M Y', strtotime($defaultFromDate)) ?>" to "<?= date('d M Y', strtotime($defaultToDate)) ?>"
+</div>
+
+<div class="mt-3">
+    <?php
+    //    $transactionsMonthWiseInfo = [];
+    //    $transactionsInfo = [];
+    //
+//    debug($transactionsInfo);
+//    debug($transactionsMonthWiseInfo);
+    if ($transactionsInfo) {
+        ?>
+        <div class="border p-1 rounded">
+            <div class="text-start bg-light p-2 border rounded">
+                <span class="fs-5 text-purple-dark"><i class="fa fa-chart-pie"></i> Complete Report</span>
+            </div>
+
+            <table class="table mt-2">
+                <thead>
+                <tr>
+                    <th class="text-success text-center">Income</th>
+                    <th class="text-danger text-center">Expense</th>
+                    <th class="text-center">Balance</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-success text-center"><?= $transactionsInfo['income'] ?></td>
+                    <td class="text-danger text-center"><?= $transactionsInfo['expense'] ?></td>
+                    <td class="text-center">
+                        <?php
+                        $bal = $transactionsInfo['income'] - $transactionsInfo['expense'];
+
+                        echo $bal > 0
+                            ? '<span class="text-success">'.$bal.'</span>'
+                            : '<span class="text-danger">'.$bal.'</span>';
+                        ?>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <div class="row">
+                    <div class="col-md-8 col-lg-5">
+                        <div id="piechart" style="width: 100%; height: 300px;"></div>
+                        <br>
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+
+                        var data = google.visualization.arrayToDataTable([
+                            ['Report', 'Amount'],
+                            ['Income', <?= $transactionsInfo['income'] ?>],
+                            ['Expense', <?= $transactionsInfo['expense'] ?>],
+                        ]);
+
+                        var options = {
+                            title: 'From "<?= date('d M y', strtotime($defaultFromDate)) ?>" to "<?= date('d M y', strtotime($defaultToDate)) ?>"',
+
+                            chartArea:{left:20,top:40,width:'100%',height:'100%'}
+                        };
+
+                        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                        chart.draw(data, options);
+                    }
+                </script>
+
+            </div>
+        </div>
+
+
+        <?php
+        if ($transactionsMonthWiseInfo) {
+            ?>
+            <div class="p-1 rounded shadow border mt-3">
+                <div class="text-start bg-light p-2 border rounded">
+                    <span class="fs-5 text-purple-dark"><i class="fa fa-chart-line"></i> Month Wise Report</span>
+                </div>
+
+
+                <div class="px-1">
+                    <table class="table table-sm text-center small mt-2">
+                        <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th class="text-success">Income</th>
+                            <th class="text-danger">Expense</th>
+                            <th>Balance</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($transactionsMonthWiseInfo as $date => $row) {
+                            ?>
+                            <tr>
+                                <td class="text-capitalize text-nowrap small"><?= date('M y', strtotime($date)) ?></td>
+                                <td class="text-success small"><?= $row['income'] ?? 0 ?></td>
+                                <td class="text-danger small"><?= $row['expense'] ?? 0 ?></td>
+                                <td class="small">
+                                    <?php
+                                    $amount = (float)($row['income'] ?? 0) - (float)($row['expense'] ?? 0);
+
+                                    echo $amount > 0 ?
+                                        '<span class="text-success">'.$amount.'</span>' :
+                                        '<span class="text-danger">'.$amount.'</span>';
+
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+
+                    <div class="">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div id="curve_chart"  style="width: 100%; height: 500px;"></div>
+                                <br>
+                                <div id="area_chart_div" style="width: 100%; height: 500px;"></div>
+                            </div>
+                        </div>
+
+                        <script type="text/javascript">
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChart2);
+
+                            function drawChart2() {
+                                var data = new google.visualization.DataTable();
+                                data.addColumn('string', 'Month');
+                                data.addColumn('number', 'Income');
+                                data.addColumn('number', 'Expense');
+
+                                data.addRows([
+                                    <?php
+                                    foreach ($transactionsMonthWiseInfo as $date => $row) {
+                                    ?>
+                                    [
+                                        '<?= date('M y', strtotime($date)) ?>',
+                                        <?= $row['income'] ?? 0 ?>,
+                                        <?= $row['expense'] ?? 0 ?>
+                                    ],
+                                    <?php
+                                        }
+                                    ?>
+                                ]);
+
+                                var options = {
+                                    title: 'Monthly Performance',
+                                    curveType: 'none',
+                                    legend: { position: 'bottom' }
+                                };
+
+                                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                                chart.draw(data, options);
+                            }
+                        </script>
+
+                        <script type="text/javascript">
+                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.setOnLoadCallback(drawChartArea);
+
+                            function drawChartArea() {
+                                var data = new google.visualization.DataTable();
+                                data.addColumn('string', 'Month');
+                                data.addColumn('number', 'Total Income');
+                                data.addColumn('number', 'Total Expense');
+
+                                data.addRows([
+                                    <?php
+                                    $totalIncome = 0;
+                                    $totalExpense = 0;
+
+                                    foreach ($transactionsMonthWiseInfo as $date => $row) {
+                                        $totalIncome += $row['income'] ?? 0;
+                                        $totalExpense += $row['expense'] ?? 0;
+                                    ?>
+                                    [
+                                        '<?= date('M y', strtotime($date)) ?>',
+                                        <?= $totalIncome ?>,
+                                        <?= $totalExpense ?>
+                                    ],
+                                    <?php
+                                    }
+                                    ?>
+                                ]);
+
+                                var options = {
+                                    title: 'Total Income & Expense',
+                                    vAxis: {minValue: 0}
+                                };
+
+                                var chart = new google.visualization.AreaChart(document.getElementById('area_chart_div'));
+                                chart.draw(data, options);
+                            }
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+
+            <?php
+        }
+        ?>
+        <?php
+    } else {
+        ?>
+        -
+        <?php
+    }
+    ?>
+</div>

@@ -57,7 +57,9 @@
                 <td>
                     <div>
                         <span class="d-inline-block text-uppercase me-1"><?= $activity->activity_date->format('d M') ?></span>
-                        <span class="badge bg-orange-light px-1 rounded-pill"><?= $activity->activity_time->format('h:i a') ?></span>
+                        <span class="badge bg-orange-light px-1 rounded-pill"><?= $activity->activity_time->format('h:i a') ?></span><br>
+                        <span class="text-capitalize text-orange small text-nowrap d-block d-md-none"><i class="fa fa-sun"></i> <?= $activity->activity_date->format('D') ?></span>
+                        <span class="text-capitalize text-orange small text-nowrap d-none d-md-block"><i class="fa fa-sun"></i> <?= $activity->activity_date->format('l') ?></span>
                     </div>
                 </td>
 

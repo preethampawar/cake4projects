@@ -60,7 +60,10 @@ use App\Model\Table\TransactionsTable;
                     <?= $k ?>.
                 </td>
                 <td>
-                    <span class="text-nowrap"><?= $transaction->transaction_date->format('d-M') ?></span>
+                    <span class="text-nowrap text-primary text-uppercase"><?= $transaction->transaction_date->format('d M') ?></span>
+                    <br>
+                    <span class="text-capitalize text-orange small text-nowrap d-block d-md-none"><i class="fa fa-sun"></i> <?= $transaction->transaction_date->format('D') ?></span>
+                    <span class="text-capitalize text-orange small text-nowrap d-none d-md-block"><i class="fa fa-sun"></i> <?= $transaction->transaction_date->format('l') ?></span>
                 </td>
                 <!--
                 <td>

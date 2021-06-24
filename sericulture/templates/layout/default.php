@@ -14,6 +14,7 @@ $userDetailsLinkActive = null;
 $batchesDashboardLinkActive = null;
 $communityDashboardLinkActive = null;
 $transactionsLinkActive = null;
+$reportsLinkActive = null;
 
 
 switch($controller) {
@@ -31,7 +32,11 @@ switch($controller) {
         $activitiesLinkActive = 'active';
         break;
     case 'Transactions':
-        $transactionsLinkActive = 'active';
+        if ($action == 'financeReport') {
+            $reportsLinkActive = 'active';
+        } else {
+            $transactionsLinkActive = 'active';
+        }
         break;
     case 'Users':
         if ($action == 'login') {
@@ -69,12 +74,12 @@ switch($controller) {
 
     </head>
     <body>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark d-print-none bg-gradient p-0">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-print-none bg-gradient p-0">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
                     <span class=""><img src="/img/2_silkworm_transparent.png" height="42" width="56" alt=""></span>
                 </a>
-                <a class="navbar-brand" href="/">
+                <a class="navbar-brand d-block d-md-none" href="/">
                     <span>Seri Tracker</span>
                 </a>
 
@@ -92,6 +97,15 @@ switch($controller) {
                             <a class="nav-link <?= $activitiesLinkActive?> px-2 me-1 my-1" href="/Activities"><i class="fa fa-tasks"></i> Activities</a>
                             <a class="nav-link <?= $transactionsLinkActive?> px-2 me-1 my-1" href="/Transactions"><i class="fa fa-rupee-sign"></i> Finance</a>
                             <a class="nav-link <?= $communityDashboardLinkActive?> px-2 me-1 my-1" href="/Batches/communityDashboard"><i class="fa fa-users"></i> Community Updates</a>
+
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle <?=$reportsLinkActive?> px-2 me-1 my-1" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-chart-pie"></i> Reports
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
+                                    <li><a class="dropdown-item" href="/Transactions/financeReport">Finance Report</a></li>
+                                </ul>
+                            </div>
 
                             <div class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle <?=$userDetailsLinkActive?> px-2 me-1 my-1" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

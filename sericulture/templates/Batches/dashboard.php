@@ -32,7 +32,7 @@ if ($transactionsInfo) {
                 foreach ($transactionsInfo as $date => $row) {
                     ?>
                     <tr>
-                        <td class="text-uppercase text-nowrap small"><?= $date ?></td>
+                        <td class="text-uppercase text-nowrap small"><?= date('M y', strtotime($date)) ?></td>
                         <td class="text-success small"><?= $row['income'] ?? 0 ?></td>
                         <td class="text-danger small"><?= $row['expense'] ?? 0 ?></td>
                         <td class="small">
@@ -159,8 +159,9 @@ foreach($batches as $batch) {
                     <td>
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-2">
-                                <div class="text-uppercase mb-3">
+                                <div class="text-uppercase mb-3 d-flex justify-content-between">
                                     <div class="small text-primary text-nowrap fs-5"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
+                                    <div class="small text-orange text-capitalize text-nowrap mt-1"><i class="fa fa-sun"></i> <?= date('l', strtotime($date)) ?></div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-10">

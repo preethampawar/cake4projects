@@ -88,7 +88,9 @@ use App\Model\Table\BatchesTable;
             <td style="width: 75px">
                 <div class="text-primary text-center text-uppercase">
                     <span class="fs-4"><i class="fa fa-calendar-alt"></i></span><br>
-                    <span class="small text-dark"><?= $date ?></span>
+                    <span class="small text-dark"><?= $date ?></span><br>
+                    <span class="text-capitalize text-orange small text-nowrap d-block d-md-none"><i class="fa fa-sun"></i> <?= date('D', strtotime($date)) ?></span>
+                    <span class="text-capitalize text-orange small text-nowrap d-none d-md-block"><i class="fa fa-sun"></i> <?= date('l', strtotime($date)) ?></span>
                 </div>
             </td>
             <td>
