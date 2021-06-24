@@ -7,12 +7,18 @@
 if ($transactionsInfo) {
     ?>
     <div class="p-1 rounded shadow border">
-        <div class="text-center bg-light p-2">
+        <div class="text-start bg-light p-2 border rounded">
             <span class="fs-5 text-purple-dark"><i class="fa fa-rupee-sign"></i> Finance</span>
         </div>
+        <div class="text-center my-2">
+            <a href="/Transactions/select/" title="Add New Transaction" class="btn btn-sm btn-orange rounded-pill">
+                <i class="fa fa-plus-circle small"></i>
+                <span class="small">NEW TRANSACTION</span>
+            </a>
+        </div>
 
-        <div class="p-1"  style="max-height: 350px; overflow: auto">
-            <table class="table table-sm text-center mt-3 small">
+        <div class="px-1"  style="max-height: 350px; overflow: auto">
+            <table class="table table-sm text-center small">
                 <thead>
                     <tr>
                         <th>Month</th>
@@ -47,12 +53,6 @@ if ($transactionsInfo) {
             </table>
         </div>
 
-        <div class="text-center mt-1 mb-3">
-            <a href="/Transactions/select/" title="Add New Transaction" class="btn btn-sm btn-orange rounded-pill">
-                <i class="fa fa-plus-circle"></i>
-                <span class="">NEW TRANSACTION</span>
-            </a>
-        </div>
     </div>
 
     <?php
@@ -76,8 +76,14 @@ foreach($batches as $batch) {
 ?>
     <div class="bg-white shadow rounded p-1 my-4 border">
 
-        <div class="rounded bg-light px-2 py-3 text-center">
+        <div class="rounded bg-light border px-2 py-2 text-start">
             <span class="fs-5 text-purple-dark"><i class="fa fa-life-ring"></i> <?= $batch->name ?></span>
+        </div>
+        <div class="text-center my-2">
+            <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">
+                <i class="fa fa-plus-circle small"></i>
+                <span class="small">NEW ACTIVITY</span>
+            </a>
         </div>
 
 
@@ -142,8 +148,8 @@ foreach($batches as $batch) {
             $dateWiseActivities[$activityDate][] = $activity;
         }
         ?>
-        <div class="p-1"  style="max-height: 450px; overflow: auto">
-            <table class="table table-borderless mt-3">
+        <div>
+            <table class="table table-borderless">
                 <tbody>
             <?php
             foreach($dateWiseActivities as $date => $dayActivities) {
@@ -151,7 +157,7 @@ foreach($batches as $batch) {
                 <tr class="border-0 border-bottom">
 
                     <td>
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="col-sm-12 col-md-2">
                                 <div class="text-uppercase mb-3">
                                     <div class="small text-primary text-nowrap fs-5"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
@@ -164,11 +170,11 @@ foreach($batches as $batch) {
 
                                     <div class="d-flex justify-content-start mb-3 small">
                                         <div class="py-1">
-                                    <span class="badge bg-orange-light rounded-pill">
-                                        <?= $row->activity_time->format('h:i A') ?>
-                                    </span>
+                                            <span class="text-nowrap text-danger small">
+                                                <?= $row->activity_time->format('h:i A') ?>
+                                            </span>
                                         </div>
-                                        <div class="ms-1 p-1 flex-fill">
+                                        <div class="ms-1 p-1 flex-fill border-start border-2 border-grey bg-light">
                                             <div class="text-dark"><?= $row->name ?></div>
                                             <?php
                                             if (!empty(trim($row->notes))) {
@@ -195,13 +201,6 @@ foreach($batches as $batch) {
             ?>
                 </tbody>
             </table>
-        </div>
-
-        <div class="text-center mt-3 mb-3">
-            <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">
-                <i class="fa fa-plus-circle"></i>
-                <span class="">NEW ACTIVITY</span>
-            </a>
         </div>
 
         <div class="p-2 border rounded small text-muted bg-light mb-3 d-none">

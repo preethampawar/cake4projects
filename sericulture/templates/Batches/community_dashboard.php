@@ -23,10 +23,8 @@ foreach($batches as $batch) {
             <div class="text-start">
                 <h4><i class="fa fa-user"></i> <?= $usersList[$batch->user_id] ?></h4>
             </div>
-            <div class="rounded bg-light px-2 py-2 mb-2 mt-3 border">
-                <div class="fs-6 text-center"><i class="fa fa-life-ring"></i> <?= $batch->name ?> <span class="small fst-italic text-muted">(batch)</span></div>
-
-
+            <div class="rounded alert alert-warning px-2 py-2 mb-2 mt-2">
+                <div class="fs-6 text-start"><i class="fa fa-life-ring"></i> <?= $batch->name ?> <span class="small fst-italic text-muted">(batch)</span></div>
 
                 <?php
                 $progressPercentage = 0;
@@ -76,13 +74,12 @@ foreach($batches as $batch) {
                 }
                 ?>
 
-
-                <div class="progress my-1">
+                <div class="progress mt-2">
                     <div class="progress-bar progress-bar-striped <?= $progressBg ?>" role="progressbar" style="width: <?= $progressPercentage ?>%" aria-valuenow="<?= $progressPercentage ?>" aria-valuemin="0" aria-valuemax="100"><?= $progressPercentage ?>%</div>
                 </div>
             </div>
 
-            <div class="mt-2 p-1" style="max-height: 350px; overflow: auto">
+            <div class="mt-1 p-1" style="max-height: 350px; overflow: auto">
                 <?php
                 $dateWiseActivities = [];
                 foreach($batch->activities as $activity) {
@@ -90,7 +87,7 @@ foreach($batches as $batch) {
                     $dateWiseActivities[$activityDate][] = $activity;
                 }
                 ?>
-                <table class="table table-borderless mt-3">
+                <table class="table table-borderless">
                     <tbody>
                 <?php
                 foreach($dateWiseActivities as $date => $dayActivities) {
@@ -111,11 +108,11 @@ foreach($batches as $batch) {
 
                                         <div class="d-flex justify-content-start mb-3 small">
                                             <div>
-                                                <span class="badge bg-orange-light rounded-pill">
+                                                <span class="text-nowrap text-danger small">
                                                     <?= $row->activity_time->format('h:i A') ?>
                                                 </span>
                                             </div>
-                                            <div class="ms-2 flex-fill">
+                                            <div class="ms-1 p-1 flex-fill border-start border-3 border-grey bg-light">
                                                 <div class="text-dark"><?= $row->name ?></div>
                                                 <?php
                                                 if (!empty(trim($row->notes))) {
