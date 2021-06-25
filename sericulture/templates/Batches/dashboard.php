@@ -80,7 +80,7 @@ foreach($batches as $batch) {
             <span class="fs-5 text-purple-dark"><i class="fa fa-life-ring"></i> <?= $batch->name ?></span>
         </div>
         <div class="text-center my-2">
-            <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">
+            <a href="/Activities/selectActivity/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange rounded-pill">
                 <i class="fa fa-plus-circle small"></i>
                 <span class="small">NEW ACTIVITY</span>
             </a>

@@ -1,76 +1,46 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/Activities/">Activities</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Select Batch</li>
-    </ol>
-</nav>
+<div class="mb-3">
+    <a href="/Activities/" class="text-decoration-none"><i class="fa fa-arrow-circle-left"></i> Back</a>
+</div>
 
-<h1>Select Batch</h1>
+<div class="border-bottom border-4 border-warning p-2 bg-light"><h5>Select Batch</h5></div>
 
-<div class="">
-    <table class="table mt-3 small ">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Batch</th>
-            <th></th>
-        </tr>
-        </thead>
+<div class="list-group list-group-flush mt-1">
+    <?php
+    foreach ($batchInfo as $batch):
+        if($batch->status == 1) {
+            ?>
+            <div class="list-group-item px-0 py-1">
+                <a
+                    href="/activities/selectActivity/<?= $batch->id ?>"
+                    title="Select <?= $batch->name ?>"
+                    id="<?= $batch->id ?>"
+                    class="nav-link d-flex justify-content-between text-primary">
 
-        <!-- Here is where we iterate through our $articles query object, printing out article info -->
+                    <?= $batch->name ?>
 
-        <tbody>
-        <?php
-        $k = 0;
-        foreach ($batchInfo as $batch):
-            $k++;
+
+                    <i class="fa fa-chevron-right mt-1"></i>
+                </a>
+            </div>
+            <?php
+        } else {
             ?>
 
-            <tr>
-                <td>
-                    <?= $k ?>.
-                </td>
-                <td>
-                    <?php
-                    if($batch->status == 1) {
-                        ?>
-                        <span class="text-success small"><i class="fa fa-circle"></i> </span>
+            <div class="list-group-item px-0 py-1">
+                <a
+                    href="#"
+                    id="<?= $batch->id ?>"
+                    class="nav-link d-flex justify-content-between text-secondary disabled" tabindex="-1" aria-disabled="true">
 
-                        <a href="/activities/add/<?= $batch->id ?>" title="Select <?= $batch->name ?>" class=""><?= $batch->name ?></a>
-                        <?php
-                    } else {
-                        ?>
-                        <span class="text-danger small"><i class="fa fa-circle"></i> </span>
-                        <span class="text-danger"><?= $batch->name ?></span>
-                        <?php
-                    }
-                    ?>
-                </td>
-                <td class="text-end">
-                    <?php
-                    if($batch->status == 1) {
-                        ?>
-                        <a href="/activities/add/<?= $batch->id ?>" title="Select <?= $batch->name ?>" class="btn btn-sm btn-primary py-0">Select</a>
-                        <?php
-                    } else {
-                        ?>
-                        <span class="text-muted">Closed</span>
-                        <?php
-                    }
-                    ?>
-                </td>
-            </tr>
+                    <?= $batch->name ?>
 
-        <?php
-        endforeach;
 
-        if (empty($batchInfo->toArray())) {
-            ?>
-            <tr><td colspan="4">No batches found.</td></tr>
+                    <i class="fa fa-chevron-right mt-1"></i>
+                </a>
+            </div>
+
             <?php
         }
-
-        ?>
-        </tbody>
-    </table>
+    endforeach;
+    ?>
 </div>

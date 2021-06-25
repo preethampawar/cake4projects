@@ -21,25 +21,25 @@ echo $this->Form->create($activity);
 
 <div class="mt-3">
     <div class="d-flex">
-        <div>
+        <div class="w-50">
             <?php
             echo $this->Form->control('activity_date',
                 [
                     'label' => 'Date',
                     'type' => 'date',
                     'required' => true,
-                    'class' => 'form-control mb-3',
+                    'class' => 'form-control form-control-sm mb-3',
                 ]);
             ?>
         </div>
-        <div class="ms-3">
+        <div class="ms-3 w-50">
             <?php
             echo $this->Form->control('activity_time',
                 [
                     'label' => 'Time *',
                     'type' => 'time',
                     'required' => true,
-                    'class' => 'form-control mb-3',
+                    'class' => 'form-control form-control-sm mb-3',
                     'format' => 'h:i',
                 ]);
             ?>

@@ -49,6 +49,25 @@ class ActivitiesController extends AppController
         $this->set(compact('activities'));
     }
 
+    public function selectActivity($batchId)
+    {
+        $userId = $this->request->getSession()->read('User.id');
+
+        $recentActivity = $this->Activities
+            ->findByBatchId($batchId)
+            ->order(['Activities.activity_date desc', 'Activities.activity_time desc'])
+            ->first();
+
+        $this->loadModel('Batches');
+        $batchInfo = $this->Batches
+            ->findById($batchId)
+            ->first();
+
+        $this->set('batchInfo', $batchInfo);
+        $this->set('batchId', $batchId);
+        $this->set('recentActivity', $recentActivity);
+    }
+
     public function selectBatch()
     {
         $userId = $this->request->getSession()->read('User.id');
@@ -61,7 +80,7 @@ class ActivitiesController extends AppController
         $this->set('batchInfo', $batchInfo);
     }
 
-    public function add($batchId)
+    public function add($batchId, $selectedActivityType = null)
     {
         $this->loadModel('Batches');
         $batchInfo = $this->Batches->findById($batchId)->firstOrFail();
@@ -76,6 +95,7 @@ class ActivitiesController extends AppController
             $data['batch_id'] = $batchId;
             $data['user_id'] = $this->request->getSession()->read('User.id');
             $data['name'] = ActivitiesTable::ACTIVITY_TYPES[$data['activity_type']];
+            $selectedActivityType = $data['activity_type'];
 
             $error = $this->validateActivity($data);
 
@@ -98,6 +118,7 @@ class ActivitiesController extends AppController
         $this->set('activity', $activity);
         $this->set('recentActivity', $recentActivity);
         $this->set('batchInfo', $batchInfo);
+        $this->set('selectedActivityType', $selectedActivityType);
     }
 
     private function validateActivity($data)

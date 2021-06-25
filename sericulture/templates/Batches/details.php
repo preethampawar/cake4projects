@@ -9,7 +9,7 @@ use App\Model\Table\BatchesTable;
     <?php
     if ($batch->status == 1) {
     ?>
-    <a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange">
+    <a href="/Activities/selectActivity/<?= $batch->id ?>" title="Add New Activity" class="btn btn-sm btn-orange">
         <i class="fa fa-plus-circle"></i>
         <span class="">NEW ACTIVITY</span>
     </a>
@@ -17,7 +17,7 @@ use App\Model\Table\BatchesTable;
     }
     ?>
 
-    <a href="/Batches/" title="Add New Activity" class="btn btn-sm btn-secondary ms-3">
+    <a href="/Batches/" class="btn btn-sm btn-secondary ms-3">
         <span class="">BACK</span>
     </a>
 </div>

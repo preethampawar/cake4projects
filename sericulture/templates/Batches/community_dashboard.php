@@ -23,8 +23,8 @@ foreach($batches as $batch) {
             <div class="text-start">
                 <h4><i class="fa fa-user"></i> <?= $usersList[$batch->user_id] ?></h4>
             </div>
-            <div class="rounded alert alert-warning px-2 py-2 mb-2 mt-2">
-                <div class="fs-6 text-start"><i class="fa fa-life-ring"></i> <?= $batch->name ?> <span class="small fst-italic text-muted">(batch)</span></div>
+            <div class="rounded px-2 pb-2 mb-2">
+                <div class="fs-6 text-start"><i class="fa fa-life-ring text-primary"></i> <?= $batch->name ?> </div>
 
                 <?php
                 $progressPercentage = 0;
@@ -98,7 +98,11 @@ foreach($batches as $batch) {
                             <div class="row">
                                 <div class="col-sm-12 col-md-2">
                                     <div class="text-uppercase mb-3">
-                                        <div class="small text-primary text-nowrap"><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
+                                        <div class="small text-primary text-nowrap d-flex justify-content-between">
+                                            <div><i class="fa fa-calendar-alt"></i> <?= $date ?></div>
+                                            <span class="d-md-none"><span class="small text-orange text-capitalize text-nowrap mt-1"><i class="fa fa-sun"></i> <?= date('D', strtotime($date)) ?></span></span>
+                                        </div>
+                                        <div class="d-none d-md-block small text-orange text-capitalize text-nowrap mt-1"><i class="fa fa-sun"></i> <?= date('D', strtotime($date)) ?></div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-10">
@@ -112,7 +116,7 @@ foreach($batches as $batch) {
                                                     <?= $row->activity_time->format('h:i A') ?>
                                                 </span>
                                             </div>
-                                            <div class="ms-1 p-1 flex-fill border-start border-3 border-grey bg-light">
+                                            <div class="ms-2 p-1 flex-fill border-start border-3 border-grey bg-light">
                                                 <div class="text-dark"><?= $row->name ?></div>
                                                 <?php
                                                 if (!empty(trim($row->notes))) {

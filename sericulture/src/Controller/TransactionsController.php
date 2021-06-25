@@ -127,9 +127,11 @@ class TransactionsController extends AppController
         $userId = $this->request->getSession()->read('User.id');
         $transactionsMonthWiseInfo = [];
         $transactionsInfo = [];
+        $formSumitted = false;
 
         if ($this->request->is(['post', 'put'])) {
             $data = $this->request->getData();
+            $formSumitted = true;
 
             $defaultFromDate = $data['fromDate'];
             $defaultToDate = $data['toDate'];
@@ -188,5 +190,6 @@ class TransactionsController extends AppController
         $this->set('selectedTransactionType', $selectedTransactionType);
         $this->set('transactionsInfo', $transactionsInfo);
         $this->set('transactionsMonthWiseInfo', $transactionsMonthWiseInfo);
+        $this->set('formSumitted', $formSumitted);
     }
 }

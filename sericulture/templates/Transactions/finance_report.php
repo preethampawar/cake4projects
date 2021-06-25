@@ -60,9 +60,15 @@ echo $this->Form->create(null);
 echo $this->Form->end();
 ?>
 
-<div class="fw-bold small mt-3">
-    Results from "<?= date('d M Y', strtotime($defaultFromDate)) ?>" to "<?= date('d M Y', strtotime($defaultToDate)) ?>"
-</div>
+<?php
+if ($formSumitted) {
+    ?>
+    <div class="fw-bold small mt-3">
+        Results from "<?= date('d M Y', strtotime($defaultFromDate)) ?>" to "<?= date('d M Y', strtotime($defaultToDate)) ?>"
+    </div>
+    <?php
+}
+?>
 
 <div class="mt-3">
     <?php
@@ -126,7 +132,8 @@ echo $this->Form->end();
                         var options = {
                             title: 'From "<?= date('d M y', strtotime($defaultFromDate)) ?>" to "<?= date('d M y', strtotime($defaultToDate)) ?>"',
 
-                            chartArea:{left:20,top:40,width:'100%',height:'100%'}
+                            chartArea:{left:20,top:40,width:'100%',height:'100%'},
+                            colors: ['#00c186', '#f55667']
                         };
 
                         var chart = new google.visualization.PieChart(document.getElementById('piechart'));
@@ -183,22 +190,27 @@ echo $this->Form->end();
                         </tbody>
                     </table>
 
-                    <div class="">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12">
-                                <div id="curve_chart"  style="width: 100%; height: 500px;"></div>
+                    <div class="mt-4 table-responsive-md">
+                        <div class="">
+                            <div class="">
+                                <?php
+                                $count = count($transactionsMonthWiseInfo);
+                                $height = $count === 1 ? 150 : (100*$count);
+                                $width = 100*$count.'px';
+                                ?>
+                                <div id="curve_chart" class="small" style="width:100%; height: <?= $height ?>px;"></div>
                                 <br>
-                                <div id="area_chart_div" style="width: 100%; height: 500px;"></div>
+                                <div id="area_chart_div" class="small"  style="width: 100%; height: 500px;"></div>
                             </div>
                         </div>
 
                         <script type="text/javascript">
-                            google.charts.load('current', {'packages':['corechart']});
+                            google.charts.load('current', {'packages':['bar']});
                             google.charts.setOnLoadCallback(drawChart2);
 
                             function drawChart2() {
                                 var data = new google.visualization.DataTable();
-                                data.addColumn('string', 'Month');
+                                data.addColumn('string', '');
                                 data.addColumn('number', 'Income');
                                 data.addColumn('number', 'Expense');
 
@@ -217,14 +229,26 @@ echo $this->Form->end();
                                 ]);
 
                                 var options = {
-                                    title: 'Monthly Performance',
-                                    curveType: 'none',
-                                    legend: { position: 'bottom' }
+                                    chart: {
+                                        title: 'Monthly Performance',
+                                        subtitle: 'Income & Expense',
+                                    },
+                                    bars: 'horizontal', // Required for Material Bar Charts.
+                                    legend: { position: 'none'},
+                                    hAxis: {format: ''},
+                                    // axes: {
+                                    //     x: {
+                                    //         0: { side: 'top', label: 'Amount'} // Top x-axis.
+                                    //     }
+                                    // },
+                                    colors: ['#00c186', '#f55667']
+
                                 };
 
-                                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                                var chart = new google.charts.Bar(document.getElementById('curve_chart'));
 
-                                chart.draw(data, options);
+                                chart.draw(data, google.charts.Bar.convertOptions(options));
+
                             }
                         </script>
 
@@ -235,8 +259,8 @@ echo $this->Form->end();
                             function drawChartArea() {
                                 var data = new google.visualization.DataTable();
                                 data.addColumn('string', 'Month');
-                                data.addColumn('number', 'Total Income');
-                                data.addColumn('number', 'Total Expense');
+                                data.addColumn('number', 'Income');
+                                data.addColumn('number', 'Expense');
 
                                 data.addRows([
                                     <?php
@@ -258,8 +282,9 @@ echo $this->Form->end();
                                 ]);
 
                                 var options = {
-                                    title: 'Total Income & Expense',
-                                    vAxis: {minValue: 0}
+                                    title: 'Total Income & Expense (Growth)',
+                                    vAxis: {minValue: 0},
+                                    colors: ['#00c186', '#f55667']
                                 };
 
                                 var chart = new google.visualization.AreaChart(document.getElementById('area_chart_div'));
@@ -275,9 +300,9 @@ echo $this->Form->end();
         }
         ?>
         <?php
-    } else {
+    } elseif($formSumitted) {
         ?>
-        -
+        No records found.
         <?php
     }
     ?>

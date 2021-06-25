@@ -71,7 +71,7 @@
                             <?php
                             if ($batch->status == 1) {
                             ?>
-                            <li><a href="/Activities/add/<?= $batch->id ?>" title="Add New Activity" class="dropdown-item"><i class="fa fa-plus"></i> Add New Activity</a></li>
+                            <li><a href="/Activities/selectActivity/<?= $batch->id ?>" title="Add New Activity" class="dropdown-item"><i class="fa fa-plus"></i> Add New Activity</a></li>
 
                             <?php
                             }
