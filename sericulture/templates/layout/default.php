@@ -188,6 +188,17 @@ switch($controller) {
                     </div>
                 </div>
             </div>
+
+            <!-- Select Transaction Menu -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="selectTransactionMenu" aria-labelledby="offcanvasTopLabel">
+                <div class="offcanvas-header border-bottom border-4 border-warning">
+                    <h5 id="offcanvasTopLabel">Select Transaction Type</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body" id="selectTransactionMenuBody">
+                    <?php echo $this->element('transaction_select_menu'); ?>
+                </div>
+            </div>
         </main>
 
         <script src="/vendor/bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>

@@ -11,9 +11,8 @@ if ($transactionsInfo) {
             <span class="fs-5 text-purple-dark"><i class="fa fa-rupee-sign"></i> Finance</span>
         </div>
         <div class="text-center my-2">
-            <a href="/Transactions/select/" title="Add New Transaction" class="btn btn-sm btn-orange rounded-pill">
-                <i class="fa fa-plus-circle small"></i>
-                <span class="small">NEW TRANSACTION</span>
+            <a href="#" class="btn btn-sm btn-orange rounded-pill small py-1" data-bs-toggle="offcanvas" data-bs-target="#selectTransactionMenu">
+                <i class="fa fa-plus-circle small"></i> <span class="small">NEW TRANSACTION</span>
             </a>
         </div>
 
