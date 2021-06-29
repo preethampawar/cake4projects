@@ -50,7 +50,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, templates/Pages/home.php)...
      */
-     $builder->connect('/', ['controller' => 'Batches', 'action' => 'dashboard', '']);
+     $builder->connect('/', ['controller' => 'Batches', 'action' => 'communityDashboard', '']);
 
     /*
      * ...and connect the rest of 'Pages' controller's URLs.

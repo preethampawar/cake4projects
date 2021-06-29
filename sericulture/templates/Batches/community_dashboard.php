@@ -1,4 +1,15 @@
-<div class="text-center text-primary mb-3 fs-5">
+
+<?php
+if (!$this->getRequest()->getSession()->read('User.id')) {
+    ?>
+    <div class="text-end">
+        <a href="/Users/login" class="btn btn-sm btn-orange">Login</a>
+    </div>
+    <?php
+}
+?>
+
+<div class="text-center text-primary my-3 fs-5">
     <i class="fa fa-users"></i> COMMUNITY UPDATES
 </div>
 
@@ -19,12 +30,20 @@ if (! $batches->toArray()) {
 foreach($batches as $batch) {
 ?>
     <div class="col-sm-6">
-        <div class="bg-white shadow rounded p-2 mb-4 border">
-            <div class="text-start">
-                <h4><i class="fa fa-user"></i> <?= $usersList[$batch->user_id] ?></h4>
+        <div class="bg-white shadow rounded p-2 mb-4 border border-2">
+            <div class="mt-1">
+                <div class="d-flex justify-content-between border-bottom border-4 border-warning pb-2">
+                    <div class="text-secondary small">Farmer</div>
+                    <h5><i class="fa fa-user-circle"></i> <?= $usersList[$batch->user_id] ?></h5>
+                </div>
             </div>
-            <div class="rounded px-2 pb-2 mb-2">
-                <div class="fs-6 text-start"><i class="fa fa-life-ring text-primary"></i> <?= $batch->name ?> </div>
+            <div class="rounded pb-2 mb-2 mt-3">
+
+
+                <div class="d-flex justify-content-between">
+                    <div class="text-secondary small">Batch</div>
+                    <div class="fs-6 text-start"><i class="fa fa-life-ring text-primary"></i> <?= $batch->name ?> </div>
+                </div>
 
                 <?php
                 $progressPercentage = 0;
@@ -143,8 +162,8 @@ foreach($batches as $batch) {
                 ?>
                     </tbody>
                 </table>
-            </div>
-            <div class="p-2 border rounded small text-muted bg-light mb-3 d-none">
+
+                <div class="p-2 border rounded small text-muted alert alert-primary mb-3">
                     <table class="table table-sm table-borderless mb-0">
                         <tbody>
                         <tr>
@@ -183,6 +202,8 @@ foreach($batches as $batch) {
                         </tbody>
                     </table>
                 </div>
+
+            </div>
 
         </div>
     </div>

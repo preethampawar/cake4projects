@@ -65,6 +65,7 @@ class AppController extends Controller
             'logout',
             'initiate',
             'continueAsGuest',
+            'communityDashboard',
         ];
 
 
