@@ -227,9 +227,6 @@ h6 {
 .border-orange {
     border: 1px solid var(--cus-orange);
 }
-.border-primary-light {
-    border: 1px solid #87CEEBFF;
-}
 
 /*p {*/
 /*    margin-bottom: 0;*/
