@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Model\Table\ExamsTable;
 use Cake\Event\EventInterface;
 use Cake\Mailer\Mailer;
 
@@ -122,18 +121,14 @@ class UsersController extends AppController
                     ? $this->Flash->success(__('You are now logged in as a guest. You can login anytime using the following login details.<br><br><b>Username: <i>' . $data['username'] . '</i><br>Password: <i>' . $originalPassword .'</i></b><br><br>Please note down these details, it will not be shown again.'), ['escape' => false])
                     : $this->Flash->success(__('Registration successful.'));
 
-                if ($this->request->getSession()->check('selectedExamId')) {
-                    return $this->redirect('/UserExams/view/' . $this->request->getSession()->read('selectedExamId'));
-                }
-
-                return $this->redirect(['controller' => 'users', 'action' => 'login']);
+                return $this->redirect('/Users/login');
             }
 
             $this->Flash->error(__('Unable to add new user.'));
         }
 
         if ($guest === true) {
-            return $this->redirect(['controller' => 'users', 'action' => 'login']);
+            return $this->redirect('/Users/login');
         }
 
         $this->set('user', $user);
@@ -272,7 +267,6 @@ class UsersController extends AppController
     public function login()
     {
         if ($this->isLoggedIn()) {
-            echo 'in Users->login()'; exit;
             return $this->redirect('/');
         }
 
