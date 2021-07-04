@@ -1,4 +1,42 @@
-<div class="d-flex justify-content-between">
+<div class="alert alert-warning p-3">
+    <h6>Quick Add</h6>
+    <?php
+    echo $this->Form->create(null, ['action'=>'/Transactions/quickAdd', 'id'=>'quickAddForm'])
+    ?>
+        <div>
+            <input
+                type="number"
+                id="transactionAmount"
+                name="transaction_amount"
+                class="form-control"
+                step="0.01"
+                placeholder="Amount">
+            <input type="hidden" name="transaction_date" value="<?= date('Y-m-d') ?>">
+            <input type="hidden" name="transaction_type" id="quickAddTransactionType">
+        </div>
+        <div class="mt-3 text-center">
+            <button type="button" class="btn btn-success me-3" onclick="addTransaction('income')"><i class="fa fa-plus-circle"></i> Income</button>
+            <button type="button" class="btn btn-danger" onclick="addTransaction('expense')"><i class="fa fa-minus-circle"></i> Expense</button>
+        </div>
+    <?php
+    echo $this->Form->end();
+    ?>
+
+    <script>
+        function addTransaction(type) {
+            if (type == 'income') {
+                $('#quickAddTransactionType').val('income')
+            }
+            if (type == 'expense') {
+                $('#quickAddTransactionType').val('expense')
+            }
+
+            $('#quickAddForm').submit()
+        }
+    </script>
+</div>
+
+<div class="d-flex justify-content-between mt-5">
     <div class="text-center text-primary fs-5">
         <i class="fa fa-asterisk"></i> UPDATES
     </div>

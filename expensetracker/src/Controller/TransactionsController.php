@@ -80,6 +80,34 @@ class TransactionsController extends AppController
         $this->set('isExpense', $isExpense);
     }
 
+    public function quickAdd()
+    {
+        $batchId = $this->getSelectedBatchId();
+        $transaction = $this->Transactions->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $error = $this->validateTransaction($data);
+
+            if ($error) {
+                $this->Flash->error(__($error));
+            } else {
+                $data['user_id'] = $this->request->getSession()->read('User.id');
+                $data['batch_id'] = $batchId;
+
+                $transaction = $this->Transactions->patchEntity($transaction, $data);
+
+                if ($transactionInfo = $this->Transactions->save($transaction)) {
+                    $this->Flash->success(__('Transaction has been saved.'));
+                } else {
+                    $this->Flash->error(__('Unable to create new transaction.'));
+                }
+            }
+        }
+
+        return $this->redirect('/');
+    }
+
     private function validateTransaction($data)
     {
         if (empty(trim($data['transaction_amount']))) {

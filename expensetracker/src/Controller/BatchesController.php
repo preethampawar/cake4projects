@@ -68,7 +68,7 @@ class BatchesController extends AppController
 
                 $this->Flash->success(__('Entity has been saved.'));
 
-                return $this->redirect('/Transactions/add/'.$batchInfo->id);
+                return $this->redirect('/Batches/');
             }
 
             $this->Flash->error(__('Unable to create new entity.'));
