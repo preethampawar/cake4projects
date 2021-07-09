@@ -1,5 +1,10 @@
-<div class="text-end">
-    <a class="btn btn-orange btn-sm rounded-pill" href="/Batches/add"><i class="fa fa-plus-circle"></i> NEW ENTITY</a>
+<div class="text-center">
+    <a href="/Batches"><i class="fa fa-hand-holding-usd"></i> Manage Accounts</a>
+</div>
+
+
+<div class="text-end mt-3">
+    <a class="btn btn-orange btn-sm rounded-pill" href="/Batches/add"><i class="fa fa-plus-circle"></i> NEW ACCOUNT</a>
 </div>
 
 <?php
@@ -7,9 +12,9 @@ if (empty($batchInfo->toArray())) {
     ?>
     <div class="mb-4 mt-3">
         <p class="bg-light p-2 rounded">No entitites found.</p>
-        <p class="px-2">Please create an entity to manage your expenses.</p>
+        <p class="px-2">Please create an Account to manage your expenses.</p>
         <p class="px-2">
-            Entity names could be, for example:<br>
+            Account names could be, for example:<br>
             <code>Shop, Agriculture, Home, Bike, Car, Tractor, Phone Recharge, etc.</code>
         </p>
     </div>
@@ -21,7 +26,7 @@ if (empty($batchInfo->toArray())) {
 if (!empty($batchInfo->toArray())) {
 ?>
     <div class="border mt-3 p-1 rounded">
-        <div class="p-2 bg-light rounded"><h5>Select Entity</h5></div>
+        <div class="p-2 bg-light rounded"><h5>Select Account</h5></div>
         <div class="list-group list-group-flush mt-2">
             <?php
             foreach ($batchInfo as $batch):

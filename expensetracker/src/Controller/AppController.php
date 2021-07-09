@@ -87,7 +87,7 @@ class AppController extends Controller
         ];
         $selectedBatch = $this->getRequest()->getSession()->check('Batch.id') ? $this->getRequest()->getSession()->read('Batch') : null;
         if ($selectedBatch && !$selectedBatch['active'] && !in_array($this->request->getParam('action'), $whiteListActions)) {
-            $this->Flash->error('This entity "'.$selectedBatch['name'].'" is closed.');
+            $this->Flash->error('This Account "'.$selectedBatch['name'].'" is closed.');
         }
     }
 

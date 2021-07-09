@@ -1,7 +1,7 @@
-<h1><i class="fa fa-hand-holding-usd"></i> Manage Entities</h1>
+<h1><i class="fa fa-hand-holding-usd"></i> Manage Accounts</h1>
 
 <div class="text-end">
-    <a class="btn btn-orange btn-sm rounded-pill" href="/Batches/add"><i class="fa fa-plus-circle"></i> NEW ENTITY</a>
+    <a class="btn btn-orange btn-sm rounded-pill" href="/Batches/add"><i class="fa fa-plus-circle"></i> NEW ACCOUNT</a>
 </div>
 
 <div>
@@ -35,7 +35,7 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Entity</th>
+            <th>Account</th>
             <th></th>
         </tr>
         </thead>
@@ -89,7 +89,7 @@
                                         '<i class="fa fa-times-circle"></i> Mark As Closed',
                                         ['controller' => 'Batches', 'action' => 'changeStatus', $batch->id, 'inactive'],
                                         [
-                                            'confirm' => 'Are you sure you want to Close this Entity?',
+                                            'confirm' => 'Are you sure you want to Close this Account?',
                                             'class' => 'dropdown-item',
                                             'title' => $batch->name,
                                             'escape' => false
@@ -100,7 +100,7 @@
                                         '<i class="fa fa-check-circle"></i> Mark As Active',
                                         ['controller' => 'Batches', 'action' => 'changeStatus', $batch->id, 'active'],
                                         [
-                                            'confirm' => 'Are you sure you want to Activate this Entity?',
+                                            'confirm' => 'Are you sure you want to Activate this Account?',
                                             'class' => 'dropdown-item',
                                             'title' => $batch->name,
                                             'escape' => false
@@ -115,7 +115,7 @@
                                     '<i class="fa fa-times-circle"></i> Delete',
                                     ['controller' => 'Batches', 'action' => 'delete', $batch->id],
                                     [
-                                        'confirm' => 'Are you sure you want to delete this Entity?',
+                                        'confirm' => 'Are you sure you want to delete this Account?',
                                         'class' => 'dropdown-item',
                                         'title' => $batch->name,
                                         'escape' => false
@@ -134,7 +134,7 @@
 
         if (empty($batches->toArray())) {
             ?>
-            <tr><td colspan="4">No entities found.</td></tr>
+            <tr><td colspan="4">No accounts found.</td></tr>
             <?php
         }
 

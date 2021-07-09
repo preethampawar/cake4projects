@@ -1,11 +1,11 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/Batches/">Manage Entities</a></li>
-    <li class="breadcrumb-item active" aria-current="page">New Entity</li>
+    <li class="breadcrumb-item"><a href="/Batches/">Manage Accounts</a></li>
+    <li class="breadcrumb-item active" aria-current="page">New Account</li>
   </ol>
 </nav>
 
-<h1>Create New Entity</h1>
+<h1>Create New Account</h1>
 
 <?php
 
@@ -18,7 +18,7 @@ echo $this->Form->create(null);
 echo $this->Form->control('name',
     [
         'type' => 'text',
-        'label' => 'Entity Name *',
+        'label' => 'Account Name *',
         'required' => true,
         'class' => 'form-control mb-3'
     ]);

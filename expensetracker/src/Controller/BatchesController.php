@@ -71,7 +71,7 @@ class BatchesController extends AppController
                 return $this->redirect('/Batches/');
             }
 
-            $this->Flash->error(__('Unable to create new entity.'));
+            $this->Flash->error(__('Unable to create new Account.'));
         }
 
         $this->set('batch', $batch);
@@ -80,7 +80,7 @@ class BatchesController extends AppController
     private function validateBatch($data)
     {
         if (empty(trim($data['name']))) {
-            return 'Please enter the entity name.';
+            return 'Please enter the Account name.';
         }
 
         return null;
@@ -96,12 +96,12 @@ class BatchesController extends AppController
             $this->Batches->patchEntity($batch, $this->request->getData());
 
             if ($this->Batches->save($batch)) {
-                $this->Flash->success(__('Entity details have been updated successfully.'));
+                $this->Flash->success(__('Account details have been updated successfully.'));
 
                 return $this->redirect(['controller' => 'Batches', 'action' => 'index']);
             }
 
-            $this->Flash->error(__('Unable to update entity details.'));
+            $this->Flash->error(__('Unable to update Account details.'));
         }
 
         $this->set('batch', $batch);
@@ -136,7 +136,7 @@ class BatchesController extends AppController
         $action = $this->request->getParam('action');
 
         if (($controller != 'Batches' || $action == 'dashboard') && !$this->isBatchSelected()) {
-            $this->Flash->set(__('Please select an Entity'));
+            $this->Flash->set(__('Please select an Account'));
 
             return $this->redirect('/Batches/selectBatch');
         }
@@ -145,7 +145,7 @@ class BatchesController extends AppController
     public function dashboard()
     {
         if (!$this->isBatchSelected()) {
-            $this->Flash->set(__('Please select an Entity'));
+            $this->Flash->set(__('Please select an Account'));
 
             return $this->redirect('/Batches/selectBatch');
         }
@@ -262,7 +262,7 @@ class BatchesController extends AppController
             return $this->redirect('/Batches/dashboard');
         }
 
-        $this->Flash->error(__('You are not authorized to access this Entity - '.$batch->name));
+        $this->Flash->error(__('You are not authorized to access this Account - '.$batch->name));
 
         return $this->redirect('/Batches/selectBatch');
     }

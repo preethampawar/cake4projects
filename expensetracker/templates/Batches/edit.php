@@ -1,11 +1,11 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/Batches/">Manage Entities</a></li>
+        <li class="breadcrumb-item"><a href="/Batches/">Manage Accounts</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit Details</li>
     </ol>
 </nav>
 
-<h1>Edit Entity</h1>
+<h1>Edit Account</h1>
 
 <?php
 
@@ -18,7 +18,7 @@ echo $this->Form->create($batch);
 echo $this->Form->control('name',
     [
         'type' => 'text',
-        'label' => 'Entity Name *',
+        'label' => 'Account Name *',
         'required' => true,
         'class' => 'form-control form-control mb-3'
     ]);
@@ -26,7 +26,7 @@ echo $this->Form->control('name',
 echo $this->Form->control('active',
     [
         'type' => 'select',
-        'label' => 'Entity Status',
+        'label' => 'Account Status',
         'options' => [1 => 'Active', 0 => 'Closed'],
         'class' => 'form-select form-select mb-3'
     ]

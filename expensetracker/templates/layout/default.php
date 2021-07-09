@@ -78,10 +78,10 @@ switch($controller) {
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light d-print-none bg-gradient p-0 border-bottom border-4 border-warning">
             <div class="container-fluid">
-                <a class="navbar-brand me-0" href="/">
+                <a class="navbar-brand me-0" href="/Batches/selectBatch">
                     <span class=""><img src="/img/rupee-sym.png" height="42" width="42" alt=""></span>
                 </a>
-                <a class="navbar-brand d-block d-md-none" href="/">
+                <a class="navbar-brand d-block d-md-none" href="/Batches/selectBatch">
                     <span>Expense Tracker</span>
                 </a>
 
@@ -99,7 +99,7 @@ switch($controller) {
                             <?php
                             if (!$selectedBatch) {
                                 ?>
-                                <a class="nav-link <?= $batchesLinkActive?> px-2 me-1 my-1" href="/Batches"><i class="fa fa-hand-holding-usd"></i> Manage Entities</a>
+                                <a class="nav-link <?= $batchesLinkActive?> px-2 me-1 my-1" href="/Batches"><i class="fa fa-hand-holding-usd"></i> Manage Accounts</a>
                                 <?php
                             }
                             ?>
@@ -155,8 +155,8 @@ switch($controller) {
             ?>
             <nav class="navbar navbar-expand-lg navbar-dark bg-purple">
                 <div class="container-fluid">
-                    <a class="navbar-brand fs-6 py-0" href="#"><?= $selectedBatch['name'] ?> <?= !$selectedBatch['active'] ? '<span class="fst-italic small text-warning"> - closed*</span>' : null ?> </a>
-                    <a class="btn btn-sm btn-light small py-0" href="/Batches/selectBatch">Change Entity <i class="fa fa-chevron-right"></i></a>
+                    <a class="navbar-brand fs-6 py-0" href="/"><i class="fa fa-home"></i> <?= $selectedBatch['name'] ?> <?= !$selectedBatch['active'] ? '<span class="fst-italic small text-warning"> - closed*</span>' : null ?> </a>
+                    <a class="btn btn-sm btn-outline-light small py-0" href="/Batches/selectBatch">Change Account <i class="fa fa-ellipsis-v"></i></a>
                 </div>
             </nav>
             <?php

@@ -1,22 +1,28 @@
-<div class="alert alert-warning p-3">
+<div class="alert alert-warning px-2 py-2">
     <h6>Quick Add</h6>
     <?php
     echo $this->Form->create(null, ['action'=>'/Transactions/quickAdd', 'id'=>'quickAddForm'])
     ?>
-        <div>
+        <div class="mt-3">
             <input
                 type="number"
                 id="transactionAmount"
                 name="transaction_amount"
                 class="form-control"
                 step="0.01"
-                placeholder="Amount">
+                placeholder="Amount*">
+            <input
+                type="text"
+                id="Notes"
+                name="name"
+                class="form-control mt-3"
+                placeholder="Notes (Optional)">
             <input type="hidden" name="transaction_date" value="<?= date('Y-m-d') ?>">
             <input type="hidden" name="transaction_type" id="quickAddTransactionType">
         </div>
-        <div class="mt-3 text-center">
-            <button type="button" class="btn btn-success me-3" onclick="addTransaction('income')"><i class="fa fa-plus-circle"></i> Income</button>
-            <button type="button" class="btn btn-danger" onclick="addTransaction('expense')"><i class="fa fa-minus-circle"></i> Expense</button>
+        <div class="mt-3 d-flex justify-content-around">
+            <button type="button" class="btn btn-success" onclick="addTransaction('income')"><i class="fa fa-plus-circle"></i> Income</button>
+            <button type="button" class="btn btn-danger" onclick="addTransaction('expense')"><i class="fa fa-plus-circle"></i> Expense</button>
         </div>
     <?php
     echo $this->Form->end();
@@ -34,6 +40,10 @@
             $('#quickAddForm').submit()
         }
     </script>
+</div>
+
+<div class="text-center mt-5">
+    <a href="/Transactions/"><i class="fa fa-chevron-circle-right"></i>  Show All Transactions </a>
 </div>
 
 <div class="d-flex justify-content-between mt-5">
