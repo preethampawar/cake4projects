@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Creating mathematical and chemical formulas with MathType</title>
+    <script src="https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js"></script>
+</head>
+
+<body>
+<textarea cols="10" id="editor1" name="editor1" rows="10" data-sample-short>&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href=&quot;https://ckeditor.com/&quot;&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;</textarea>
+<script>
+    (function() {
+        var mathElements = [
+            'math',
+            'maction',
+            'maligngroup',
+            'malignmark',
+            'menclose',
+            'merror',
+            'mfenced',
+            'mfrac',
+            'mglyph',
+            'mi',
+            'mlabeledtr',
+            'mlongdiv',
+            'mmultiscripts',
+            'mn',
+            'mo',
+            'mover',
+            'mpadded',
+            'mphantom',
+            'mroot',
+            'mrow',
+            'ms',
+            'mscarries',
+            'mscarry',
+            'msgroup',
+            'msline',
+            'mspace',
+            'msqrt',
+            'msrow',
+            'mstack',
+            'mstyle',
+            'msub',
+            'msup',
+            'msubsup',
+            'mtable',
+            'mtd',
+            'mtext',
+            'mtr',
+            'munder',
+            'munderover',
+            'semantics',
+            'annotation',
+            'annotation-xml'
+        ];
+
+        CKEDITOR.plugins.addExternal('ckeditor_wiris', 'https://ckeditor.com/docs/ckeditor4/4.16.0/examples/assets/plugins/ckeditor_wiris/', 'plugin.js');
+
+        CKEDITOR.replace('editor1', {
+            extraPlugins: 'ckeditor_wiris',
+            // For now, MathType is incompatible with CKEditor file upload plugins.
+            removePlugins: 'uploadimage,uploadwidget,uploadfile,filetools,filebrowser',
+            height: 320,
+            // Update the ACF configuration with MathML syntax.
+            extraAllowedContent: mathElements.join(' ') + '(*)[*]{*};img[data-mathml,data-custom-editor,role](Wirisformula)'
+        });
+    }());
+</script>
+</body>
+
+</html>
