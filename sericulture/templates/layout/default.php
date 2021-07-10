@@ -122,6 +122,7 @@ switch($controller) {
                         } else {
                             ?>
                             <a class="nav-link <?= $communityDashboardLinkActive?> px-2 me-1 my-1" href="/Batches/communityDashboard"><i class="fa fa-users"></i> Community Updates</a>
+                            <a class="nav-link px-2 me-1 my-1" href="//expenses.simpleaccounting.in">Manage Finances</a>
                             <a class="nav-link <?= $loginLinkActive ?> px-2 me-1 my-1" href="/Users/login">Login</a>
                             <a class="nav-link <?= $registerLinkActive ?> px-2 my-1" href="/Users/register">Register</a>
                             <?php
