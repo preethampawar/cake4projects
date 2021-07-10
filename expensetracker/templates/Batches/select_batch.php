@@ -11,11 +11,11 @@
 if (empty($batchInfo->toArray())) {
     ?>
     <div class="mb-4 mt-3">
-        <p class="bg-light p-2 rounded">No entitites found.</p>
+        <p class="bg-light p-2 rounded">No accounts found.</p>
         <p class="px-2">Please create an Account to manage your expenses.</p>
         <p class="px-2">
-            Account names could be, for example:<br>
-            <code>Shop, Agriculture, Home, Bike, Car, Tractor, Phone Recharge, etc.</code>
+            Examples for Account names:<br>
+            <code>Agriculture, Bike, Car, Home, Mobile, Natasha, Robert, School, Shop, Tractor, etc.</code>
         </p>
     </div>
     <?php

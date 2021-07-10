@@ -20,31 +20,6 @@ class UsersController extends AppController
         $this->loadComponent('Flash'); // Include the FlashComponent
     }
 
-    public function index()
-    {
-        $this->loadComponent('Paginator');
-        $questions = $this->Paginator->paginate(
-            $this->Questions->find('all')
-                ->where(['Questions.deleted' => 0])
-                ->contain(['QuestionOptions'])
-                ->order('Questions.id desc'),
-            [
-                'limit' => '50',
-                'order' => [
-                    'Questions.id' => 'desc'
-                ]
-            ]
-        );
-
-        $this->set(compact('questions'));
-    }
-
-    public function view($id)
-    {
-        $question = $this->Questions->findById($id)->firstOrFail();
-        $this->set(compact('question'));
-    }
-
     public function add()
     {
         $user = $this->Users->newEmptyEntity();
@@ -270,23 +245,27 @@ class UsersController extends AppController
             return $this->redirect('/');
         }
 
-        if ($this->request->is('post')) {
-            $data = $this->request->getData();
-            $userInfo = $this->Users->findByUsername($data['username'])->where(['Users.deleted' => 0])->first();
+        $userManagementLoginUrl = $this->userManagementLoginUrl . base64_encode($this->userManagementAppCode);
 
-            if ($userInfo && $userInfo->password === sha1($data['kunji'])) {
-                $user = $this->saveUserToSession($userInfo);
+        return $this->redirect($userManagementLoginUrl);
 
-                if ($user['isAdmin'] == false) {
-                    return $this->redirect('/Batches/dashboard');
-                }
-
-                return $this->redirect('/Batches/dashboard');
-            }
-
-            $this->Flash->error(__('User not found.'));
-
-        }
+//        if ($this->request->is('post')) {
+//            $data = $this->request->getData();
+//            $userInfo = $this->Users->findByUsername($data['username'])->where(['Users.deleted' => 0])->first();
+//
+//            if ($userInfo && $userInfo->password === sha1($data['kunji'])) {
+//                $user = $this->saveUserToSession($userInfo);
+//
+//                if ($user['isAdmin'] == false) {
+//                    return $this->redirect('/Batches/dashboard');
+//                }
+//
+//                return $this->redirect('/Batches/dashboard');
+//            }
+//
+//            $this->Flash->error(__('User not found.'));
+//
+//        }
     }
 
     private function saveUserToSession($userInfo)
@@ -307,54 +286,129 @@ class UsersController extends AppController
 
     public function logout()
     {
+        $this->request->getSession()->delete('User');
         $this->request->getSession()->delete('userInfo');
         $this->request->getSession()->destroy();
 
         return $this->redirect('/');
     }
 
-    public function sendRegisterEmail($userInfo, $originalPassword)
+//    public function sendRegisterEmail($userInfo, $originalPassword)
+//    {
+//        $body = sprintf("
+//<p>Dear %s,</p>
+//
+//<p>You are successfully enrolled on our platform. Find the below details which you have provided at the time of registration.</p>
+//
+//<p>
+//<b>Login details:</b> <br>
+//Username: %s <br>
+//Password: %s <br>
+//</p>
+//
+//<p>
+//<b>Profile Information:</b> <br>
+//Full Name: %s <br>
+//Email: %s <br>
+//Phone: %s <br>
+//</p>
+//
+//<p>Note: This is an auto generated email. Please do not reply.</p>
+//
+//        ", $userInfo->name, $userInfo->username, $originalPassword, $userInfo->name, $userInfo->email, $userInfo->phone);
+//
+//        if(empty($userInfo->email)) {
+//            $userInfo->email = 'preetham.pawar@gmail.com';
+//        }
+//
+//        return true;
+//
+//        try {
+//            $mailer = new Mailer('letsgreenify');
+//            $mailer->setFrom(['no-reply@letsgreenify.com' => 'Sericulture Tracker'])
+//                ->setTo($userInfo->email)
+//                ->setBcc('preetham.pawar@gmail.com')
+//                ->setSubject('Congratulations! You are now registered with us.')
+//                ->setEmailFormat('html')
+//                ->deliver($body);
+//        } catch (Exception $e) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
+
+    public function appRequestLogout()
     {
-        $body = sprintf("
-<p>Dear %s,</p>
+        $userManagementLogoutUrl = $this->userManagementLogoutUrl . base64_encode($this->userManagementAppCode);
 
-<p>You are successfully enrolled on our platform. Find the below details which you have provided at the time of registration.</p>
+        return $this->redirect($userManagementLogoutUrl);
+    }
 
-<p>
-<b>Login details:</b> <br>
-Username: %s <br>
-Password: %s <br>
-</p>
+    public function appResponse($encodedData)
+    {
+        $response = $this->decodeAppResponse($encodedData);
 
-<p>
-<b>Profile Information:</b> <br>
-Full Name: %s <br>
-Email: %s <br>
-Phone: %s <br>
-</p>
-
-<p>Note: This is an auto generated email. Please do not reply.</p>
-
-        ", $userInfo->name, $userInfo->username, $originalPassword, $userInfo->name, $userInfo->email, $userInfo->phone);
-
-        if(empty($userInfo->email)) {
-            $userInfo->email = 'preetham.pawar@gmail.com';
+        if($this->validAppResponse($response)) {
+            $this->request->getSession()->write('User', $response['User']);
+            return $this->redirect('/');
         }
 
-        return true;
+        $this->Flash->error('Invalid Request');
+        $this->redirect('/');
+    }
 
-        try {
-            $mailer = new Mailer('letsgreenify');
-            $mailer->setFrom(['no-reply@letsgreenify.com' => 'Sericulture Tracker'])
-                ->setTo($userInfo->email)
-                ->setBcc('preetham.pawar@gmail.com')
-                ->setSubject('Congratulations! You are now registered with us.')
-                ->setEmailFormat('html')
-                ->deliver($body);
-        } catch (Exception $e) {
-            return false;
+    private function decodeAppResponse($encodedData)
+    {
+        if (empty(trim($encodedData))) {
+            return null;
         }
 
-        return true;
+        return json_decode(
+            base64_decode(trim($encodedData)),
+            true
+        );
+    }
+
+    private function validAppResponse($response)
+    {
+        if (!empty($response) && isset($response['appCode'])
+            && !empty(trim($response['appCode']))
+            && isset($response['User']['id'])
+            && !empty($response['User']['id'])
+            && $this->userManagementAppCode == $response['appCode'])
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function profile($action)
+    {
+        $appAction = 'myProfile';
+
+        switch ($action) {
+            case 'myProfile':
+                $appAction = 'myProfile';
+                break;
+            case 'updateProfile':
+                $appAction = 'updateProfile';
+                break;
+            case 'updatePassword':
+                $appAction = 'updatePassword';
+                break;
+            default:
+                break;
+        }
+
+        $this->appRequestAction($appAction);
+    }
+
+    private function appRequestAction($action)
+    {
+        $userManagementActionUrl = $this->userManagementActionUrl . base64_encode($this->userManagementAppCode) . '/' . base64_encode($action);
+
+        return $this->redirect($userManagementActionUrl);
     }
 }

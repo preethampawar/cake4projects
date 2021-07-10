@@ -126,10 +126,10 @@ switch($controller) {
                                     <i class="fa fa-user-circle"></i> <?= ucwords($loggedInUser['name']) ?>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="/Users/myProfile">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="/Users/updateProfile">Update Profile</a></li>
-                                    <li><a class="dropdown-item" href="/Users/updatePassword">Change Password</a></li>
-                                    <li><a class="dropdown-item" href="/Users/logout">Logout</a></li>
+                                    <li><a class="dropdown-item" href="/Users/profile/myProfile">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="/Users/profile/updateProfile">Update Profile</a></li>
+                                    <li><a class="dropdown-item" href="/Users/profile/updatePassword">Change Password</a></li>
+                                    <li><a class="dropdown-item" href="/Users/appRequestLogout">Logout</a></li>
                                 </ul>
                             </div>
                             <?php

@@ -30,6 +30,20 @@ use Cake\Event\EventInterface;
  */
 class AppController extends Controller
 {
+    /** dev env */
+//    public $userManagementUrl = '//www.usermanagement-local.com:8080/';
+//    public $userManagementAppCode = 'SERI';
+//    public $userManagementLoginUrl = '//www.usermanagement-local.com:8080/Users/appRequestLogin/';
+//    public $userManagementLogoutUrl = '//www.usermanagement-local.com:8080/Users/appRequestLogout/';
+//    public $userManagementActionUrl = '//www.usermanagement-local.com:8080/Users/appRequestAction/';
+
+    /** prod env */
+    public $userManagementUrl = '//usermanagement.simpleaccounting.in/';
+    public $userManagementAppCode = 'SERI';
+    public $userManagementLoginUrl = '//usermanagement.simpleaccounting.in/Users/appRequestLogin/';
+    public $userManagementLogoutUrl = '//usermanagement.simpleaccounting.in/Users/appRequestLogout/';
+    public $userManagementActionUrl = '//usermanagement.simpleaccounting.in/Users/appRequestAction/';
+
     /**
      * Initialization hook method.
      *
@@ -66,6 +80,7 @@ class AppController extends Controller
             'initiate',
             'continueAsGuest',
             'communityDashboard',
+            'appResponse',
         ];
 
 
