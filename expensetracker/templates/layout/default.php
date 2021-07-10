@@ -107,14 +107,14 @@ switch($controller) {
                             <?php
                             if ($selectedBatch) {
                                 ?>
-                                <a class="nav-link <?= $transactionsLinkActive?> px-2 me-1 my-1" href="/Transactions"><i class="fa fa-rupee-sign"></i> Finance</a>
+                                <a class="nav-link <?= $transactionsLinkActive?> px-2 me-1 my-1" href="/Transactions"><i class="fa fa-rupee-sign"></i> Transactions</a>
 
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle <?=$reportsLinkActive?> px-2 me-1 my-1" href="#" id="reportsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-chart-pie"></i> Reports
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="reportsDropdown">
-                                        <li><a class="dropdown-item" href="/Transactions/financeReport">Finance Report</a></li>
+                                        <li><a class="dropdown-item" href="/Transactions/financeReport">Transactions Report</a></li>
                                     </ul>
                                 </div>
                                 <?php
@@ -156,7 +156,7 @@ switch($controller) {
             <nav class="navbar navbar-expand-lg navbar-dark bg-purple">
                 <div class="container-fluid">
                     <a class="navbar-brand fs-6 py-0" href="/"><i class="fa fa-home"></i> <?= $selectedBatch['name'] ?> <?= !$selectedBatch['active'] ? '<span class="fst-italic small text-warning"> - closed*</span>' : null ?> </a>
-                    <a class="btn btn-sm btn-outline-light small py-0" href="/Batches/selectBatch">Change Account <i class="fa fa-ellipsis-v"></i></a>
+                    <a class="btn btn-sm btn-outline-light small py-0" href="/Batches/selectBatch">Switch Account <i class="fa fa-chevron-circle-right"></i></a>
                 </div>
             </nav>
             <?php

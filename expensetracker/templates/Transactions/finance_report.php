@@ -1,6 +1,6 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<h1><i class="fa fa-chart-pie"></i> Finance Report</h1>
+<h1><i class="fa fa-chart-pie"></i> Transactions Report</h1>
 
 <?php
 echo $this->Form->create(null);

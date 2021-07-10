@@ -7,7 +7,7 @@ if ($this->getRequest()->getSession()->check('Batch.id') && $this->getRequest()-
     $batchActive = true;
 }
 ?>
-<h1><i class="fa fa-rupee-sign"></i>  Finance</h1>
+<h1><i class="fa fa-rupee-sign"></i>  Transactions</h1>
 
 <?php
 if ($batchActive) {
@@ -80,7 +80,7 @@ if ($batchActive) {
                     <?= $k ?>.
                 </td>
                 <td>
-                    <span class="text-nowrap text-primary text-uppercase"><?= $transaction->transaction_date->format('d M') ?></span>
+                    <span class="text-nowrap text-primary text-uppercase"><?= $transaction->transaction_date != null ? $transaction->transaction_date->format('d M') : '-' ?></span>
 
                 </td>
                 <!--

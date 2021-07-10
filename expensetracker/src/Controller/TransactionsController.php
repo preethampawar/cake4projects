@@ -113,6 +113,9 @@ class TransactionsController extends AppController
         if (empty(trim($data['transaction_amount']))) {
             return 'Please enter Amount.';
         }
+        if (empty(trim($data['transaction_date']))) {
+            return 'Please enter Transaction Date.';
+        }
 
         return null;
     }
